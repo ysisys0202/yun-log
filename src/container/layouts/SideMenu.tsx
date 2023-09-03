@@ -39,8 +39,9 @@ const S = css`
   padding: 16px;
   background-color: #b8ddda;
   width: 20%;
-  min-width: 220px;
+  /* min-width: 220px; */
   height: 100dvh;
+  border-right: 1px solid ${gray.border};
   svg {
     transform: translateX(-12px);
   }

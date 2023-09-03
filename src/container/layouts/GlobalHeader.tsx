@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import Link from "next/link";
-
+import { colors, gray } from "@/constants/colors";
 const GlobalHeader = () => {
   return (
     <header css={S}>
@@ -33,6 +33,14 @@ const globalMenus = [
 ];
 
 const S = css`
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 0 20px;
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(50px);
+  border-bottom: 1px solid ${gray.border};
   ul {
     display: flex;
     align-items: center;
@@ -45,7 +53,7 @@ const S = css`
       font-size: 18px;
       font-weight: 500;
       line-height: 1.4;
-      color: #000;
+      color: ${colors.white};
       &::after {
         content: "";
         position: absolute;
@@ -53,7 +61,7 @@ const S = css`
         right: 0;
         width: 0px;
         height: 2px;
-        background-color: #000;
+        background-color: ${colors.white};
         transition: width 200ms ease-in-out;
       }
       &:hover {
