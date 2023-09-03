@@ -14,8 +14,7 @@ const Homepage = ({ children }: { children: React.ReactNode }) => {
         <Profile />
         <FeaturePosts />
       </section>
-      {/* 주요 게시물 */}
-      {/* 모든 게시물  */}
+      <RecentPosts />
     </Content>
   );
 };
