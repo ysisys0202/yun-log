@@ -9,7 +9,7 @@ const SideMenu = () => {
     <aside css={S}>
       <header>
         <div className="logo">
-          <Logo width="100" height="100" fill={colors.white} />
+          <Logo width="140" height="140" fill={colors.white} />
           <strong className="visually-hidden">이윤슬 개발 블로그</strong>
         </div>
       </header>
@@ -43,7 +43,7 @@ const S = css`
   height: 100dvh;
   border-right: 1px solid ${gray.border};
   svg {
-    transform: translateX(-12px);
+    transform: translate(-24px, -24px);
   }
   .tab-list {
     margin-top: auto;
