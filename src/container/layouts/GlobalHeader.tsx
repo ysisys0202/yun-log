@@ -36,6 +36,7 @@ const S = css`
   position: fixed;
   top: 0;
   right: 0;
+  z-index: 50;
   padding: 0 20px;
   width: 80%;
   background-color: rgba(255, 255, 255, 0.2);
