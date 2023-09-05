@@ -4,7 +4,10 @@ import Tag from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { css } from "@emotion/react";
 import { colors, gray } from "@/constants/colors";
+import { motion, useScroll } from "framer-motion";
+import CircularProgressBar from "@/components/common/CircularProgressBar";
 const SideMenu = () => {
+  const { scrollYProgress } = useScroll();
   return (
     <aside css={S}>
       <header>
@@ -26,6 +29,13 @@ const SideMenu = () => {
           <br />
           스크롤 하세요
         </span>
+        <CircularProgressBar
+          className="mx-auto"
+          size={80}
+          progressPer={scrollYProgress}
+          baseColor="#fff"
+          progressColor="#247774"
+        />
       </footer>
     </aside>
   );
@@ -42,8 +52,10 @@ const S = css`
   /* min-width: 220px; */
   height: 100dvh;
   border-right: 1px solid ${gray.border};
-  svg {
-    transform: translate(-24px, -24px);
+  .logo {
+    svg {
+      transform: translate(-24px, -24px);
+    }
   }
   .tab-list {
     margin-top: auto;
@@ -52,6 +64,7 @@ const S = css`
     margin: 160px 0 40px;
     text-align: center;
   }
+
   .scroll-text {
     font-size: 16px;
     color: ${colors.white};
