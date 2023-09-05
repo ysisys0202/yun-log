@@ -5,16 +5,23 @@ import RecentPosts from "@/container/home/RecentPosts";
 import Content from "@/container/layouts/Content";
 import { css } from "@emotion/react";
 import React from "react";
+import { getAllPosts, getFeaturedPosts } from "../../lib/posts-util";
 
-const Homepage = ({ children }: { children: React.ReactNode }) => {
+const Homepage = ({
+  featuredPostList,
+  allPostList,
+}: {
+  featuredPostList: any;
+  allPostList: any;
+}) => {
   return (
     <Content>
       <h1 className="visually-hidden">이윤슬 블로그 메인 페이지</h1>
       <section className="top-section" css={S}>
         <Profile />
-        <FeaturePosts />
+        <FeaturePosts postList={featuredPostList} />
       </section>
-      <RecentPosts />
+      <RecentPosts postList={allPostList} />
     </Content>
   );
 };
@@ -24,4 +31,14 @@ const S = css`
   height: 50vh;
   min-height: 600px;
 `;
+export function getStaticProps() {
+  const featuredPostList = getFeaturedPosts();
+  const allPostList = getAllPosts();
+  return {
+    props: {
+      allPostList,
+      featuredPostList,
+    },
+  };
+}
 export default Homepage;

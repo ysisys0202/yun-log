@@ -5,7 +5,7 @@ import PostList from "@/components/posts/PostList";
 import { css } from "@emotion/react";
 import { gray } from "@/constants/colors";
 
-const RecentPosts = () => {
+const RecentPosts = ({ postList }: { postList: any }) => {
   return (
     <HomeSection SectionStyle={S}>
       <SectionTitle>최근 게시물</SectionTitle>

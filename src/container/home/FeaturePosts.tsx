@@ -1,10 +1,11 @@
-import Content from "../layouts/Content";
 import SectionTitle from "@/components/home/SectionTitle";
 import PostList from "@/components/posts/PostList";
 import { css } from "@emotion/react";
 import HomeSection from "./HomeSection";
+import { getAllPosts } from "../../../lib/posts-util";
+import { PostCardType } from "@/components/posts/PostCard";
 
-const FeaturePosts = () => {
+const FeaturePosts = ({ postList }: { postList: PostCardType[] }) => {
   return (
     <HomeSection SectionStyle={S}>
       <SectionTitle>주요 게시물</SectionTitle>
@@ -26,46 +27,5 @@ const S = css`
     width: 100%;
   }
 `;
-const postList = [
-  {
-    id: "123",
-    title: "var 쓰지마..., 그게 뭔데",
-    link: "/",
-    category: "javascript",
-    modifiedDate: "2023년 09월 03일",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
-  },
-  {
-    id: "123",
-    title: "var 쓰지마..., 그게 뭔데",
-    link: "/",
-    category: "javascript",
-    modifiedDate: "2023년 09월 03일",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
-  },
-  {
-    id: "123",
-    title: "var 쓰지마..., 그게 뭔데",
-    link: "/",
-    category: "javascript",
-    modifiedDate: "2023년 09월 03일",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
-  },
-  {
-    id: "123",
-    title: "var 쓰지마..., 그게 뭔데",
-    link: "/",
-    category: "javascript",
-    modifiedDate: "2023년 09월 03일",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
-  },
-];
+
 export default FeaturePosts;
