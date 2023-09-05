@@ -6,15 +6,16 @@ import { css } from "@emotion/react";
 import { colors, gray } from "@/constants/colors";
 import { motion, useScroll } from "framer-motion";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
+import Link from "next/link";
 const SideMenu = () => {
   const { scrollYProgress } = useScroll();
   return (
     <aside css={S}>
       <header>
-        <div className="logo">
+        <Link href="/" className="logo">
           <Logo width="140" height="140" fill={colors.white} />
           <strong className="visually-hidden">이윤슬 개발 블로그</strong>
-        </div>
+        </Link>
       </header>
       <TagList className="tab-list">
         {tagList.map((tagItem) => (
