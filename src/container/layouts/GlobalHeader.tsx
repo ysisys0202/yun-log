@@ -40,7 +40,7 @@ const S = css`
   padding: 0 20px;
   width: 80%;
   background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(50px);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid ${gray.border};
   ul {
     display: flex;
