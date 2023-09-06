@@ -4,18 +4,16 @@ import { gray } from "@/constants/colors";
 import Link from "next/link";
 
 type Props = {
-  postList: PostCardType[];
+  postList: any;
   type?: "feature" | "default";
 };
 
 const PostList = ({ postList, type = "default" }: Props) => {
   return (
     <ul className="post-list" css={S}>
-      {postList.map((post) => (
+      {postList.map((post: any) => (
         <li key={post.id}>
-          <Link href="">
-            <PostCard post={post} type={type} />
-          </Link>
+          <PostCard post={post} type={type} />
         </li>
       ))}
     </ul>
@@ -25,6 +23,7 @@ const PostList = ({ postList, type = "default" }: Props) => {
 const S = css`
   height: 100%;
   overflow: scroll;
+
   li {
     &:not(:first-of-type) {
       border-top: 1px solid ${gray.border};

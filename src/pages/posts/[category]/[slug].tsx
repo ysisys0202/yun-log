@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useReducer } from "react";
-import { getPostData, getPostsFiles } from "../../../lib/posts-util";
+import { getPostData, getPostFiles } from "../../../../lib/posts-util";
 import { GetStaticPropsContext } from "next";
 import PostContent from "@/components/posts/PostContent";
 import Content from "@/container/layouts/Content";
@@ -14,24 +14,26 @@ const PostDetail = ({ post }: { post: any }) => {
 };
 
 export function getStaticPaths() {
-  const postFileNames = getPostsFiles();
-  const slugs = postFileNames.map((postFileName: string) =>
-    postFileName.replace(/\.md$/, "")
-  );
+  // const postFiles = getPostFiles();
+  // const slugs = postFiles.map(
+  //   (postFile: any) => postFile.name && postFile.name.replace(/\.md$/, "")
+  // );
   return {
-    paths: slugs.map((slug: string) => ({ params: { slug: slug } })),
-    fallback: true,
+    paths: [],
+    // paths: slugs.map((slug: string) => ({ params: { slug: slug } })),
+    fallback: false,
   };
 }
 export function getStaticProps(context: GetStaticPropsContext) {
   if (!context || !context.params) {
     return;
   }
+  const category = context.params.category;
   const slug = context.params.slug;
-  if (typeof slug !== "string") {
+  if (typeof category !== "string" || typeof slug !== "string") {
     return;
   }
-  const postData = getPostData(slug);
+  const postData = getPostData(category, slug);
   return {
     props: {
       post: postData,

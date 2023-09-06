@@ -2,9 +2,10 @@ import { colors, gray } from "@/constants/colors";
 import { css } from "@emotion/react";
 import Image from "next/image";
 import ViewMoreButton from "./ViewMoreButton";
+import Link from "next/link";
 type Props = {
   type: "default" | "feature";
-  post: PostCardType;
+  post: any;
 };
 export type PostCardType = {
   id: string;
@@ -17,32 +18,31 @@ export type PostCardType = {
 };
 const PostCard = ({ post, type }: Props) => {
   return (
-    <article css={S} className={`${type}-card`}>
-      <div className="text-area">
-        <div className="definition-item">
-          <span className="label">최종 수정일</span>
-          <span className="value">2023년 2월 2일</span>
+    <Link href={`posts/${post.category}/${post.slug}`}>
+      <article css={S} className={`${type}-card`}>
+        <div className="text-area">
+          <div className="definition-item">
+            <span className="label">최종 수정일</span>
+            <span className="value">2023년 2월 2일</span>
+          </div>
+          <h3 className="post-title ">{post.title}</h3>
+          {type === "default" && (
+            <p className="post-description">{post.description}</p>
+          )}
+          <ViewMoreButton
+            className={`mt-2 ${type === "feature" ? "justify-end" : ""}`}
+          />
         </div>
-        <h3 className="post-title ">var 쓰지마... 그게 뭔데</h3>
         {type === "default" && (
-          <p className="post-description">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim,
-            sint.
-          </p>
+          <Image
+            src="/images/home/profile.jpg"
+            alt="aa"
+            width="300"
+            height="220"
+          />
         )}
-        <ViewMoreButton
-          className={`mt-2 ${type === "feature" ? "justify-end" : ""}`}
-        />
-      </div>
-      {type === "default" && (
-        <Image
-          src="/images/home/profile.jpg"
-          alt="aa"
-          width="300"
-          height="220"
-        />
-      )}
-    </article>
+      </article>
+    </Link>
   );
 };
 const S = css`
