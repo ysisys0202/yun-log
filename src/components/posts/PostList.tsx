@@ -22,8 +22,10 @@ const PostList = ({ postList, type = "default" }: Props) => {
 
 const S = css`
   height: 100%;
-  overflow: scroll;
-
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   li {
     &:not(:first-of-type) {
       border-top: 1px solid ${gray.border};
