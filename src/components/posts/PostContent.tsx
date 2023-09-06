@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { css } from "@emotion/react";
 import { gray } from "@/constants/colors";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 const PostContent = ({ post }: { post: any }) => {
   const customComponents = {
     p(paragraph: any) {
@@ -26,7 +27,9 @@ const PostContent = ({ post }: { post: any }) => {
     code(code: any) {
       const { language, children } = code;
       return (
-        <SyntaxHighlighter language={language}>{children}</SyntaxHighlighter>
+        <SyntaxHighlighter language={language} style={vscDarkPlus}>
+          {children}
+        </SyntaxHighlighter>
       );
     },
   };
