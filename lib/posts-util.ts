@@ -8,7 +8,10 @@ export function getCategories() {
   return fs.readdirSync(postsDirectory);
 }
 
-export function getPostFiles(): any[] {
+export function getPostFiles(category: string) {
+  return fs.readdirSync(`${postsDirectory}/${category}`);
+}
+export function getPostAllFiles(): any[] {
   const categories = getCategories();
   const allPosts = categories.map((category) => {
     return {
@@ -35,7 +38,7 @@ export function getPostData(category: string, postIdentifier: string) {
 }
 
 export function getAllPosts() {
-  const postFiles = getPostFiles();
+  const postFiles = getPostAllFiles();
   const allPosts = postFiles
     .map((posts) =>
       posts.files.map((file: string) => getPostData(posts.category, file))
