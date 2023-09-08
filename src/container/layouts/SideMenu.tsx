@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "/public/logo/logo.svg";
 import Tag from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { css } from "@emotion/react";
 import { colors, gray } from "@/constants/colors";
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
 import Link from "next/link";
+import { CategoriesInfo } from "@/types/post";
+import { categoriesMap } from "@/constants/category";
 const SideMenu = () => {
+  const [cetegoriesInfo, setCategoriesInfo] = useState<null | CategoriesInfo[]>(
+    null
+  );
   const { scrollYProgress } = useScroll();
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/getFileInfo");
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      setCategoriesInfo(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <aside css={S}>
       <header>
@@ -18,11 +39,12 @@ const SideMenu = () => {
         </Link>
       </header>
       <TagList className="tab-list">
-        {tagList.map((tagItem) => (
-          <Tag key={tagItem.label} variant="outlined" textColor="#247774">
-            #{tagItem.label}
-          </Tag>
-        ))}
+        {cetegoriesInfo &&
+          cetegoriesInfo.map((category) => (
+            <Tag key={category.name} variant="outlined" textColor="#247774">
+              {categoriesMap.get(category.name)} {`(${category.fileLength})`}
+            </Tag>
+          ))}
       </TagList>
       <footer>
         <span className="scroll-text">
