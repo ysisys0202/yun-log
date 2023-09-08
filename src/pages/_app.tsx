@@ -5,6 +5,7 @@ import Head from "next/head";
 import GlobalHeader from "@/container/layouts/GlobalHeader";
 import SideMenu from "@/container/layouts/SideMenu";
 import BackGround from "@/container/layouts/BackGround";
+import Content from "@/container/layouts/Content";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <SideMenu />
       <GlobalHeader />
       <BackGround />
-      <Component {...pageProps} />
+      <Content>
+        <Component {...pageProps} />
+      </Content>
     </>
   );
 }

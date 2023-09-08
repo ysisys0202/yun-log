@@ -3,14 +3,9 @@ import React, { useReducer } from "react";
 import { getPostData, getPostFiles } from "../../../../lib/posts-util";
 import { GetStaticPropsContext } from "next";
 import PostContent from "@/components/posts/PostContent";
-import Content from "@/container/layouts/Content";
 
 const PostDetail = ({ post }: { post: any }) => {
-  return (
-    <Content>
-      <PostContent post={post} />
-    </Content>
-  );
+  return <PostContent post={post} />;
 };
 
 export function getStaticPaths() {
