@@ -33,12 +33,12 @@ const globalMenus = [
 ];
 
 const S = css`
-  position: fixed;
+  position: sticky;
   top: 0;
   right: 0;
   z-index: 50;
   padding: 0 20px;
-  width: 80%;
+  width: 100%;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid ${gray.border};
