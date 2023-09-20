@@ -16,9 +16,10 @@ export type PostCardType = {
   description: string;
   thumbNailImage: string;
 };
+
 const PostCard = ({ post, type }: Props) => {
   return (
-    <Link href={`posts/${post.category}/${post.slug}`}>
+    <Link href={`/posts/${post.category}/${post.slug}`}>
       <article css={S} className={`${type}-card`}>
         <div className="text-area">
           <div className="definition-item">
