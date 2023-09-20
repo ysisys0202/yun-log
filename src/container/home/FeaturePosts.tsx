@@ -2,7 +2,6 @@ import SectionTitle from "@/components/home/SectionTitle";
 import PostList from "@/components/posts/PostList";
 import { css } from "@emotion/react";
 import HomeSection from "./HomeSection";
-import { getAllPosts } from "../../../lib/posts-util";
 import { PostCardType } from "@/components/posts/PostCard";
 import { media } from "@/constants/breakPoints";
 import useMediaQuery from "@/hooks/useMediaQuery";

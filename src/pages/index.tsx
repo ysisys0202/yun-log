@@ -3,7 +3,7 @@ import FeaturePosts from "@/container/home/FeaturePosts";
 import Profile from "@/container/home/Profile";
 import RecentPosts from "@/container/home/RecentPosts";
 import { css } from "@emotion/react";
-import { getAllPosts, getFeaturedPosts } from "../../lib/posts-util";
+import { getFeaturedPosts, getPosts } from "../../lib/posts-util";
 import { media } from "@/constants/breakPoints";
 
 const Homepage = ({
@@ -34,7 +34,7 @@ const S = css`
 `;
 export function getStaticProps() {
   const featuredPostList = getFeaturedPosts();
-  const allPostList = getAllPosts();
+  const allPostList = getPosts();
   return {
     props: {
       allPostList,
