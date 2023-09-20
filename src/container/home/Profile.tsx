@@ -15,10 +15,6 @@ const Profile = () => {
         height={460}
       />
       <strong>프론트엔드 개발을 합니다</strong>
-      <div className="skill-set">
-        <span className="label">주요 기술</span>
-        <span className="skill-list">{skillList.join(", ")}</span>
-      </div>
     </HomeSection>
   );
 };
@@ -34,21 +30,10 @@ const S = css`
     font-size: 24px;
     font-weight: 500;
   }
-  .skill-set {
-    display: flex;
-    margin-top: 4px;
-    font-size: 16px;
-    .label {
-      &::after {
-        content: ":";
-        margin: 0 4px;
-      }
-    }
-  }
+
   @media ${media.md} {
     width: 40vw;
     border-right: 1px solid ${gray.border};
   }
 `;
-const skillList = ["HTML", "CSS", "Java Script", "React", "Next"];
 export default Profile;
