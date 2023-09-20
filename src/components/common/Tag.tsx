@@ -1,7 +1,8 @@
 import { colors, gray } from "@/constants/colors";
 import { css } from "@emotion/react";
-import React from "react";
-type Props = {
+import Link from "next/link";
+import React, { Component } from "react";
+type TagProps = {
   className?: string;
   backgroundColor?: string;
   textColor?: string;
@@ -18,7 +19,7 @@ const Tag = ({
   size = "md",
   children,
   variant = "contained",
-}: Props) => {
+}: TagProps) => {
   const style = {
     backgroundColor,
     color: textColor,
@@ -32,6 +33,36 @@ const Tag = ({
     >
       {children}
     </div>
+  );
+};
+type LinkTagProps = TagProps & {
+  href: string;
+};
+const LinkTag = ({
+  className = "",
+  backgroundColor = "#",
+  textColor = gray.primary,
+  borderColor = colors.white,
+  size = "md",
+  children,
+  variant = "contained",
+  href,
+}: LinkTagProps) => {
+  return (
+    <Link href={href}>
+      <Tag
+        {...{
+          className,
+          backgroundColor,
+          textColor,
+          borderColor,
+          size,
+          variant,
+        }}
+      >
+        {children}
+      </Tag>
+    </Link>
   );
 };
 const S = css`
@@ -52,3 +83,4 @@ const S = css`
   }
 `;
 export default Tag;
+export { LinkTag };
