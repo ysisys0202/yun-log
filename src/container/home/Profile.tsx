@@ -3,6 +3,7 @@ import HomeSection from "./HomeSection";
 import { css } from "@emotion/react";
 import SectionTitle from "@/components/home/SectionTitle";
 import { colors, gray } from "@/constants/colors";
+import { media } from "@/constants/breakPoints";
 const Profile = () => {
   return (
     <HomeSection SectionStyle={S}>
@@ -22,9 +23,7 @@ const Profile = () => {
   );
 };
 const S = css`
-  width: 40vw;
   color: ${colors.white};
-  border-right: 1px solid ${gray.border};
   img {
     margin-top: 16px;
     max-width: 300px;
@@ -45,6 +44,10 @@ const S = css`
         margin: 0 4px;
       }
     }
+  }
+  @media ${media.md} {
+    width: 40vw;
+    border-right: 1px solid ${gray.border};
   }
 `;
 const skillList = ["HTML", "CSS", "Java Script", "React", "Next"];

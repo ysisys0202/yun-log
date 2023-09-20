@@ -3,8 +3,8 @@ import FeaturePosts from "@/container/home/FeaturePosts";
 import Profile from "@/container/home/Profile";
 import RecentPosts from "@/container/home/RecentPosts";
 import { css } from "@emotion/react";
-import React from "react";
 import { getAllPosts, getFeaturedPosts } from "../../lib/posts-util";
+import { media } from "@/constants/breakPoints";
 
 const Homepage = ({
   featuredPostList,
@@ -25,10 +25,12 @@ const Homepage = ({
   );
 };
 const S = css`
-  display: flex;
-  border-bottom: 1px solide ${gray.border};
-  height: 50vh;
-  min-height: 600px;
+  @media ${media.md} {
+    display: flex;
+    border-bottom: 1px solide ${gray.border};
+    height: 50vh;
+    min-height: 600px;
+  }
 `;
 export function getStaticProps() {
   const featuredPostList = getFeaturedPosts();
