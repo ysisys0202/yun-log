@@ -8,16 +8,16 @@ import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
 import { css } from "@emotion/react";
+import { media } from "@/constants/breakPoints";
+import { RecoilRoot } from "recoil";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <RecoilRoot>
       <Head>
         <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
       </Head>
       <Layout style={S}>
-        <div className="side-area">
-          <SideMenu />
-        </div>
+        <SideMenu />
         <div className="content-area">
           <GlobalHeader />
           <BackGround />
@@ -26,17 +26,19 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Content>
         </div>
       </Layout>
-    </>
+    </RecoilRoot>
   );
 }
 const S = css`
-  display: flex;
-  .side-area {
-    width: 20%;
-    min-width: 220px;
-  }
   .content-area {
-    width: 80%;
+    width: 100%;
+  }
+  @media ${media.md} {
+    .content-area {
+      margin-left: auto;
+      width: 80%;
+      max-width: calc(100% - 220px);
+    }
   }
 `;
 export default MyApp;

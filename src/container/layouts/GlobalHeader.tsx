@@ -2,7 +2,18 @@
 import { css } from "@emotion/react";
 import Link from "next/link";
 import { colors, gray } from "@/constants/colors";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import { media } from "@/constants/breakPoints";
+import MenuButton from "@/components/common/MenuButton";
+import { useRecoilState } from "recoil";
+import { mobileMenuState } from "@/store/mobileMenu";
 const GlobalHeader = () => {
+  const isMediaMd = useMediaQuery(media.md);
+  const [mobileMenuActive, setMobileMenuActive] =
+    useRecoilState(mobileMenuState);
+  const mobileMenuButtonClickHandler = () => {
+    setMobileMenuActive((prevState: boolean) => !prevState);
+  };
   return (
     <header css={S}>
       <nav>
@@ -14,6 +25,13 @@ const GlobalHeader = () => {
             </li>
           ))}
         </ul>
+        {!isMediaMd && (
+          <MenuButton
+            onClick={mobileMenuButtonClickHandler}
+            isActive={mobileMenuActive}
+            className="mobile-menu-button"
+          />
+        )}
       </nav>
     </header>
   );
@@ -42,6 +60,11 @@ const S = css`
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid ${gray.border};
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   ul {
     display: flex;
     align-items: center;
@@ -73,6 +96,10 @@ const S = css`
         }
       }
     }
+  }
+  .mobile-menu-button {
+    position: relative;
+    z-index: 1000;
   }
 `;
 export default GlobalHeader;
