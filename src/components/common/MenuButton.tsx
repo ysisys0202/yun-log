@@ -14,7 +14,7 @@ const MenuButton = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`${isActive ? "is-active" : ""}`}
+      className={`${isActive ? "is-active" : ""} ${className}`}
       css={S}
       aria-label={`메뉴 열기`}
       {...props}
