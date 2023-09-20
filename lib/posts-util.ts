@@ -9,17 +9,20 @@ export function getCategories() {
 }
 
 export function getPostFiles(category: string) {
-  return fs.readdirSync(`${postsDirectory}/${category}`);
+  const files = fs.readdirSync(`${postsDirectory}/${category}`);
+  return files.map((file) => {
+    {
+      return {
+        fileName: file,
+        category,
+      };
+    }
+  });
 }
 export function getPostAllFiles(): any[] {
   const categories = getCategories();
-  const allPosts = categories.map((category) => {
-    return {
-      category,
-      files: fs.readdirSync(`${postsDirectory}/${category}`),
-    };
-  });
-  return allPosts;
+  const allPosts = categories.map((category) => getPostFiles(category));
+  return allPosts.flat();
 }
 
 export function getPostData(category: string, postIdentifier: string) {
@@ -37,19 +40,17 @@ export function getPostData(category: string, postIdentifier: string) {
   return postData;
 }
 
-export function getAllPosts() {
-  const postFiles = getPostAllFiles();
-  const allPosts = postFiles
-    .map((posts) =>
-      posts.files.map((file: string) => getPostData(posts.category, file))
-    )
-    .flat();
-  return allPosts;
+export function getPosts(category?: string) {
+  const postFiles = category ? getPostFiles(category) : getPostAllFiles();
+  console.log(postFiles);
+  const posts = postFiles.map((post: any) =>
+    getPostData(post.category, post.fileName)
+  );
+  return posts;
 }
 
 export function getFeaturedPosts() {
-  const allPosts = getAllPosts();
-
+  const allPosts = getPosts();
   const featuredPosts = allPosts.filter((post: any) => post.isFeatured);
 
   return featuredPosts;
