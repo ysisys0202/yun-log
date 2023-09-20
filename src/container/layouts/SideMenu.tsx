@@ -1,86 +1,81 @@
 import React, { useEffect, useState } from "react";
 import Logo from "/public/logo/logo.svg";
-import Tag from "@/components/common/Tag";
+import { LinkTag } from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { css } from "@emotion/react";
 import { colors, gray } from "@/constants/colors";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { useScroll, useSpring } from "framer-motion";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
 import Link from "next/link";
 import { CategoriesInfo } from "@/types/post";
 import { categoriesMap } from "@/constants/category";
 import { media } from "@/constants/breakPoints";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { mobileMenuState } from "@/store/mobileMenu";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import MenuButton from "@/components/common/MenuButton";
+import { categories } from "@/store/categories";
 const SideMenu = () => {
-  const [cetegoriesInfo, setCategoriesInfo] = useState<null | CategoriesInfo[]>(
-    null
-  );
+  const [mount, setMount] = useState(false);
+  const postCategories = useRecoilValue(categories);
   const [mobileMenuActive, setMobileMenuActive] =
     useRecoilState(mobileMenuState);
   const { scrollYProgress } = useScroll();
-  const fetchData = async () => {
-    try {
-      const response = await fetch("/api/getFileInfo");
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      setCategoriesInfo(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
   const isMediaMd = useMediaQuery(media.md);
   const mobileMenuButtonClickHandler = () => {
     setMobileMenuActive((prevState: boolean) => !prevState);
   };
+  useEffect(() => {
+    setMount(true);
+  }, []);
   return (
-    <aside
-      className={`side-menu ${mobileMenuActive ? "is-active" : ""}`}
-      css={S}
-    >
-      <header>
-        <Link href="/" className="logo">
-          <Logo width="140" height="140" fill={colors.white} />
-          <strong className="visually-hidden">이윤슬 개발 블로그</strong>
-        </Link>
-        {!isMediaMd && (
-          <MenuButton
-            isActive={mobileMenuActive}
-            onClick={mobileMenuButtonClickHandler}
-            className="mobile-menu-button"
+    mount && (
+      <aside
+        className={`side-menu ${mobileMenuActive ? "is-active" : ""}`}
+        css={S}
+      >
+        <header>
+          <Link href="/" className="logo">
+            <Logo width="140" height="140" fill={colors.white} />
+            <strong className="visually-hidden">이윤슬 개발 블로그</strong>
+          </Link>
+          {!isMediaMd && (
+            <MenuButton
+              isActive={mobileMenuActive}
+              onClick={mobileMenuButtonClickHandler}
+              className="mobile-menu-button"
+            />
+          )}
+        </header>
+        <TagList className="tab-list">
+          {postCategories &&
+            postCategories.map((category: CategoriesInfo) => (
+              <LinkTag
+                key={category.name}
+                variant="outlined"
+                textColor="#247774"
+                href={`/posts/${category.name}`}
+              >
+                {categoriesMap.get(category.name)} {`(${category.fileLength})`}
+              </LinkTag>
+            ))}
+        </TagList>
+        <footer>
+          <span className="scroll-text">
+            아래로
+            <br />
+            스크롤 하세요
+          </span>
+          <CircularProgressBar
+            className="mx-auto"
+            size={80}
+            progressPer={scrollYProgress}
+            baseColor="#fff"
+            progressColor="#247774"
           />
-        )}
-      </header>
-      <TagList className="tab-list">
-        {cetegoriesInfo &&
-          cetegoriesInfo.map((category) => (
-            <Tag key={category.name} variant="outlined" textColor="#247774">
-              {categoriesMap.get(category.name)} {`(${category.fileLength})`}
-            </Tag>
-          ))}
-      </TagList>
-      <footer>
-        <span className="scroll-text">
-          아래로
-          <br />
-          스크롤 하세요
-        </span>
-        <CircularProgressBar
-          className="mx-auto"
-          size={80}
-          progressPer={scrollYProgress}
-          baseColor="#fff"
-          progressColor="#247774"
-        />
-      </footer>
-    </aside>
+        </footer>
+      </aside>
+    )
   );
 };
 const S = css`
