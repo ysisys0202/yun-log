@@ -7,9 +7,9 @@ type Props = {
 };
 const TagList = ({ align = "start", children, className = "" }: Props) => {
   return (
-    <ul css={S} className={`${className} align-${align} `}>
+    <div css={S} className={`${className} align-${align} `}>
       {children}
-    </ul>
+    </div>
   );
 };
 const S = css`
