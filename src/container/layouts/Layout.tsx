@@ -4,10 +4,16 @@ import { SerializedStyles, css } from "@emotion/react";
 const Layout = ({
   children,
   style,
+  className,
 }: {
   children: React.ReactNode;
   style: SerializedStyles;
+  className: string;
 }) => {
-  return <div css={style}>{children}</div>;
+  return (
+    <div className={className} css={style}>
+      {children}
+    </div>
+  );
 };
 export default Layout;

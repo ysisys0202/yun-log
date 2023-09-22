@@ -10,13 +10,18 @@ import Layout from "@/container/layouts/Layout";
 import { css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
 import { RecoilRoot } from "recoil";
+import { Nanum_Gothic } from "next/font/google";
+const defaultFont = Nanum_Gothic({
+  subsets: ["latin"],
+  weight: ["400", "700", "800"],
+});
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <Head>
         <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
       </Head>
-      <Layout style={S}>
+      <Layout className={defaultFont.className} style={S}>
         <SideMenu />
         <div className="content-area">
           <GlobalHeader />
