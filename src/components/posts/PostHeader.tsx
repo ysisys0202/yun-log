@@ -1,6 +1,9 @@
 import { css } from "@emotion/react";
 import Image from "next/image";
 import Link from "next/link";
+import Typography from "../common/Typography";
+import { gray } from "@/constants/colors";
+import DefinitionItem from "../common/DefinitionItem";
 
 type Props = {
   title: string;
@@ -31,20 +34,38 @@ const PostHeader = ({
       )}
       <div className="text-area">
         <Link href={`/posts/${category}`}>{category}</Link>
-        <h1>{title}</h1>
-        {subTitle && <h2>{subTitle}</h2>}
-        <div className="definition-item">
-          <span className="label">최종 수정일</span>
-          <span className="value">{formattedDate}</span>
-        </div>
+        <Typography
+          variant="h1"
+          element="h1"
+          color={gray.primary}
+          className="mt-4"
+        >
+          {title}
+        </Typography>
+        {subTitle && (
+          <Typography
+            variant="subtitle1"
+            element="p"
+            color={gray.primary}
+            className="mt-1"
+          >
+            {subTitle}
+          </Typography>
+        )}
+        <DefinitionItem
+          label="최종 수정일"
+          value={formattedDate}
+          color={gray.primary}
+          className="mt-1"
+        />
       </div>
     </header>
   );
 };
 const S = css`
   position: relative;
-  padding: 8px 16px;
-  height: 160px;
+  padding: 32px 16px 16px;
+
   img {
     position: absolute;
     top: 0;
@@ -59,22 +80,10 @@ const S = css`
     flex-direction: column;
     position: relative;
     z-index: 10;
+
     height: 100%;
-  }
-  h1 {
-    margin-top: auto;
-    font-size: 36px;
-    line-height: 1.4;
-  }
-  .definition-item {
-    font-size: 14px;
-    line-height: 1.4;
-    opacity: 0.8;
-    .label {
-      &::after {
-        content: ":";
-        margin: 0 4px;
-      }
+    a {
+      margin-top: auto;
     }
   }
 `;
