@@ -15,4 +15,4 @@ export type TypographyVariantType =
   | "h4"
   | "body1"
   | "body2"
-  | "caption1";
+  | "subtitle1";
