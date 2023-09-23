@@ -6,8 +6,38 @@ import { css } from "@emotion/react";
 import { gray } from "@/constants/colors";
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { PostDetailType } from "@/types/post";
+import Typography from "../common/Typography";
+import { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 const PostContent = ({ post }: { post: PostDetailType }) => {
   const customComponents = {
+    h1(h1: ReactMarkdownProps) {
+      return (
+        <Typography variant="h1" element="h1" color={gray.primary}>
+          {h1.children}
+        </Typography>
+      );
+    },
+    h2(h2: ReactMarkdownProps) {
+      return (
+        <Typography variant="h2" element="h2" color={gray.primary}>
+          {h2.children}
+        </Typography>
+      );
+    },
+    h3(h3: ReactMarkdownProps) {
+      return (
+        <Typography variant="h3" element="h3" color={gray.primary}>
+          {h3.children}
+        </Typography>
+      );
+    },
+    h4(h4: ReactMarkdownProps) {
+      return (
+        <Typography variant="h4" element="h4" color={gray.primary}>
+          {h4.children}
+        </Typography>
+      );
+    },
     p(paragraph: any) {
       const { node } = paragraph;
       if (node.children[0].tagName === "img") {
@@ -22,7 +52,11 @@ const PostContent = ({ post }: { post: PostDetailType }) => {
           />
         );
       }
-      return <p>{paragraph.children}</p>;
+      return (
+        <Typography variant="body1" element="p" color={gray.primary}>
+          {paragraph.children}
+        </Typography>
+      );
     },
     code(code: any) {
       const { className, children } = code;
