@@ -83,7 +83,7 @@ const S = css`
       font-size: 15px;
     }
     &.typography-subtitle1 {
-      font-size: 16px;
+      font-size: 18px;
     }
   }
 `;
