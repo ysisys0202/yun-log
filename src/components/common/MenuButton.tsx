@@ -47,7 +47,7 @@ const S = css`
   &.is-active {
     .bar {
       &:first-of-type {
-        transform: translateY(10px) rotateZ(-45deg);
+        transform: translateX(14%) translateY(430%) rotateZ(-45deg);
       }
 
       &:nth-of-type(2) {
@@ -55,7 +55,7 @@ const S = css`
       }
 
       &:last-of-type {
-        transform: translateY(-7px) rotateZ(45deg);
+        transform: translateX(13%) translateY(-430%) rotateZ(45deg);
       }
     }
   }
@@ -63,6 +63,7 @@ const S = css`
     width: 100%;
     height: 2px;
     border-radius: 2px;
+    transition: all 200ms ease-in-out;
   }
 `;
 export default MenuButton;
