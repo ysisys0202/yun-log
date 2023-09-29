@@ -8,9 +8,20 @@ import {
 } from "../../../../lib/posts-util";
 import { GetStaticPropsContext } from "next";
 import PostContent from "@/components/posts/PostContent";
+import MyHead from "@/components/common/MyHead";
+import { PostDetailType } from "@/types/post";
 
-const PostDetail = ({ post }: { post: any }) => {
-  return <PostContent post={post} />;
+const PostDetail = ({ post }: { post: PostDetailType }) => {
+  return (
+    <>
+      <MyHead
+        title={post.title}
+        description={post.excerpt}
+        ogImage={post.thumbNailImage}
+      />
+      <PostContent post={post} />;
+    </>
+  );
 };
 
 export function getStaticPaths() {

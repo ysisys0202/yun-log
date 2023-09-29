@@ -5,6 +5,7 @@ import RecentPosts from "@/container/home/RecentPosts";
 import { css } from "@emotion/react";
 import { getFeaturedPosts, getPosts } from "../../lib/posts-util";
 import { media } from "@/constants/breakPoints";
+import MyHead from "@/components/common/MyHead";
 
 const Homepage = ({
   featuredPostList,
@@ -15,7 +16,8 @@ const Homepage = ({
 }) => {
   return (
     <>
-      <h1 className="visually-hidden">이윤슬 블로그 메인 페이지</h1>
+      <MyHead title="홈" />
+      <h1 className="visually-hidden">이골더 블로그 메인 페이지</h1>
       <section className="top-section" css={S}>
         <Profile />
         <FeaturePosts postList={featuredPostList} />
