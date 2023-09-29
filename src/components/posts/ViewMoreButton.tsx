@@ -2,6 +2,7 @@ import { colors } from "@/constants/colors";
 import { css } from "@emotion/react";
 import React from "react";
 import IconArrow from "public/icons/arrow.svg";
+import Typography from "../common/Typography";
 type Props = { text?: string; icon?: React.ReactNode; className?: string };
 
 const ViewMoreButton = ({
@@ -11,21 +12,21 @@ const ViewMoreButton = ({
 }: Props) => {
   return (
     <div css={S} {...(className && { className: className })}>
-      {
-        <>
-          <span>{text}</span>
-          {icon}
-        </>
-      }
+      <Typography
+        variant="subtitle1"
+        element="span"
+        color={colors.white}
+        className="!font-normal"
+      >
+        {text}
+      </Typography>
+      {icon}
     </div>
   );
 };
 const S = css`
   display: flex;
   align-items: center;
-  color: ${colors.white};
-  font-size: 18px;
-  line-height: 1.4;
   opacity: 0.8;
 `;
 export default ViewMoreButton;

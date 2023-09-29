@@ -1,18 +1,19 @@
 import { colors } from "@/constants/colors";
 import { css } from "@emotion/react";
 import React from "react";
+import Typography from "../common/Typography";
 type Props = { children: React.ReactNode; className?: string };
 const SectionTitle = ({ children, className }: Props) => {
   return (
-    <h2 css={S} {...(className && { className: className })}>
+    <Typography
+      variant="h1"
+      element="h2"
+      color={colors.white}
+      {...(className && { className: className })}
+    >
       {children}
-    </h2>
+    </Typography>
   );
 };
-const S = css`
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 1.4;
-  color: ${colors.white};
-`;
+
 export default SectionTitle;

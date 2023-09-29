@@ -7,6 +7,7 @@ import { media } from "@/constants/breakPoints";
 import MenuButton from "@/components/common/MenuButton";
 import { useRecoilState } from "recoil";
 import { mobileMenuState } from "@/store/mobileMenu";
+import Typography from "@/components/common/Typography";
 const GlobalHeader = () => {
   const isMediaMd = useMediaQuery(media.md);
   const [mobileMenuActive, setMobileMenuActive] =
@@ -21,7 +22,15 @@ const GlobalHeader = () => {
         <ul>
           {globalMenus.map((globalMenu) => (
             <li key={globalMenu.id}>
-              <Link href={globalMenu.link}>{globalMenu.name}</Link>
+              <Link href={globalMenu.link}>
+                <Typography
+                  variant="subtitle1"
+                  element="span"
+                  color={colors.white}
+                >
+                  {globalMenu.name}
+                </Typography>
+              </Link>
             </li>
           ))}
         </ul>
@@ -74,10 +83,6 @@ const S = css`
       display: inline-block;
       position: relative;
       padding: 12px;
-      font-size: 18px;
-      font-weight: 500;
-      line-height: 1.4;
-      color: ${colors.white};
       &::after {
         content: "";
         position: absolute;

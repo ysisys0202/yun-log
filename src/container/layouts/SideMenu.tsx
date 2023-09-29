@@ -37,7 +37,7 @@ const SideMenu = () => {
         <header>
           <Link href="/" className="logo">
             <Logo width="140" height="140" fill={colors.white} />
-            <strong className="visually-hidden">이윤슬 개발 블로그</strong>
+            <strong className="visually-hidden">이골더 개발 블로그</strong>
           </Link>
           {!isMediaMd && (
             <MenuButton

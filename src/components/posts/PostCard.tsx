@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import Image from "next/image";
 import ViewMoreButton from "./ViewMoreButton";
 import Link from "next/link";
+import Typography from "../common/Typography";
 type Props = {
   type: "default" | "feature";
   post: any;
@@ -22,13 +23,23 @@ const PostCard = ({ post, type }: Props) => {
     <Link href={`/posts/${post.category}/${post.slug}`}>
       <article css={S} className={`${type}-card`}>
         <div className="text-area">
-          <div className="definition-item">
-            <span className="label">최종 수정일</span>
-            <span className="value">2023년 2월 2일</span>
-          </div>
-          <h3 className="post-title ">{post.title}</h3>
+          <Typography
+            variant="h4"
+            element="h3"
+            color={colors.white}
+            className="mt-1"
+          >
+            {post.title}
+          </Typography>
           {type === "default" && (
-            <p className="post-description">{post.description}</p>
+            <Typography
+              variant="body1"
+              element="p"
+              color={colors.white}
+              className="mt-1"
+            >
+              {post.description}
+            </Typography>
           )}
           <ViewMoreButton
             className={`mt-2 ${type === "feature" ? "justify-end" : ""}`}
@@ -57,27 +68,7 @@ const S = css`
     background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
   }
-  .definition-item {
-    font-size: 14px;
-    line-height: 1.4;
-    opacity: 0.8;
-    .label {
-      &::after {
-        content: ":";
-        margin: 0 4px;
-      }
-    }
-  }
-  .post-title {
-    margin-top: 4px;
-    font-size: 24px;
-    line-height: 1.4;
-  }
-  .post-description {
-    margin-top: 4px;
-    font-size: 20px;
-    line-height: 1.4;
-  }
+
   img {
     width: 160px;
     height: 160px;
