@@ -1,3 +1,4 @@
+export type PostCardVariantType = "vertical" | "horizontal";
 export type PostDetailType = {
   title: string;
   subTitle: string;
