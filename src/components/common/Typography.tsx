@@ -77,7 +77,6 @@ const S = css`
     }
     &.typography-body1 {
       font-size: 16px;
-      font-weight: 700;
     }
     &.typography-body2 {
       font-size: 15px;
