@@ -1,4 +1,4 @@
-import { colors } from "@/constants/colors";
+import { colors, gray, green } from "@/constants/colors";
 import { css } from "@emotion/react";
 type Props = {
   color?: string;
@@ -7,7 +7,7 @@ type Props = {
 };
 type ButtonProps = Props & React.ButtonHTMLAttributes<HTMLButtonElement>;
 const MenuButton = ({
-  color = colors.white,
+  color = green.primary,
   isActive,
   className = "",
   ...props

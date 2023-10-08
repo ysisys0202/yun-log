@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "/public/logo/logo.svg";
 import { LinkTag } from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { css } from "@emotion/react";
-import { colors, gray } from "@/constants/colors";
+import { colors, gray, green } from "@/constants/colors";
 import { useScroll, useSpring } from "framer-motion";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
 import Link from "next/link";
@@ -36,8 +36,8 @@ const SideMenu = () => {
       >
         <header>
           <Link href="/" className="logo">
-            <Logo width="140" height="140" fill={colors.white} />
-            <strong className="visually-hidden">이골더 개발 블로그</strong>
+            <Logo width="140" height="140" fill={green.border} />
+            <strong className="visually-hidden">이윤슬 개발 블로그</strong>
           </Link>
           {!isMediaMd && (
             <MenuButton
@@ -53,7 +53,8 @@ const SideMenu = () => {
               <LinkTag
                 key={category.name}
                 variant="outlined"
-                textColor="#247774"
+                borderColor={green.border}
+                textColor={green.primary}
                 href={`/posts/${category.name}`}
               >
                 {categoriesMap.get(category.name)} {`(${category.fileLength})`}
@@ -61,17 +62,12 @@ const SideMenu = () => {
             ))}
         </TagList>
         <footer>
-          <span className="scroll-text">
-            아래로
-            <br />
-            스크롤 하세요
-          </span>
           <CircularProgressBar
             className="mx-auto"
             size={80}
             progressPer={scrollYProgress}
-            baseColor="#fff"
-            progressColor="#247774"
+            baseColor={green.border}
+            progressColor={green.primary}
           />
         </footer>
       </aside>
@@ -88,7 +84,7 @@ const S = css`
   padding: 16px;
   width: 80%;
   height: 100dvh;
-  background-color: #b8ddda;
+  background-color: ${green.background};
   border-right: 1px solid ${gray.border};
   transform: translateX(100vw);
   transition: transform 200ms ease-in-out;

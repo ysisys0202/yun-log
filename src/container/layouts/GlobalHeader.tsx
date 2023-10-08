@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import Link from "next/link";
-import { colors, gray } from "@/constants/colors";
+import { colors, gray, green } from "@/constants/colors";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { media } from "@/constants/breakPoints";
 import MenuButton from "@/components/common/MenuButton";
@@ -26,7 +26,7 @@ const GlobalHeader = () => {
                 <Typography
                   variant="subtitle1"
                   element="span"
-                  color={colors.white}
+                  color={gray.primary}
                 >
                   {globalMenu.name}
                 </Typography>
@@ -90,7 +90,7 @@ const S = css`
         right: 0;
         width: 0px;
         height: 2px;
-        background-color: ${colors.white};
+        background-color: ${green.primary};
         transition: width 200ms ease-in-out;
       }
       &:hover {

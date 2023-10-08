@@ -1,4 +1,4 @@
-import { colors } from "@/constants/colors";
+import { colors, gray } from "@/constants/colors";
 import { css } from "@emotion/react";
 import React from "react";
 import IconArrow from "public/icons/arrow.svg";
@@ -6,16 +6,16 @@ import Typography from "../common/Typography";
 type Props = { text?: string; icon?: React.ReactNode; className?: string };
 
 const ViewMoreButton = ({
-  text = "더 알아보기",
-  icon = <IconArrow width={24} height={24} stroke={colors.white} />,
+  text = "더보기",
+  icon = <IconArrow width={16} height={16} stroke={gray.primary} />,
   className = "",
 }: Props) => {
   return (
     <div css={S} {...(className && { className: className })}>
       <Typography
-        variant="subtitle1"
+        variant="body1"
         element="span"
-        color={colors.white}
+        color={gray.primary}
         className="!font-normal"
       >
         {text}

@@ -1,7 +1,6 @@
 import "@/styles/reset.css";
-import "@/styles/globals.css";
+import "@/styles/global.css";
 import { AppProps } from "next/app";
-import Head from "next/head";
 import GlobalHeader from "@/container/layouts/GlobalHeader";
 import SideMenu from "@/container/layouts/SideMenu";
 import BackGround from "@/container/layouts/BackGround";
@@ -11,7 +10,6 @@ import { css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
 import { RecoilRoot } from "recoil";
 import { Nanum_Gothic } from "next/font/google";
-import MyHead from "@/components/common/MyHead";
 const defaultFont = Nanum_Gothic({
   subsets: ["latin"],
   weight: ["400", "700", "800"],

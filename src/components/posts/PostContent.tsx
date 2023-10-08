@@ -8,6 +8,7 @@ import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { PostDetailType } from "@/types/post";
 import Typography from "../common/Typography";
 import { ReactMarkdownProps } from "react-markdown/lib/complex-types";
+import { media } from "@/constants/breakPoints";
 const PostContent = ({ post }: { post: PostDetailType }) => {
   const customComponents = {
     h1(h1: ReactMarkdownProps) {
@@ -93,16 +94,16 @@ const PostContent = ({ post }: { post: PostDetailType }) => {
   );
 };
 const S = css`
-  margin: 32px;
   padding: 24px;
-  width: calc(100% - 64px);
   max-width: 860px;
-  border-radius: 4px;
-  background-color: ${gray.background}80;
   .post-markdown {
     img {
+      width: 100%;
       max-width: 400px;
     }
+  }
+  @media ${media.md} {
+    margin: 32px;
   }
 `;
 export default PostContent;

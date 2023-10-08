@@ -1,12 +1,16 @@
-import { colors, gray } from "@/constants/colors";
+import { colors, gray, green } from "@/constants/colors";
 import { css } from "@emotion/react";
 import Image from "next/image";
 import ViewMoreButton from "./ViewMoreButton";
 import Link from "next/link";
 import Typography from "../common/Typography";
+import { PostCardVariantType, PostDetailType } from "@/types/post";
+import Tag from "../common/Tag";
+import { categoriesMap } from "@/constants/category";
+import { media } from "@/constants/breakPoints";
 type Props = {
-  type: "default" | "feature";
-  post: any;
+  type: PostCardVariantType;
+  post: PostDetailType;
 };
 export type PostCardType = {
   id: string;
@@ -21,64 +25,178 @@ export type PostCardType = {
 const PostCard = ({ post, type }: Props) => {
   return (
     <Link href={`/posts/${post.category}/${post.slug}`}>
-      <article css={S} className={`${type}-card`}>
+      <article css={type === "vertical" ? VerticalStyle : HorizontalStyle}>
         <div className="text-area">
-          <Typography
-            variant="h4"
-            element="h3"
-            color={colors.white}
-            className="mt-1"
-          >
+          <Tag variant="outlined" borderColor={gray.border} size="sm">
+            {categoriesMap.get(post.category)}
+          </Tag>
+          <Typography variant="subtitle1" element="h3" color={gray.primary}>
             {post.title}
           </Typography>
-          {type === "default" && (
-            <Typography
-              variant="body1"
-              element="p"
-              color={colors.white}
-              className="mt-1"
-            >
-              {post.description}
-            </Typography>
-          )}
-          <ViewMoreButton
-            className={`mt-2 ${type === "feature" ? "justify-end" : ""}`}
-          />
+          <Typography variant="body1" element="p" color={gray.secondary}>
+            {post.excerpt}
+          </Typography>
+          <ViewMoreButton className={`view-more-button`} />
         </div>
-        {type === "default" && (
+        <div className="image-area">
           <Image
             src="/images/home/profile.jpg"
             alt="aa"
             width="300"
             height="220"
           />
-        )}
+        </div>
       </article>
     </Link>
   );
 };
-const S = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32px 16px;
-  color: ${colors.white};
-  transition: all 200ms ease-in-out;
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-  }
 
-  img {
-    width: 160px;
-    height: 160px;
-    object-fit: cover;
+const VerticalStyle = css`
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: start;
+  position: relative;
+  padding: 16px 16px 32px;
+  background-color: ${colors.white};
+  border: 1px solid ${gray.background};
+  height: 100%;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    transition: background-color 200ms ease-in-out;
   }
-  &.feature-card {
-    padding: 80px 16px;
+  &:hover {
+    &::after {
+      background-color: ${green.primary};
+    }
+    .image-area {
+      img {
+        transform: scale(1.08);
+      }
+    }
+    .view-more-button {
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+  .image-area {
+    margin-top: 16px;
+    aspect-ratio: 400/300;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 200ms ease-in-out;
+    }
+  }
+  .text-area {
+    margin-top: 16px;
+    h3 {
+      margin-top: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    p {
+      margin-top: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
+  .view-more-button {
+    margin-top: 16px;
+    svg {
+      transition: transform 200ms ease-in-out;
+    }
+  }
+`;
+const HorizontalStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 32px 16px;
+  background-color: ${colors.white};
+  border: 1px solid ${gray.background};
+  .text-area {
+    width: calc(100% - 190px);
+    h3 {
+      margin-top: 8px;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    p {
+      margin-top: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+  .image-area {
+    aspect-ratio: 400/300;
+    margin-left: 16px;
+    min-width: 160px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 200ms ease-in-out;
+    }
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    transition: background-color 200ms ease-in-out;
+  }
+  &:hover {
+    &::after {
+      background-color: ${green.primary};
+    }
+    .image-area {
+      img {
+        transform: scale(1.08);
+      }
+    }
+    .view-more-button {
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+  .view-more-button {
+    margin-top: 16px;
+    svg {
+      transition: transform 200ms ease-in-out;
+    }
+  }
+  @media ${media.md} {
     .text-area {
-      margin-left: auto;
-      text-align: right;
+      width: calc(100% - 216px);
+    }
+    .image-area {
+      max-width: 200px;
     }
   }
 `;

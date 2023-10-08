@@ -16,6 +16,6 @@ const HomeSection = ({ children, className = "", SectionStyle }: Props) => {
   );
 };
 const S = css`
-  padding: 32px 24px;
+  padding: 80px 24px;
 `;
 export default HomeSection;

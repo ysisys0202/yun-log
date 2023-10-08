@@ -1,4 +1,4 @@
-import { colors } from "@/constants/colors";
+import { colors, gray } from "@/constants/colors";
 import { css } from "@emotion/react";
 import React from "react";
 import Typography from "../common/Typography";
@@ -6,9 +6,9 @@ type Props = { children: React.ReactNode; className?: string };
 const SectionTitle = ({ children, className }: Props) => {
   return (
     <Typography
-      variant="h1"
+      variant="h3"
       element="h2"
-      color={colors.white}
+      color={gray.primary}
       {...(className && { className: className })}
     >
       {children}

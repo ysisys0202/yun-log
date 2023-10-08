@@ -11,28 +11,13 @@ const FeaturePosts = ({ postList }: { postList: PostCardType[] }) => {
   return (
     <HomeSection SectionStyle={S}>
       <SectionTitle>주요 게시물</SectionTitle>
-      <PostList postList={postList} type={isMediaMd ? "feature" : "default"} />
+      <PostList postList={postList} type="vertical" />
     </HomeSection>
   );
 };
 const S = css`
   .post-list {
-    margin: 24px -24px 0;
-  }
-  @media ${media.md} {
-    position: relative;
-    width: 60vw;
-    h2 {
-      position: relative;
-      z-index: 2;
-    }
-    .post-list {
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin: 0;
-      width: 100%;
-    }
+    margin: 48px -24px 0;
   }
 `;
 

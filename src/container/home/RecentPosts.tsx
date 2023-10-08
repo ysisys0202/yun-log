@@ -56,9 +56,8 @@ const postList = [
   },
 ];
 const S = css`
-  border-top: 1px solid ${gray.border};
   .post-list {
-    margin: 24px -24px 0;
+    margin: 48px -24px 0;
   }
 `;
 export default RecentPosts;

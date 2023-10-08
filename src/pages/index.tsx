@@ -18,22 +18,13 @@ const Homepage = ({
     <>
       <MyHead title="홈" />
       <h1 className="visually-hidden">이골더 블로그 메인 페이지</h1>
-      <section className="top-section" css={S}>
-        <Profile />
-        <FeaturePosts postList={featuredPostList} />
-      </section>
+      <Profile />
+      <FeaturePosts postList={featuredPostList} />
       <RecentPosts postList={allPostList} />
     </>
   );
 };
-const S = css`
-  @media ${media.md} {
-    display: flex;
-    border-bottom: 1px solide ${gray.border};
-    height: 50vh;
-    min-height: 600px;
-  }
-`;
+
 export function getStaticProps() {
   const featuredPostList = getFeaturedPosts();
   const allPostList = getPosts();

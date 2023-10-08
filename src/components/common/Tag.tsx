@@ -66,12 +66,17 @@ const LinkTag = ({
   );
 };
 const S = css`
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 20px;
+  &.size-sm {
+    padding: 4px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
   &.size-md {
-    padding: 4px 8px;
+    padding: 4px 12px;
     font-size: 14px;
     line-height: 1.4;
   }

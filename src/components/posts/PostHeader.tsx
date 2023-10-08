@@ -4,6 +4,8 @@ import Link from "next/link";
 import Typography from "../common/Typography";
 import { gray } from "@/constants/colors";
 import DefinitionItem from "../common/DefinitionItem";
+import { LinkTag } from "../common/Tag";
+import { categoriesMap } from "@/constants/category";
 
 type Props = {
   title: string;
@@ -33,12 +35,19 @@ const PostHeader = ({
         <Image src={headerImage} alt={title} width={1200} height={500} />
       )}
       <div className="text-area">
-        <Link href={`/posts/${category}`}>{category}</Link>
+        <LinkTag
+          variant="outlined"
+          borderColor={gray.primary}
+          size="sm"
+          href={`/posts/${category}`}
+        >
+          {categoriesMap.get(category)}
+        </LinkTag>
         <Typography
           variant="h1"
           element="h1"
           color={gray.primary}
-          className="mt-4"
+          className="mt-2"
         >
           {title}
         </Typography>
@@ -64,7 +73,7 @@ const PostHeader = ({
 };
 const S = css`
   position: relative;
-  padding: 32px 16px 16px;
+  padding: 64px 16px 16px;
 
   img {
     position: absolute;
