@@ -8,7 +8,6 @@ const SectionTitle = ({ children, className }: Props) => {
     <Typography
       variant="h3"
       element="h2"
-      color={gray.primary}
       {...(className && { className: className })}
     >
       {children}

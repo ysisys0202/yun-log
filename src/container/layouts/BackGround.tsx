@@ -1,8 +1,26 @@
 import { media } from "@/constants/breakPoints";
+import useColorMode from "@/hooks/useColorMode";
+import { colorModeState } from "@/store/colorMode";
+import {
+  ColorSematicType,
+  ColorSetType,
+  ColorThemeType,
+} from "@/types/colorTheme";
 import { css } from "@emotion/react";
+import { useRecoilValue } from "recoil";
 
 const BackGround = () => {
-  return <div css={S}></div>;
+  const c = useColorMode();
+  const colorMode = useRecoilValue(colorModeState);
+  return (
+    <div
+      css={S}
+      style={{
+        backgroundColor: c.background_global,
+        backgroundImage: `url(/images/common/grid_line_${colorMode}.svg)`,
+      }}
+    ></div>
+  );
 };
 const S = css`
   position: fixed;
@@ -10,8 +28,7 @@ const S = css`
   right: 0;
   z-index: -1;
   width: 100%;
-  height: 100vh;
-  background-image: url(/images/common/grid_line.svg);
+  height: 100dvh;
   background-size: 8.3333%;
   background-position: center 50px;
   @media ${media.md} {

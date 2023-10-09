@@ -1,4 +1,5 @@
 import { colors, gray } from "@/constants/colors";
+import useColorMode from "@/hooks/useColorMode";
 import { css } from "@emotion/react";
 import Link from "next/link";
 import React, { Component } from "react";
@@ -14,7 +15,7 @@ type TagProps = {
 const Tag = ({
   className = "",
   backgroundColor = "#",
-  textColor = gray.primary,
+  textColor,
   borderColor = colors.white,
   size = "md",
   children,
@@ -25,6 +26,13 @@ const Tag = ({
     color: textColor,
     borderColor,
   };
+  const c = useColorMode();
+  if (!textColor) {
+    textColor = c.primary;
+  }
+  if (!borderColor) {
+    borderColor = c.border;
+  }
   return (
     <div
       className={`${className} size-${size} ${variant}`}
@@ -41,8 +49,8 @@ type LinkTagProps = TagProps & {
 const LinkTag = ({
   className = "",
   backgroundColor = "#",
-  textColor = gray.primary,
-  borderColor = colors.white,
+  textColor,
+  borderColor,
   size = "md",
   children,
   variant = "contained",

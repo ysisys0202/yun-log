@@ -5,7 +5,9 @@ import SectionTitle from "@/components/home/SectionTitle";
 import { colors, gray } from "@/constants/colors";
 import { media } from "@/constants/breakPoints";
 import Typography from "@/components/common/Typography";
+import useColorMode from "@/hooks/useColorMode";
 const Profile = () => {
+  const c = useColorMode();
   return (
     <HomeSection SectionStyle={S}>
       <header className="section-header pt-4">
@@ -24,7 +26,7 @@ const Profile = () => {
           <Typography
             variant="subtitle1"
             element="strong"
-            color={gray.primary}
+            color={c.primary}
             className="!font-normal"
           >
             프론트엔드 개발자로서

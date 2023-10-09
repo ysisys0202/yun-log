@@ -3,8 +3,8 @@ import Logo from "/public/logo/logo.svg";
 import { LinkTag } from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { css } from "@emotion/react";
-import { colors, gray, green } from "@/constants/colors";
-import { useScroll, useSpring } from "framer-motion";
+import { colors } from "@/constants/colors";
+import { useScroll } from "framer-motion";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
 import Link from "next/link";
 import { CategoriesInfo } from "@/types/post";
@@ -15,6 +15,8 @@ import { mobileMenuState } from "@/store/mobileMenu";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import MenuButton from "@/components/common/MenuButton";
 import { categories } from "@/store/categories";
+import useColorMode from "@/hooks/useColorMode";
+import { ColorSetType } from "@/types/colorTheme";
 const SideMenu = () => {
   const [mount, setMount] = useState(false);
   const postCategories = useRecoilValue(categories);
@@ -28,15 +30,17 @@ const SideMenu = () => {
   useEffect(() => {
     setMount(true);
   }, []);
+  const c = useColorMode();
   return (
     mount && (
       <aside
         className={`side-menu ${mobileMenuActive ? "is-active" : ""}`}
-        css={S}
+        css={S(c)}
+        style={{ borderRight: `1px solid ${c.border}` }}
       >
         <header>
           <Link href="/" className="logo">
-            <Logo width="140" height="140" fill={green.border} />
+            <Logo width="140" height="140" fill={c.green_border} />
             <strong className="visually-hidden">이윤슬 개발 블로그</strong>
           </Link>
           {!isMediaMd && (
@@ -53,8 +57,8 @@ const SideMenu = () => {
               <LinkTag
                 key={category.name}
                 variant="outlined"
-                borderColor={green.border}
-                textColor={green.primary}
+                borderColor={c.green_border}
+                textColor={c.green_primary}
                 href={`/posts/${category.name}`}
               >
                 {categoriesMap.get(category.name)} {`(${category.fileLength})`}
@@ -66,15 +70,15 @@ const SideMenu = () => {
             className="mx-auto"
             size={80}
             progressPer={scrollYProgress}
-            baseColor={green.border}
-            progressColor={green.primary}
+            baseColor={c.green_border}
+            progressColor={c.green_primary}
           />
         </footer>
       </aside>
     )
   );
 };
-const S = css`
+const S = (c: ColorSetType) => css`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -84,8 +88,7 @@ const S = css`
   padding: 16px;
   width: 80%;
   height: 100dvh;
-  background-color: ${green.background};
-  border-right: 1px solid ${gray.border};
+  background-color: ${c.green_background};
   transform: translateX(100vw);
   transition: transform 200ms ease-in-out;
   &.is-active {

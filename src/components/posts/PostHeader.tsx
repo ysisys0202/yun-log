@@ -6,6 +6,7 @@ import { gray } from "@/constants/colors";
 import DefinitionItem from "../common/DefinitionItem";
 import { LinkTag } from "../common/Tag";
 import { categoriesMap } from "@/constants/category";
+import useColorMode from "@/hooks/useColorMode";
 
 type Props = {
   title: string;
@@ -22,6 +23,7 @@ const PostHeader = ({
   headerImage,
   category,
 }: Props) => {
+  const c = useColorMode();
   const dateOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
@@ -37,7 +39,7 @@ const PostHeader = ({
       <div className="text-area">
         <LinkTag
           variant="outlined"
-          borderColor={gray.primary}
+          borderColor={c.primary}
           size="sm"
           href={`/posts/${category}`}
         >
@@ -46,7 +48,7 @@ const PostHeader = ({
         <Typography
           variant="h1"
           element="h1"
-          color={gray.primary}
+          color={c.primary}
           className="mt-2"
         >
           {title}
@@ -55,7 +57,7 @@ const PostHeader = ({
           <Typography
             variant="subtitle1"
             element="p"
-            color={gray.primary}
+            color={c.primary}
             className="mt-1"
           >
             {subTitle}
@@ -64,7 +66,7 @@ const PostHeader = ({
         <DefinitionItem
           label="최종 수정일"
           value={formattedDate}
-          color={gray.primary}
+          color={c.primary}
           className="mt-1"
         />
       </div>

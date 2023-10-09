@@ -8,6 +8,7 @@ import { PostCardVariantType, PostDetailType } from "@/types/post";
 import Tag from "../common/Tag";
 import { categoriesMap } from "@/constants/category";
 import { media } from "@/constants/breakPoints";
+import useColorMode from "@/hooks/useColorMode";
 type Props = {
   type: PostCardVariantType;
   post: PostDetailType;
@@ -23,17 +24,29 @@ export type PostCardType = {
 };
 
 const PostCard = ({ post, type }: Props) => {
+  const c = useColorMode();
   return (
     <Link href={`/posts/${post.category}/${post.slug}`}>
-      <article css={type === "vertical" ? VerticalStyle : HorizontalStyle}>
+      <article
+        css={type === "vertical" ? VerticalStyle : HorizontalStyle}
+        style={{
+          backgroundColor: c.background_global,
+          border: `1px solid ${c.border}`,
+        }}
+      >
         <div className="text-area">
-          <Tag variant="outlined" borderColor={gray.border} size="sm">
+          <Tag
+            variant="outlined"
+            borderColor={c.border}
+            textColor={c.tertiary}
+            size="sm"
+          >
             {categoriesMap.get(post.category)}
           </Tag>
-          <Typography variant="subtitle1" element="h3" color={gray.primary}>
+          <Typography variant="subtitle1" element="h3" color={c.primary}>
             {post.title}
           </Typography>
-          <Typography variant="body1" element="p" color={gray.secondary}>
+          <Typography variant="body1" element="p" color={c.secondary}>
             {post.excerpt}
           </Typography>
           <ViewMoreButton className={`view-more-button`} />
@@ -57,8 +70,6 @@ const VerticalStyle = css`
   justify-content: start;
   position: relative;
   padding: 16px 16px 32px;
-  background-color: ${colors.white};
-  border: 1px solid ${gray.background};
   height: 100%;
   &::after {
     content: "";
@@ -72,7 +83,7 @@ const VerticalStyle = css`
   }
   &:hover {
     &::after {
-      background-color: ${green.primary};
+      background-color: ${green.$10};
     }
     .image-area {
       img {
@@ -128,8 +139,7 @@ const HorizontalStyle = css`
   justify-content: space-between;
   position: relative;
   padding: 32px 16px;
-  background-color: ${colors.white};
-  border: 1px solid ${gray.background};
+
   .text-area {
     width: calc(100% - 190px);
     h3 {
@@ -172,7 +182,7 @@ const HorizontalStyle = css`
   }
   &:hover {
     &::after {
-      background-color: ${green.primary};
+      background-color: ${green.$100};
     }
     .image-area {
       img {

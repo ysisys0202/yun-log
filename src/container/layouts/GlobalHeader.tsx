@@ -1,13 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import Link from "next/link";
-import { colors, gray, green } from "@/constants/colors";
+import { green } from "@/constants/colors";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { media } from "@/constants/breakPoints";
 import MenuButton from "@/components/common/MenuButton";
 import { useRecoilState } from "recoil";
 import { mobileMenuState } from "@/store/mobileMenu";
 import Typography from "@/components/common/Typography";
+import useColorMode from "@/hooks/useColorMode";
+import ColorModeButton from "@/components/common/ColorModeButton";
 const GlobalHeader = () => {
   const isMediaMd = useMediaQuery(media.md);
   const [mobileMenuActive, setMobileMenuActive] =
@@ -15,8 +17,9 @@ const GlobalHeader = () => {
   const mobileMenuButtonClickHandler = () => {
     setMobileMenuActive((prevState: boolean) => !prevState);
   };
+  const c = useColorMode();
   return (
-    <header css={S}>
+    <header css={S} style={{ borderBottom: `1px solid ${c.border}` }}>
       <nav>
         <h2 className="visually-hidden">블로그 대메뉴</h2>
         <ul>
@@ -26,7 +29,7 @@ const GlobalHeader = () => {
                 <Typography
                   variant="subtitle1"
                   element="span"
-                  color={gray.primary}
+                  color={c.primary}
                 >
                   {globalMenu.name}
                 </Typography>
@@ -34,6 +37,7 @@ const GlobalHeader = () => {
             </li>
           ))}
         </ul>
+        <ColorModeButton className="ml-auto mr-4" />
         {!isMediaMd && (
           <MenuButton
             onClick={mobileMenuButtonClickHandler}
@@ -68,7 +72,7 @@ const S = css`
   width: 100%;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid ${gray.border};
+
   nav {
     display: flex;
     justify-content: space-between;
@@ -90,7 +94,7 @@ const S = css`
         right: 0;
         width: 0px;
         height: 2px;
-        background-color: ${green.primary};
+        background-color: ${green.$100};
         transition: width 200ms ease-in-out;
       }
       &:hover {

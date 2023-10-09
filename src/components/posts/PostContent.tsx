@@ -9,32 +9,34 @@ import { PostDetailType } from "@/types/post";
 import Typography from "../common/Typography";
 import { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 import { media } from "@/constants/breakPoints";
+import useColorMode from "@/hooks/useColorMode";
 const PostContent = ({ post }: { post: PostDetailType }) => {
+  const c = useColorMode();
   const customComponents = {
     h1(h1: ReactMarkdownProps) {
       return (
-        <Typography variant="h1" element="h1" color={gray.primary}>
+        <Typography variant="h1" element="h1" color={c.primary}>
           {h1.children}
         </Typography>
       );
     },
     h2(h2: ReactMarkdownProps) {
       return (
-        <Typography variant="h2" element="h2" color={gray.primary}>
+        <Typography variant="h2" element="h2" color={c.primary}>
           {h2.children}
         </Typography>
       );
     },
     h3(h3: ReactMarkdownProps) {
       return (
-        <Typography variant="h3" element="h3" color={gray.primary}>
+        <Typography variant="h3" element="h3" color={c.primary}>
           {h3.children}
         </Typography>
       );
     },
     h4(h4: ReactMarkdownProps) {
       return (
-        <Typography variant="h4" element="h4" color={gray.primary}>
+        <Typography variant="h4" element="h4" color={c.primary}>
           {h4.children}
         </Typography>
       );
@@ -54,7 +56,7 @@ const PostContent = ({ post }: { post: PostDetailType }) => {
         );
       }
       return (
-        <Typography variant="body1" element="p" color={gray.primary}>
+        <Typography variant="body1" element="p" color={c.primary}>
           {paragraph.children}
         </Typography>
       );

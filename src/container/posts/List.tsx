@@ -5,6 +5,7 @@ import { PostCardType } from "@/components/posts/PostCard";
 import PostList from "@/components/posts/PostList";
 import { categoriesMap } from "@/constants/category";
 import { green } from "@/constants/colors";
+import useColorMode from "@/hooks/useColorMode";
 import { categories } from "@/store/categories";
 import { CategoriesInfo } from "@/types/post";
 import Link from "next/link";
@@ -16,6 +17,7 @@ const PostListContainer = ({ postList }: { postList: PostCardType[] }) => {
   const query = router.query;
   const currentCategory = query.category as string;
   const postCategories = useRecoilValue(categories);
+  const c = useColorMode();
   return (
     <div>
       <SectionTitle className="p-4">
@@ -28,11 +30,11 @@ const PostListContainer = ({ postList }: { postList: PostCardType[] }) => {
               <LinkTag
                 key={category.name}
                 variant="outlined"
-                textColor={green.primary}
-                borderColor={green.border}
+                textColor={c.green_primary}
+                borderColor={c.green_border}
                 backgroundColor={
                   currentCategory === category.name
-                    ? green.background
+                    ? c.green_background
                     : "transparent"
                 }
                 href={`/posts/${category.name}`}

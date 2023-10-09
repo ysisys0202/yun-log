@@ -1,5 +1,6 @@
 import { media } from "@/constants/breakPoints";
 import { gray } from "@/constants/colors";
+import useColorMode from "@/hooks/useColorMode";
 import {
   TypographyElementType,
   TypographyVariantType,
@@ -9,18 +10,22 @@ import { css } from "@emotion/react";
 type Props = {
   variant: TypographyVariantType;
   element: TypographyElementType;
-  color: string;
+  color?: string;
   className?: string;
   children: React.ReactNode;
 };
 const Typography = ({
   variant,
   element,
-  color = gray.primary,
+  color,
   className = "",
   children,
 }: Props) => {
   const Component = element;
+  const c = useColorMode();
+  if (!color) {
+    color = c.primary;
+  }
   return (
     <Component
       className={`typography-${variant} ${className}`}

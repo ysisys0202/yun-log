@@ -42,7 +42,6 @@ export function getPostData(category: string, postIdentifier: string) {
 
 export function getPosts(category?: string) {
   const postFiles = category ? getPostFiles(category) : getPostAllFiles();
-  console.log(postFiles);
   const posts = postFiles.map((post: any) =>
     getPostData(post.category, post.fileName)
   );

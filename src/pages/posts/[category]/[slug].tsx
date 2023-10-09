@@ -1,11 +1,4 @@
-import { useRouter } from "next/router";
-import React, { useReducer } from "react";
-import {
-  getCategories,
-  getPostData,
-  getPostFiles,
-  getPosts,
-} from "../../../../lib/posts-util";
+import { getPostData, getPosts } from "../../../../lib/posts-util";
 import { GetStaticPropsContext } from "next";
 import PostContent from "@/components/posts/PostContent";
 import MyHead from "@/components/common/MyHead";
