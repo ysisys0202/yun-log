@@ -3,7 +3,6 @@ import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { css } from "@emotion/react";
-import { gray } from "@/constants/colors";
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { PostDetailType } from "@/types/post";
 import Typography from "../common/Typography";
@@ -48,7 +47,7 @@ const PostContent = ({ post }: { post: PostDetailType }) => {
         return (
           <Image
             src={`${image.properties.src}`}
-            alt={image.alt}
+            alt={image.properties.alt}
             width={600}
             height={300}
             className="image"
@@ -56,6 +55,7 @@ const PostContent = ({ post }: { post: PostDetailType }) => {
         );
       }
       return (
+        // <Test color={c.primary}>{paragraph.children}</Test>
         <Typography variant="body1" element="p" color={c.primary}>
           {paragraph.children}
         </Typography>

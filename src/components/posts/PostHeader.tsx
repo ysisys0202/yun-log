@@ -40,6 +40,7 @@ const PostHeader = ({
         <LinkTag
           variant="outlined"
           borderColor={c.primary}
+          textColor={c.primary}
           size="sm"
           href={`/posts/${category}`}
         >

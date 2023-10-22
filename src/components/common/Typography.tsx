@@ -22,10 +22,6 @@ const Typography = ({
   children,
 }: Props) => {
   const Component = element;
-  const c = useColorMode();
-  if (!color) {
-    color = c.primary;
-  }
   return (
     <Component
       className={`typography-${variant} ${className}`}

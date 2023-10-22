@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SerializedStyles, css } from "@emotion/react";
+import { useRecoilState } from "recoil";
+import { colorModeState, value as colorModeValue } from "@/store/colorMode";
 
 const Layout = ({
   children,

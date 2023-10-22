@@ -12,6 +12,4 @@ export type ColorSematicType =
 export type ColorSetType = {
   [key in ColorSematicType]: string;
 };
-export type ColorThemeSetType = {
-  [key in ColorThemeType]: ColorSetType;
-};
+export type ColorThemeSetType = Record<ColorThemeType, ColorSetType>;
