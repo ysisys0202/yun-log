@@ -30,6 +30,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+#MAC OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
