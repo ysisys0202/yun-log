@@ -4,12 +4,15 @@ import Link from "next/link";
 import { green } from "@/constants/colors";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { media } from "@/constants/breakPoints";
-import MenuButton from "@/components/common/MenuButton";
 import { useRecoilState } from "recoil";
 import { mobileMenuState } from "@/store/mobileMenu";
 import Typography from "@/components/common/Typography";
 import useColorMode from "@/hooks/useColorMode";
 import ColorModeButton from "@/components/common/ColorModeButton";
+import dynamic from "next/dynamic";
+const MenuButton = dynamic(() => import("@/components/common/MenuButton"), {
+  ssr: false,
+});
 const GlobalHeader = () => {
   const isMediaMd = useMediaQuery(media.md);
   const [mobileMenuActive, setMobileMenuActive] =

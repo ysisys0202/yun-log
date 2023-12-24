@@ -1,15 +1,20 @@
 import "@/styles/reset.css";
 import "@/styles/global.css";
+import { css } from "@emotion/react";
+import { Nanum_Gothic } from "next/font/google";
+import dynamic from "next/dynamic";
 import { AppProps } from "next/app";
-import GlobalHeader from "@/container/layouts/GlobalHeader";
-import SideMenu from "@/container/layouts/SideMenu";
+import { RecoilRoot } from "recoil";
+import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
-import { css } from "@emotion/react";
-import { media } from "@/constants/breakPoints";
-import { RecoilRoot } from "recoil";
-import { Nanum_Gothic } from "next/font/google";
+const GlobalHeader = dynamic(() => import("@/container/layouts/GlobalHeader"), {
+  ssr: false,
+});
+const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
+  ssr: true,
+});
 const defaultFont = Nanum_Gothic({
   subsets: ["latin"],
   weight: ["400", "700", "800"],
