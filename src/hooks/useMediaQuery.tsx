@@ -1,17 +1,24 @@
+import { isClient } from "@/services/common";
 import { useEffect, useState } from "react";
 
 function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!isClient) {
+      return;
+    }
     const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
-
-    const mediaChangeHandler = (event: any) => setMatches(event.matches);
-    mediaQuery.addEventListener("change", mediaChangeHandler);
-
+    const updateMatches = () => {
+      if (mediaQuery.matches === matches) {
+        return;
+      }
+      setMatches(mediaQuery.matches);
+    };
+    updateMatches();
+    mediaQuery.addEventListener("change", updateMatches);
     return () => {
-      mediaQuery.removeEventListener("change", mediaChangeHandler);
+      mediaQuery.removeEventListener("change", updateMatches);
     };
   }, [query]);
 
