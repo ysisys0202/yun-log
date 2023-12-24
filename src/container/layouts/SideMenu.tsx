@@ -92,6 +92,7 @@ const S = (c: ColorSetType) => css`
   }
   .tab-list {
     margin-top: auto;
+    margin-bottom: 120px;
   }
   .mobile-menu-button {
     position: absolute;
