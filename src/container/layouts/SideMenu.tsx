@@ -65,15 +65,6 @@ const SideMenu = () => {
               </LinkTag>
             ))}
         </TagList>
-        <footer>
-          <CircularProgressBar
-            className="mx-auto"
-            size={80}
-            progressPer={scrollYProgress}
-            baseColor={c.green_border}
-            progressColor={c.green_primary}
-          />
-        </footer>
       </aside>
     )
   );
