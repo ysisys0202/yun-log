@@ -1,9 +1,11 @@
+'use client'
 import "@/styles/reset.css";
 import "@/styles/global.css";
 import { css } from "@emotion/react";
 import { Nanum_Gothic } from "next/font/google";
 import dynamic from "next/dynamic";
 import { AppProps } from "next/app";
+import { MDXProvider } from '@mdx-js/react'
 import { RecoilRoot } from "recoil";
 import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";
@@ -21,18 +23,20 @@ const defaultFont = Nanum_Gothic({
 });
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
-      <Layout className={defaultFont.className} style={S}>
-        <SideMenu />
-        <div className="content-area">
-          <GlobalHeader />
-          <BackGround />
-          <Content>
-            <Component {...pageProps} />
-          </Content>
-        </div>
-      </Layout>
-    </RecoilRoot>
+    <MDXProvider>
+      <RecoilRoot>
+        <Layout className={defaultFont.className} style={S}>
+          <SideMenu />
+          <div className="content-area">
+            <GlobalHeader />
+            <BackGround />
+            <Content>
+              <Component {...pageProps} />
+            </Content>
+          </div>
+        </Layout>
+      </RecoilRoot>
+    </MDXProvider>
   );
 }
 const S = css`

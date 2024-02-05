@@ -1,3 +1,4 @@
+const withMDX = require('@next/mdx')()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,8 +13,9 @@ const nextConfig = {
     });
     return config;
   },
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     domains: ["drive.google.com"],
   },
 };
-module.exports = nextConfig;
+module.exports = withMDX(nextConfig);
