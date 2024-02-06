@@ -19,6 +19,7 @@ export function getPostFiles(category: string) {
     }
   });
 }
+
 export function getPostAllFiles(): any[] {
   const categories = getCategories();
   const allPosts = categories.map((category) => getPostFiles(category));
@@ -26,8 +27,8 @@ export function getPostAllFiles(): any[] {
 }
 
 export function getPostData(category: string, postIdentifier: string) {
-  const postSlug = postIdentifier.replace(/\.md$/, ""); // removes the file extension
-  const filePath = path.join(postsDirectory, category, `${postSlug}.md`);
+  const postSlug = postIdentifier.replace(/\.mdx$/, ""); // removes the file extension
+  const filePath = path.join(postsDirectory, category, `${postSlug}.mdx`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
   const postData = {

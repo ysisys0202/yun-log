@@ -1,4 +1,4 @@
-import { getPostData, getPosts } from "../../../../lib/posts-util";
+import { getPostData, getPosts } from "../../../../libs/posts-util";
 import { GetStaticPropsContext } from "next";
 import MyHead from "@/components/common/MyHead";
 import { PostDetailType } from "@/types/post";

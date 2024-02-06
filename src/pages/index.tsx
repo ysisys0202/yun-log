@@ -3,7 +3,7 @@ import FeaturePosts from "@/container/home/FeaturePosts";
 import Profile from "@/container/home/Profile";
 import RecentPosts from "@/container/home/RecentPosts";
 import { css } from "@emotion/react";
-import { getFeaturedPosts, getPosts } from "../../lib/posts-util";
+import { getFeaturedPosts, getPosts } from "../../libs/posts-util";
 import { media } from "@/constants/breakPoints";
 import MyHead from "@/components/common/MyHead";
 

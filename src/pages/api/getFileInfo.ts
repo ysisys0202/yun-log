@@ -1,4 +1,4 @@
-import { getCategories, getPostFiles } from "../../../lib/posts-util";
+import { getCategories, getPostFiles } from "../../../libs/posts-util";
 
 export default async function categoriesInfo(req: any, res: any) {
   try {

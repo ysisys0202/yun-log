@@ -1,6 +1,6 @@
 import PostList from "@/components/posts/PostList";
 import React, { useEffect, useState } from "react";
-import { getPosts } from "../../../lib/posts-util";
+import { getPosts } from "../../../libs/posts-util";
 import PostListContainer from "@/container/posts/List";
 import { PostCardType } from "@/components/posts/PostCard";
 import { GetStaticPropsContext } from "next";
