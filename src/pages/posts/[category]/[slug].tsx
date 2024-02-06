@@ -1,10 +1,16 @@
 import { getPostData, getPosts } from "../../../../lib/posts-util";
 import { GetStaticPropsContext } from "next";
-import PostContent from "@/components/posts/PostContent";
 import MyHead from "@/components/common/MyHead";
 import { PostDetailType } from "@/types/post";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
+import PostContent from "@/components/posts/PostContent";
 
-const PostDetail = ({ post }: { post: PostDetailType }) => {
+type Props = {
+  post: PostDetailType;
+  mdx: MDXRemoteSerializeResult;
+};
+const PostDetail = ({ post, mdx }: Props) => {
   return (
     <>
       <MyHead
@@ -12,7 +18,7 @@ const PostDetail = ({ post }: { post: PostDetailType }) => {
         description={post.excerpt}
         ogImage={post.thumbNailImage}
       />
-      <PostContent post={post} />;
+      <PostContent {...{ post, mdx }} />
     </>
   );
 };
@@ -25,14 +31,18 @@ export function getStaticPaths() {
     fallback: false,
   };
 }
-export function getStaticProps(context: GetStaticPropsContext) {
+export async function getStaticProps(context: GetStaticPropsContext) {
   const category = context.params?.category as string;
   const slug = context.params?.slug as string;
-
   const postData = getPostData(category, slug);
+  const source = "Some **mdx** text, with a component";
+  const mdx = await serialize(postData.content, {
+    parseFrontmatter: true,
+  });
   return {
     props: {
       post: postData,
+      mdx,
     },
   };
 }
