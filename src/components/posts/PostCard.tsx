@@ -83,7 +83,7 @@ const VerticalStyle = css`
   }
   &:hover {
     &::after {
-      background-color: ${green.$10};
+      background-color: ${green.$100};
     }
     .image-area {
       img {
