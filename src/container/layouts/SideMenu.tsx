@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import Logo from "/public/logo/logo.svg";
+import Logo from "@/components/common/Logo";
 import { LinkTag } from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { css } from "@emotion/react";
 import { colors } from "@/constants/colors";
-import { useScroll } from "framer-motion";
-import CircularProgressBar from "@/components/common/CircularProgressBar";
 import Link from "next/link";
 import { CategoriesInfo } from "@/types/post";
 import { categoriesMap } from "@/constants/category";
@@ -22,15 +20,14 @@ const SideMenu = () => {
   const postCategories = useRecoilValue(categories);
   const [mobileMenuActive, setMobileMenuActive] =
     useRecoilState(mobileMenuState);
-  const { scrollYProgress } = useScroll();
   const isMediaMd = useMediaQuery(media.md);
   const mobileMenuButtonClickHandler = () => {
     setMobileMenuActive((prevState: boolean) => !prevState);
   };
+  const c = useColorMode();
   useEffect(() => {
     setMount(true);
   }, []);
-  const c = useColorMode();
   return (
     mount && (
       <aside
@@ -40,7 +37,7 @@ const SideMenu = () => {
       >
         <header>
           <Link href="/" className="logo">
-            <Logo width="140" height="140" fill={c.green_border} />
+            <Logo />
             <strong className="visually-hidden">이윤슬 개발 블로그</strong>
           </Link>
           {!isMediaMd && (
@@ -84,11 +81,6 @@ const S = (c: ColorSetType) => css`
   transition: transform 200ms ease-in-out;
   &.is-active {
     transform: translateX(calc(100vw - 100%));
-  }
-  .logo {
-    svg {
-      transform: translate(-24px, -24px);
-    }
   }
   .tab-list {
     margin-top: auto;
