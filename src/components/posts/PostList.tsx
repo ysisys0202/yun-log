@@ -14,7 +14,7 @@ const PostList = ({ postList, type = "horizontal" }: Props) => {
   return (
     <ul className={`post-list ${type}`} css={S}>
       {postList.map((post: any) => (
-        <li key={post.id}>
+        <li key={post.slug}>
           <PostCard post={post} type={type} />
         </li>
       ))}
