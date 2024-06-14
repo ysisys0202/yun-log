@@ -1,12 +1,12 @@
 import useColorMode from "@/hooks/useColorMode";
 import { css } from "@emotion/react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect } from "react";
 
 const Logo = () => {
   const c = useColorMode();
   const { scrollYProgress } = useScroll();
 
-  const value = useTransform(scrollYProgress, [0, 1], ["0", "100"]);
   return (
     <svg
       width="141"
@@ -19,12 +19,12 @@ const Logo = () => {
         <mask id="mask">
           <motion.circle
             id="progressCircle"
-            cx="70"
             cy="70"
+            cx="70"
             r="30"
-            fill="none"
+            fill="black"
             stroke="white"
-            strokeWidth="70"
+            strokeWidth="75"
             pathLength="1"
             initial={{ rotate: -100 }}
             style={{ pathLength: scrollYProgress }}
