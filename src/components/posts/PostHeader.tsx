@@ -10,7 +10,7 @@ import useColorMode from "@/hooks/useColorMode";
 type Props = {
   title: string;
   subTitle?: string;
-  date: string;
+  createdAt: string;
   headerImage?: string;
   category: string;
 };
@@ -18,7 +18,7 @@ type Props = {
 const PostHeader = ({
   title,
   subTitle,
-  date,
+  createdAt,
   headerImage,
   category,
 }: Props) => {
@@ -28,7 +28,10 @@ const PostHeader = ({
     month: "long",
     day: "numeric",
   };
-  const formattedDate = new Date(date).toLocaleDateString("ko-KR", dateOptions);
+  const formattedDate = new Date(createdAt).toLocaleDateString(
+    "ko-KR",
+    dateOptions
+  );
 
   return (
     <header css={S}>

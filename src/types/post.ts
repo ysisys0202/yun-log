@@ -5,7 +5,7 @@ export type PostDetailType = {
   intro: string;
   thumbNailImage: string;
   isFeatured: boolean;
-  createAt: string;
+  createdAt: string;
   content: string;
   category: string;
   slug: string;

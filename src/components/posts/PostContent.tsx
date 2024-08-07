@@ -16,7 +16,7 @@ type Props = {
 };
 
 const PostContent = ({ post, mdx }: Props) => {
-  const { title, createAt, thumbNailImage, subTitle, category } = post;
+  const { title, createdAt, thumbNailImage, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
   const c = useColorMode();
   const postComponents = {
@@ -57,7 +57,7 @@ const PostContent = ({ post, mdx }: Props) => {
     <article css={S.self}>
       <PostHeader
         title={title}
-        createAt={createAt}
+        createdAt={createdAt}
         headerImage={thumbNailImage}
         subTitle={subTitle}
         category={category}
