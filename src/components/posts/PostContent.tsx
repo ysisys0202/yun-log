@@ -1,73 +1,96 @@
 import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { media } from "@/constants/breakPoints";
 import { PostDetailType } from "@/types/post";
-import PostHeader from "./PostHeader";
 import useColorMode from "@/hooks/useColorMode";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import Typography from "../common/Typography";
+import PostHeader from "@/components/posts/PostHeader";
+import Typography from "@/components/common/Typography";
+import Codeblock from "@/components/posts/Codeblock";
 
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
-const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
+
 type Props = {
   post: PostDetailType;
   mdx: MDXRemoteSerializeResult;
 };
+
 const PostContent = ({ post, mdx }: Props) => {
+  const { title, createAt, thumbNailImage, subTitle, category } = post;
+  const { compiledSource, scope, frontmatter } = mdx;
   const c = useColorMode();
   const postComponents = {
-    h1: (props: any) => (
+    h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
       <Typography variant={"h1"} element={"h2"} color={c.primary}>
         {props.children}
       </Typography>
     ),
-    h2: (props: any) => (
+    h2: (props: React.HTMLProps<HTMLHeadingElement>) => (
       <Typography variant={"h2"} element={"h3"} color={c.primary}>
         {props.children}
       </Typography>
     ),
-    h3: (props: any) => (
+    h3: (props: React.HTMLProps<HTMLHeadingElement>) => (
       <Typography variant={"h3"} element={"h4"} color={c.primary}>
         {props.children}
       </Typography>
     ),
-    p: (props: any) => (
+    p: (props: React.HTMLProps<HTMLParagraphElement>) => (
       <Typography variant={"body1"} element={"p"} color={c.secondary}>
         {props.children}
       </Typography>
     ),
+    code(props: React.HTMLProps<HTMLPreElement>) {
+      const { children, className } = props;
+      const language = className?.split("-")[1];
+      return (
+        <Codeblock language={language || "javascript"}>
+          {children as string}
+        </Codeblock>
+      );
+    },
+
     PostImage,
-    Codeblock,
   };
+
   return (
-    <article css={S}>
+    <article css={S.self}>
       <PostHeader
-        title={post.title}
-        date={post.date}
-        headerImage={post.thumbNailImage}
-        subTitle={post.subTitle}
-        category={post.category}
+        title={title}
+        createAt={createAt}
+        headerImage={thumbNailImage}
+        subTitle={subTitle}
+        category={category}
       />
-      <MDXRemote
-        compiledSource={mdx.compiledSource}
-        scope={mdx.scope}
-        frontmatter={mdx.frontmatter}
-        components={postComponents}
-      />
+      <Typography variant="body1" element="p" color={c.primary}>
+        {post.intro}
+      </Typography>
+      <div css={S.markdown}>
+        <MDXRemote
+          compiledSource={compiledSource}
+          scope={scope}
+          frontmatter={frontmatter}
+          components={postComponents}
+        />
+      </div>
     </article>
   );
 };
-const S = css`
-  padding: 24px;
-  max-width: 860px;
-  .post-markdown {
+
+const S = {
+  self: css`
+    padding: 24px;
+    max-width: 860px;
+    @media ${media.md} {
+      margin: 32px;
+    }
+  `,
+  markdown: css`
     img {
       width: 100%;
       max-width: 400px;
     }
-  }
-  @media ${media.md} {
-    margin: 32px;
-  }
-`;
+  `,
+};
+
 export default PostContent;
