@@ -1,11 +1,9 @@
 import { css } from "@emotion/react";
 import Image from "next/image";
-import Link from "next/link";
-import Typography from "../common/Typography";
-import { gray } from "@/constants/colors";
-import DefinitionItem from "../common/DefinitionItem";
-import { LinkTag } from "../common/Tag";
 import useColorMode from "@/hooks/useColorMode";
+import Typography from "@/components/common/Typography";
+import DefinitionItem from "@/components/common/DefinitionItem";
+import { LinkTag } from "@/components/common/Tag";
 
 type Props = {
   title: string;
@@ -34,11 +32,17 @@ const PostHeader = ({
   );
 
   return (
-    <header css={S}>
+    <header>
       {headerImage && (
-        <Image src={headerImage} alt={title} width={1200} height={500} />
+        <Image
+          src={headerImage}
+          alt={title}
+          width={1200}
+          height={500}
+          css={S.headerImage}
+        />
       )}
-      <div className="text-area">
+      <div css={S.titleBox}>
         <LinkTag
           variant="outlined"
           borderColor={c.primary}
@@ -48,12 +52,7 @@ const PostHeader = ({
         >
           {category}
         </LinkTag>
-        <Typography
-          variant="h1"
-          element="h1"
-          color={c.primary}
-          className="mt-2"
-        >
+        <Typography variant="h1" element="h1" color={c.primary} css={S.title}>
           {title}
         </Typography>
         {subTitle && (
@@ -61,7 +60,7 @@ const PostHeader = ({
             variant="subtitle1"
             element="p"
             color={c.primary}
-            className="mt-1"
+            css={S.subTitle}
           >
             {subTitle}
           </Typography>
@@ -70,36 +69,31 @@ const PostHeader = ({
           label="최종 수정일"
           value={formattedDate}
           color={c.primary}
-          className="mt-1"
+          css={S.postInfo}
         />
       </div>
     </header>
   );
 };
-const S = css`
-  position: relative;
-  padding: 64px 16px 16px;
 
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
+const S = {
+  headerImage: css`
     width: 100%;
-    height: 100%;
+    height: 240px;
     object-fit: cover;
-    opacity: 0.8;
-  }
-  .text-area {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 10;
+  `,
+  titleBox: css`
+    padding: 24px 0;
+  `,
+  title: css`
+    margin-top: 8px;
+  `,
+  subTitle: css`
+    margin-top: 4px;
+  `,
+  postInfo: css`
+    margin-top: 4px;
+  `,
+};
 
-    height: 100%;
-    a {
-      margin-top: auto;
-    }
-  }
-`;
 export default PostHeader;
-``;
