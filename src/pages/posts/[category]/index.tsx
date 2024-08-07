@@ -4,7 +4,6 @@ import { getCategories, getPosts } from "../../../../libs/posts-util";
 import { GetStaticPropsContext } from "next";
 import { PostCardType } from "@/components/posts/PostCard";
 import MyHead from "@/components/common/MyHead";
-import { categoriesMap } from "@/constants/category";
 
 const FilteredPostList = ({
   postList,
@@ -20,10 +19,8 @@ const FilteredPostList = ({
   return (
     <>
       <MyHead
-        title={`${categoriesMap.get(category)} 카테고리 게시물 목록`}
-        description={`이윤슬 개발 블로그의 ${categoriesMap.get(
-          category
-        )} 카테고리 게시물 목록입니다.`}
+        title={`${category} 카테고리 게시물 목록`}
+        description={`이윤슬 개발 블로그의 ${category} 카테고리 게시물 목록입니다.`}
       />
       {mount && <PostListContainer postList={postList} />}
     </>

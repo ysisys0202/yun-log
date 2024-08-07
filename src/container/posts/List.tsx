@@ -3,7 +3,6 @@ import TagList from "@/components/common/TagList";
 import SectionTitle from "@/components/home/SectionTitle";
 import { PostCardType } from "@/components/posts/PostCard";
 import PostList from "@/components/posts/PostList";
-import { categoriesMap } from "@/constants/category";
 import { green } from "@/constants/colors";
 import useColorMode from "@/hooks/useColorMode";
 import { categories } from "@/store/categories";
@@ -39,7 +38,7 @@ const PostListContainer = ({ postList }: { postList: PostCardType[] }) => {
                 }
                 href={`/posts/${category.name}`}
               >
-                {categoriesMap.get(category.name)} {`(${category.fileLength})`}
+                {category.name} {`(${category.fileLength})`}
               </LinkTag>
             ))}
         </TagList>

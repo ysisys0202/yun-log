@@ -2,10 +2,10 @@ export type PostCardVariantType = "vertical" | "horizontal";
 export type PostDetailType = {
   title: string;
   subTitle: string;
-  excerpt: string;
+  intro: string;
   thumbNailImage: string;
   isFeatured: boolean;
-  date: string;
+  createAt: string;
   content: string;
   category: string;
   slug: string;

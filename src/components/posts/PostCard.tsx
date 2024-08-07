@@ -6,7 +6,6 @@ import Link from "next/link";
 import Typography from "../common/Typography";
 import { PostCardVariantType, PostDetailType } from "@/types/post";
 import Tag from "../common/Tag";
-import { categoriesMap } from "@/constants/category";
 import { media } from "@/constants/breakPoints";
 import useColorMode from "@/hooks/useColorMode";
 type Props = {
@@ -18,8 +17,9 @@ export type PostCardType = {
   title: string;
   link: string;
   category: string;
-  modifiedDate: string;
+  createdAt: string;
   description: string;
+  intro: string;
   thumbNailImage: string;
 };
 
@@ -41,13 +41,13 @@ const PostCard = ({ post, type }: Props) => {
             textColor={c.tertiary}
             size="sm"
           >
-            {categoriesMap.get(post.category)}
+            {post.category}
           </Tag>
           <Typography variant="subtitle1" element="h3" color={c.primary}>
             {post.title}
           </Typography>
           <Typography variant="body1" element="p" color={c.secondary}>
-            {post.excerpt}
+            {post.intro}
           </Typography>
           <ViewMoreButton className={`view-more-button`} />
         </div>

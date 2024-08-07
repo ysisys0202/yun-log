@@ -5,7 +5,6 @@ import Typography from "../common/Typography";
 import { gray } from "@/constants/colors";
 import DefinitionItem from "../common/DefinitionItem";
 import { LinkTag } from "../common/Tag";
-import { categoriesMap } from "@/constants/category";
 import useColorMode from "@/hooks/useColorMode";
 
 type Props = {
@@ -44,7 +43,7 @@ const PostHeader = ({
           size="sm"
           href={`/posts/${category}`}
         >
-          {categoriesMap.get(category)}
+          {category}
         </LinkTag>
         <Typography
           variant="h1"
