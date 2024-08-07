@@ -1,7 +1,7 @@
 import { colors, gray } from "@/constants/colors";
 import useColorMode from "@/hooks/useColorMode";
 import { css } from "@emotion/react";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import React, { Component } from "react";
 type TagProps = {
   className?: string;
@@ -14,7 +14,7 @@ type TagProps = {
 };
 const Tag = ({
   className = "",
-  backgroundColor = "#",
+  backgroundColor = gray.$10,
   textColor,
   borderColor = colors.white,
   size = "md",
@@ -43,9 +43,8 @@ const Tag = ({
     </div>
   );
 };
-type LinkTagProps = TagProps & {
-  href: string;
-};
+type LinkTagProps = TagProps & LinkProps;
+
 const LinkTag = ({
   className = "",
   backgroundColor = "#",
@@ -55,9 +54,10 @@ const LinkTag = ({
   children,
   variant = "contained",
   href,
+  ...rest
 }: LinkTagProps) => {
   return (
-    <Link href={href}>
+    <Link href={href} {...rest}>
       <Tag
         {...{
           className,

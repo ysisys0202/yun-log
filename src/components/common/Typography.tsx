@@ -6,6 +6,7 @@ import {
   TypographyVariantType,
 } from "@/types/typography";
 import { css } from "@emotion/react";
+import { HTMLProps } from "react";
 
 type Props = {
   variant: TypographyVariantType;
@@ -13,7 +14,7 @@ type Props = {
   color?: string;
   className?: string;
   children: React.ReactNode;
-};
+} & HTMLProps<HTMLElement>;
 const Typography = ({
   variant,
   element,
