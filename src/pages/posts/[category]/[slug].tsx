@@ -1,11 +1,12 @@
 import { GetStaticPropsContext } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import remarkGfm from "remark-gfm";
+import remarkFrontmatter from "remark-frontmatter";
 import { getPostData, getPosts } from "../../../../libs/posts-util";
 import { PostDetailType } from "@/types/post";
 import MyHead from "@/components/common/MyHead";
 import PostContent from "@/components/posts/PostContent";
-import remarkGfm from "remark-gfm";
 
 type Props = {
   post: PostDetailType;
@@ -13,7 +14,6 @@ type Props = {
 };
 
 const PostDetail = ({ post, mdx }: Props) => {
-  console.log(mdx);
   return (
     <>
       <MyHead
@@ -39,12 +39,11 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const category = context.params?.category as string;
   const slug = context.params?.slug as string;
   const postData = getPostData(category, slug);
-  const { content } = postData;
-
-  const mdx = await serialize(content, {
+  const { fileContent } = postData;
+  const mdx = await serialize(fileContent, {
     parseFrontmatter: true,
     mdxOptions: {
-      remarkPlugins: [remarkGfm],
+      remarkPlugins: [remarkGfm, remarkFrontmatter],
     },
   });
 

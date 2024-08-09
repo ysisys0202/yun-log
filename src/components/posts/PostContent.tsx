@@ -69,9 +69,9 @@ const PostContent = ({ post, mdx }: Props) => {
       <div css={S.markdown}>
         <MDXRemote
           compiledSource={compiledSource}
-          scope={scope}
-          frontmatter={frontmatter}
+          scope={{ ...scope, ...frontmatter }}
           components={postComponents}
+          frontmatter={frontmatter}
         />
       </div>
     </article>

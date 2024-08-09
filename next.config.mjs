@@ -2,12 +2,11 @@
 
 import nextMDX from "@next/mdx";
 import remarkGfm from "remark-gfm";
-
+import remarkFrontmatter from "remark-frontmatter";
 const withMDX = nextMDX({
   extensions: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [],
+    remarkPlugins: [remarkGfm, remarkFrontmatter],
   },
 });
 

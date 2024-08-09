@@ -36,6 +36,7 @@ export function getPostData(category: string, postIdentifier: string) {
     slug: postSlug,
     ...data,
     content,
+    fileContent,
   };
 
   return postData;
