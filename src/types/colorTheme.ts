@@ -3,12 +3,13 @@ export type ColorSematicType =
   | "primary"
   | "secondary"
   | "tertiary"
-  | "background_element"
-  | "background_global"
+  | "backgroundElement"
+  | "backgroundGlobal"
   | "border"
-  | "green_primary"
-  | "green_border"
-  | "green_background";
+  | "greenPrimary"
+  | "greenBorder"
+  | "greenBackground";
+
 export type ColorSetType = {
   [key in ColorSematicType]: string;
 };

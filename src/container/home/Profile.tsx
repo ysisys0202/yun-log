@@ -2,12 +2,10 @@ import Image from "next/image";
 import HomeSection from "./HomeSection";
 import { css } from "@emotion/react";
 import SectionTitle from "@/components/home/SectionTitle";
-import { colors, gray } from "@/constants/colors";
-import { media } from "@/constants/breakPoints";
 import Typography from "@/components/common/Typography";
-import useColorMode from "@/hooks/useColorMode";
+import { colorVars } from "@/constants/cssVariables";
+
 const Profile = () => {
-  const c = useColorMode();
   return (
     <HomeSection SectionStyle={S}>
       <header className="section-header pt-4">
@@ -26,7 +24,7 @@ const Profile = () => {
           <Typography
             variant="subtitle1"
             element="strong"
-            color={c.primary}
+            color={colorVars.primary}
             className="!font-normal"
           >
             프론트엔드 개발자로서

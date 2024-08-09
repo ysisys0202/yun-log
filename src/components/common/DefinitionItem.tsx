@@ -1,27 +1,25 @@
-import { css } from "@emotion/react";
 import React from "react";
-import Typography from "./Typography";
+import { SerializedStyles, css } from "@emotion/react";
 import { colors } from "@/constants/colors";
+import Typography from "@/components/common/Typography";
+
 type Props = {
   color?: string;
   label: string | React.ReactNode;
   value: string | React.ReactNode;
   className?: string;
+  css?: SerializedStyles;
 };
 const DefinitionItem = ({
   color = colors.white,
   label,
   value,
   className = "",
+  css,
 }: Props) => {
   return (
-    <div {...(className && { className: className })} css={S}>
-      <Typography
-        variant="body2"
-        element="span"
-        color={color}
-        className="label"
-      >
+    <div {...(className && { className: className })} css={css}>
+      <Typography variant="body2" element="span" color={color} css={S.label}>
         {label}
       </Typography>
       <Typography
@@ -35,12 +33,12 @@ const DefinitionItem = ({
     </div>
   );
 };
-const S = css`
-  .label {
+const S = {
+  label: css`
     &::after {
       content: ":";
       margin: 0 4px;
     }
-  }
-`;
+  `,
+};
 export default DefinitionItem;

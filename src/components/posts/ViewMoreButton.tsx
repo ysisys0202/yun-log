@@ -2,20 +2,19 @@ import { css } from "@emotion/react";
 import React from "react";
 import IconArrow from "public/icons/arrow.svg";
 import Typography from "../common/Typography";
-import useColorMode from "@/hooks/useColorMode";
+import { colorVars } from "@/constants/cssVariables";
 type Props = { text?: string; icon?: React.ReactNode; className?: string };
 
 const ViewMoreButton = ({ text = "더보기", icon, className = "" }: Props) => {
-  const c = useColorMode();
   if (!icon) {
-    icon = <IconArrow width={16} height={16} stroke={c.primary} />;
+    icon = <IconArrow width={16} height={16} stroke={colorVars.primary} />;
   }
   return (
     <div css={S} {...(className && { className: className })}>
       <Typography
         variant="body1"
         element="span"
-        color={c.primary}
+        color={colorVars.primary}
         className="!font-normal"
       >
         {text}

@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import Logo from "@/components/common/Logo";
-import { LinkTag } from "@/components/common/Tag";
-import TagList from "@/components/common/TagList";
-import { css } from "@emotion/react";
-import { colors } from "@/constants/colors";
 import Link from "next/link";
-import { CategoriesInfo } from "@/types/post";
-import { categoriesMap } from "@/constants/category";
-import { media } from "@/constants/breakPoints";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { css } from "@emotion/react";
+import { ColorSetType } from "@/types/colorTheme";
+import { CategoriesInfo } from "@/types/post";
+import { colors } from "@/constants/colors";
+import { media } from "@/constants/breakPoints";
+import { categories } from "@/store/categories";
 import { mobileMenuState } from "@/store/mobileMenu";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import Logo from "@/components/common/Logo";
 import MenuButton from "@/components/common/MenuButton";
-import { categories } from "@/store/categories";
-import useColorMode from "@/hooks/useColorMode";
-import { ColorSetType } from "@/types/colorTheme";
+import { LinkTag } from "@/components/common/Tag";
+import TagList from "@/components/common/TagList";
+import { colorVars } from "@/constants/cssVariables";
+
 const SideMenu = () => {
   const [mount, setMount] = useState(false);
   const postCategories = useRecoilValue(categories);
@@ -24,16 +24,16 @@ const SideMenu = () => {
   const mobileMenuButtonClickHandler = () => {
     setMobileMenuActive((prevState: boolean) => !prevState);
   };
-  const c = useColorMode();
   useEffect(() => {
     setMount(true);
   }, []);
+
   return (
     mount && (
       <aside
         className={`side-menu ${mobileMenuActive ? "is-active" : ""}`}
-        css={S(c)}
-        style={{ borderRight: `1px solid ${c.border}` }}
+        css={S}
+        style={{ borderRight: `1px solid ${colorVars.border}` }}
       >
         <header>
           <Link href="/" className="logo">
@@ -54,11 +54,11 @@ const SideMenu = () => {
               <LinkTag
                 key={category.name}
                 variant="outlined"
-                borderColor={c.green_border}
-                textColor={c.green_primary}
+                borderColor={colorVars.greenBorder}
+                textColor={colorVars.greenPrimary}
                 href={`/posts/${category.name}`}
               >
-                {categoriesMap.get(category.name)} {`(${category.fileLength})`}
+                {category.name} {`(${category.fileLength})`}
               </LinkTag>
             ))}
         </TagList>
@@ -66,7 +66,7 @@ const SideMenu = () => {
     )
   );
 };
-const S = (c: ColorSetType) => css`
+const S = css`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -76,7 +76,7 @@ const S = (c: ColorSetType) => css`
   padding: 16px;
   width: 80%;
   height: 100dvh;
-  background-color: ${c.green_background};
+  background-color: ${colorVars.greenBackground};
   transform: translateX(100vw);
   transition: transform 200ms ease-in-out;
   &.is-active {
@@ -105,16 +105,4 @@ const S = (c: ColorSetType) => css`
     transform: translateX(0);
   }
 `;
-const tagList = [
-  {
-    label: "JavaScript",
-  },
-  {
-    label: "HTML",
-  },
-  { label: "CSS" },
-  { label: "Web" },
-  { label: "React" },
-  { label: "Next" },
-];
 export default SideMenu;

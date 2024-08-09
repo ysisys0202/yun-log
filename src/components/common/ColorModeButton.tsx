@@ -1,9 +1,9 @@
-import React, { ButtonHTMLAttributes, useEffect } from "react";
+import { ButtonHTMLAttributes, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import IconSun from "public/icons/sun.svg";
 import IconMoon from "public/icons/moon.svg";
-import useColorMode from "@/hooks/useColorMode";
 import { colorModeState, value as colorModeValue } from "@/store/colorMode";
+import { colorVars } from "@/constants/cssVariables";
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 const setDarkClass = (isDark: boolean) => {
   if (isDark) {
@@ -15,11 +15,10 @@ const setDarkClass = (isDark: boolean) => {
 const ColorModeButton = (props: Props) => {
   const [colorMode, setColorMode] = useRecoilState(colorModeState);
   const isDark = colorMode === "dark";
-  const c = useColorMode();
   const Icon = isDark ? (
-    <IconMoon width={24} height={24} fill={c.primary} />
+    <IconMoon width={24} height={24} fill={colorVars.primary} />
   ) : (
-    <IconSun width={24} height={24} fill={c.primary} />
+    <IconSun width={24} height={24} fill={colorVars.primary} />
   );
 
   useEffect(() => {

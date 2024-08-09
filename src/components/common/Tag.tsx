@@ -1,8 +1,9 @@
-import { colors, gray } from "@/constants/colors";
-import useColorMode from "@/hooks/useColorMode";
-import { css } from "@emotion/react";
+import React, { HTMLProps } from "react";
 import Link, { LinkProps } from "next/link";
-import React, { Component } from "react";
+import { css } from "@emotion/react";
+import { colors } from "@/constants/colors";
+import { colorVars } from "@/constants/cssVariables";
+
 type TagProps = {
   className?: string;
   backgroundColor?: string;
@@ -11,10 +12,11 @@ type TagProps = {
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
   variant?: "contained" | "outlined";
-};
+} & Omit<HTMLProps<HTMLDivElement>, "size">;
+
 const Tag = ({
   className = "",
-  backgroundColor = gray.$10,
+  backgroundColor = "transparent",
   textColor,
   borderColor = colors.white,
   size = "md",
@@ -26,12 +28,12 @@ const Tag = ({
     color: textColor,
     borderColor,
   };
-  const c = useColorMode();
+
   if (!textColor) {
-    textColor = c.primary;
+    textColor = colorVars.primary;
   }
   if (!borderColor) {
-    borderColor = c.border;
+    borderColor = colorVars.border;
   }
   return (
     <div
@@ -57,7 +59,7 @@ const LinkTag = ({
   ...rest
 }: LinkTagProps) => {
   return (
-    <Link href={href} {...rest}>
+    <Link href={href}>
       <Tag
         {...{
           className,

@@ -1,14 +1,14 @@
 import { colors, gray, green } from "@/constants/colors";
-import useColorMode from "@/hooks/useColorMode";
+import { colorVars } from "@/constants/cssVariables";
 import { css } from "@emotion/react";
+
 type Props = {
   isActive: boolean;
   className?: string;
 };
 type ButtonProps = Props & React.ButtonHTMLAttributes<HTMLButtonElement>;
-const MenuButton = ({ isActive, className = "", ...props }: ButtonProps) => {
-  const c = useColorMode();
 
+const MenuButton = ({ isActive, className = "", ...props }: ButtonProps) => {
   return (
     <button
       className={`${isActive ? "is-active" : ""} ${className}`}
@@ -19,17 +19,17 @@ const MenuButton = ({ isActive, className = "", ...props }: ButtonProps) => {
       <div
         className="bar"
         aria-hidden="true"
-        style={{ backgroundColor: c.green_primary }}
+        style={{ backgroundColor: colorVars.greenPrimary }}
       ></div>
       <div
         className="bar"
         aria-hidden="true"
-        style={{ backgroundColor: c.green_primary }}
+        style={{ backgroundColor: colorVars.greenPrimary }}
       ></div>
       <div
         className="bar"
         aria-hidden="true"
-        style={{ backgroundColor: c.green_primary }}
+        style={{ backgroundColor: colorVars.greenPrimary }}
       ></div>
     </button>
   );

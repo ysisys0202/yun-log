@@ -1,16 +1,14 @@
-import { colors, gray } from "@/constants/colors";
-import { css } from "@emotion/react";
 import React from "react";
-import Typography from "../common/Typography";
-import useColorMode from "@/hooks/useColorMode";
+import { colorVars } from "@/constants/cssVariables";
+import Typography from "@/components/common/Typography";
+
 type Props = { children: React.ReactNode; className?: string };
 const SectionTitle = ({ children, className }: Props) => {
-  const c = useColorMode();
   return (
     <Typography
       variant="h3"
       element="h2"
-      color={c.primary}
+      color={colorVars.primary}
       {...(className && { className: className })}
     >
       {children}

@@ -33,7 +33,7 @@ const S = {
   codeBlockHeader: css`
     padding: 8px;
     border-radius: 4px 4px 0 0;
-    background-color: ${gray.$50};
+    background-color: ${gray[50]};
   `,
   codeBlockBody: css`
     margin: 0 !important;

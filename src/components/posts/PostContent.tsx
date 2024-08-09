@@ -3,8 +3,8 @@ import { css } from "@emotion/react";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { PostDetailType } from "@/types/post";
 import { media } from "@/constants/breakPoints";
-import useColorMode from "@/hooks/useColorMode";
 import PostHeader from "@/components/posts/PostHeader";
+import { colorVars } from "@/constants/cssVariables";
 
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
@@ -19,25 +19,24 @@ type Props = {
 const PostContent = ({ post, mdx }: Props) => {
   const { title, createdAt, thumbNailImage, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
-  const c = useColorMode();
   const postComponents = {
     h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant={"h1"} element={"h2"} color={c.primary}>
+      <Typography variant={"h1"} element={"h2"} color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
     h2: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant={"h2"} element={"h3"} color={c.primary}>
+      <Typography variant={"h2"} element={"h3"} color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
     h3: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant={"h3"} element={"h4"} color={c.primary}>
+      <Typography variant={"h3"} element={"h4"} color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
     p: (props: React.HTMLProps<HTMLParagraphElement>) => (
-      <Typography variant={"body1"} element={"p"} color={c.secondary}>
+      <Typography variant={"body1"} element={"p"} color={colorVars.secondary}>
         {props.children}
       </Typography>
     ),
@@ -63,7 +62,7 @@ const PostContent = ({ post, mdx }: Props) => {
         subTitle={subTitle}
         category={category}
       />
-      <Typography variant="body1" element="p" color={c.primary}>
+      <Typography variant="body1" element="p" color={colorVars.primary}>
         {post.intro}
       </Typography>
       <div css={S.markdown}>

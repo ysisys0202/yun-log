@@ -4,38 +4,45 @@ import { css } from "@emotion/react";
 import { Nanum_Gothic } from "next/font/google";
 import dynamic from "next/dynamic";
 import { AppProps } from "next/app";
-import { MDXProvider } from "@mdx-js/react";
 import { RecoilRoot } from "recoil";
 import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
+import GlobalStyles from "@/styles/cssVariables";
+
 const GlobalHeader = dynamic(() => import("@/container/layouts/GlobalHeader"), {
   ssr: false,
 });
 const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
   ssr: true,
 });
+
 const defaultFont = Nanum_Gothic({
   subsets: ["latin"],
   weight: ["400", "700", "800"],
 });
-function MyApp({ Component, pageProps }: AppProps) {
+
+const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <RecoilRoot>
-      <Layout className={defaultFont.className} style={S}>
-        <SideMenu />
-        <div className="content-area">
-          <GlobalHeader />
-          <BackGround />
-          <Content>
-            <Component {...pageProps} />
-          </Content>
-        </div>
-      </Layout>
-    </RecoilRoot>
+    <>
+      <GlobalStyles />
+      <RecoilRoot>
+        <Layout className={defaultFont.className} style={S}>
+          <SideMenu />
+          <div className="content-area">
+            <GlobalHeader />
+            <BackGround />
+            <Content>
+              <Component {...pageProps} />
+            </Content>
+          </div>
+        </Layout>
+      </RecoilRoot>
+    </>
   );
-}
+};
+
 const S = css`
   .content-area {
     width: 100%;
@@ -48,4 +55,4 @@ const S = css`
     }
   }
 `;
-export default MyApp;
+export default App;

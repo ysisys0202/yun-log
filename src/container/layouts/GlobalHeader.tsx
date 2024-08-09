@@ -7,12 +7,14 @@ import { media } from "@/constants/breakPoints";
 import { useRecoilState } from "recoil";
 import { mobileMenuState } from "@/store/mobileMenu";
 import Typography from "@/components/common/Typography";
-import useColorMode from "@/hooks/useColorMode";
 import ColorModeButton from "@/components/common/ColorModeButton";
 import dynamic from "next/dynamic";
+import { colorVars } from "@/constants/cssVariables";
+
 const MenuButton = dynamic(() => import("@/components/common/MenuButton"), {
   ssr: false,
 });
+
 const GlobalHeader = () => {
   const isMediaMd = useMediaQuery(media.md);
   const [mobileMenuActive, setMobileMenuActive] =
@@ -20,9 +22,9 @@ const GlobalHeader = () => {
   const mobileMenuButtonClickHandler = () => {
     setMobileMenuActive((prevState: boolean) => !prevState);
   };
-  const c = useColorMode();
+
   return (
-    <header css={S} style={{ borderBottom: `1px solid ${c.border}` }}>
+    <header css={S} style={{ borderBottom: `1px solid ${colorVars.border}` }}>
       <nav>
         <h2 className="visually-hidden">블로그 대메뉴</h2>
         <ul>
@@ -32,7 +34,7 @@ const GlobalHeader = () => {
                 <Typography
                   variant="subtitle1"
                   element="span"
-                  color={c.primary}
+                  color={colorVars.primary}
                 >
                   {globalMenu.name}
                 </Typography>
@@ -97,7 +99,7 @@ const S = css`
         right: 0;
         width: 0px;
         height: 2px;
-        background-color: ${green.$100};
+        background-color: ${green[100]};
         transition: width 200ms ease-in-out;
       }
       &:hover {

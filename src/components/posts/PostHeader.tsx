@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import Image from "next/image";
-import useColorMode from "@/hooks/useColorMode";
 import Typography from "@/components/common/Typography";
 import DefinitionItem from "@/components/common/DefinitionItem";
 import { LinkTag } from "@/components/common/Tag";
+import { colorVars } from "@/constants/cssVariables";
 
 type Props = {
   title: string;
@@ -20,7 +20,6 @@ const PostHeader = ({
   headerImage,
   category,
 }: Props) => {
-  const c = useColorMode();
   const dateOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
@@ -45,21 +44,26 @@ const PostHeader = ({
       <div css={S.titleBox}>
         <LinkTag
           variant="outlined"
-          borderColor={c.primary}
-          textColor={c.primary}
+          borderColor={colorVars.primary}
+          textColor={colorVars.primary}
           size="sm"
           href={`/posts/${category}`}
         >
           {category}
         </LinkTag>
-        <Typography variant="h1" element="h1" color={c.primary} css={S.title}>
+        <Typography
+          variant="h1"
+          element="h1"
+          color={colorVars.primary}
+          css={S.title}
+        >
           {title}
         </Typography>
         {subTitle && (
           <Typography
             variant="subtitle1"
             element="p"
-            color={c.primary}
+            color={colorVars.primary}
             css={S.subTitle}
           >
             {subTitle}
@@ -68,7 +72,7 @@ const PostHeader = ({
         <DefinitionItem
           label="최종 수정일"
           value={formattedDate}
-          color={c.primary}
+          color={colorVars.primary}
           css={S.postInfo}
         />
       </div>

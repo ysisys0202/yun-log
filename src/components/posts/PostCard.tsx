@@ -1,4 +1,4 @@
-import { colors, gray, green } from "@/constants/colors";
+import { green } from "@/constants/colors";
 import { css } from "@emotion/react";
 import Image from "next/image";
 import ViewMoreButton from "./ViewMoreButton";
@@ -7,11 +7,13 @@ import Typography from "../common/Typography";
 import { PostCardVariantType, PostDetailType } from "@/types/post";
 import Tag from "../common/Tag";
 import { media } from "@/constants/breakPoints";
-import useColorMode from "@/hooks/useColorMode";
+import { colorVars } from "@/constants/cssVariables";
+
 type Props = {
   type: PostCardVariantType;
   post: PostDetailType;
 };
+
 export type PostCardType = {
   id: string;
   title: string;
@@ -24,29 +26,26 @@ export type PostCardType = {
 };
 
 const PostCard = ({ post, type }: Props) => {
-  const c = useColorMode();
   return (
     <Link href={`/posts/${post.category}/${post.slug}`}>
-      <article
-        css={type === "vertical" ? VerticalStyle : HorizontalStyle}
-        style={{
-          backgroundColor: c.background_global,
-          border: `1px solid ${c.border}`,
-        }}
-      >
+      <article css={type === "vertical" ? VerticalStyle : HorizontalStyle}>
         <div className="text-area">
           <Tag
             variant="outlined"
-            borderColor={c.border}
-            textColor={c.tertiary}
+            borderColor={colorVars.border}
+            textColor={colorVars.tertiary}
             size="sm"
           >
             {post.category}
           </Tag>
-          <Typography variant="subtitle1" element="h3" color={c.primary}>
+          <Typography
+            variant="subtitle1"
+            element="h3"
+            color={colorVars.primary}
+          >
             {post.title}
           </Typography>
-          <Typography variant="body1" element="p" color={c.secondary}>
+          <Typography variant="body1" element="p" color={colorVars.secondary}>
             {post.intro}
           </Typography>
           <ViewMoreButton className={`view-more-button`} />
@@ -71,6 +70,8 @@ const VerticalStyle = css`
   position: relative;
   padding: 16px 16px 32px;
   height: 100%;
+  background-color: ${colorVars.backgroundGlobal};
+  border: 1px solid ${colorVars.border};
   &::after {
     content: "";
     position: absolute;
@@ -83,7 +84,7 @@ const VerticalStyle = css`
   }
   &:hover {
     &::after {
-      background-color: ${green.$100};
+      background-color: ${green[100]};
     }
     .image-area {
       img {
@@ -139,7 +140,8 @@ const HorizontalStyle = css`
   justify-content: space-between;
   position: relative;
   padding: 32px 16px;
-
+  background-color: ${colorVars.backgroundGlobal};
+  border: 1px solid ${colorVars.border};
   .text-area {
     width: calc(100% - 190px);
     h3 {
@@ -182,7 +184,7 @@ const HorizontalStyle = css`
   }
   &:hover {
     &::after {
-      background-color: ${green.$100};
+      background-color: ${green[100]};
     }
     .image-area {
       img {

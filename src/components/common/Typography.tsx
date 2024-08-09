@@ -1,12 +1,10 @@
-import { media } from "@/constants/breakPoints";
-import { gray } from "@/constants/colors";
-import useColorMode from "@/hooks/useColorMode";
+import { HTMLProps } from "react";
+import { css } from "@emotion/react";
 import {
   TypographyElementType,
   TypographyVariantType,
 } from "@/types/typography";
-import { css } from "@emotion/react";
-import { HTMLProps } from "react";
+import { media } from "@/constants/breakPoints";
 
 type Props = {
   variant: TypographyVariantType;
