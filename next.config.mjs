@@ -1,4 +1,16 @@
-const withMDX = require('@next/mdx')()
+// next.config.mjs
+
+import nextMDX from "@next/mdx";
+import remarkGfm from "remark-gfm";
+
+const withMDX = nextMDX({
+  extensions: /\.mdx?$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -13,9 +25,11 @@ const nextConfig = {
     });
     return config;
   },
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   images: {
     domains: ["drive.google.com"],
   },
 };
-module.exports = withMDX(nextConfig);
+
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig);
