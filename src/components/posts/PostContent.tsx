@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { media } from "@/constants/breakPoints";
 import { PostDetailType } from "@/types/post";
+import { media } from "@/constants/breakPoints";
 import useColorMode from "@/hooks/useColorMode";
 import PostHeader from "@/components/posts/PostHeader";
-import Typography from "@/components/common/Typography";
-import Codeblock from "@/components/posts/Codeblock";
 
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
+const Spacing = dynamic(() => import("@/components/common/Spacing"));
+const Typography = dynamic(() => import("@/components/common/Typography"));
+const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
 
 type Props = {
   post: PostDetailType;
@@ -49,8 +50,8 @@ const PostContent = ({ post, mdx }: Props) => {
         </Codeblock>
       );
     },
-
     PostImage,
+    Spacing,
   };
 
   return (
