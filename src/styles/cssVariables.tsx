@@ -13,7 +13,7 @@ const globalStyles = css`
     --color-green-border: ${colors.green[50]};
     --color-green-background: ${colors.green[10]};
   }
-  :root.dark {
+  :root .dark {
     --color-primary: ${colors.gray[20]};
     --color-secondary: ${colors.gray[30]};
     --color-tertiary: ${colors.gray[40]};
