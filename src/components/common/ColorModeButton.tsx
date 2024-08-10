@@ -1,45 +1,43 @@
-import { ButtonHTMLAttributes, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import IconSun from "public/icons/sun.svg";
 import IconMoon from "public/icons/moon.svg";
-import { colorModeState, value as colorModeValue } from "@/store/colorMode";
 import { colorVars } from "@/constants/cssVariables";
+
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
-const setDarkClass = (isDark: boolean) => {
+
+const setThemeClass = (isDark: boolean) => {
   if (isDark) {
-    document.documentElement.classList.add("dark");
+    document.body.classList.remove("dark");
   } else {
-    document.documentElement.classList.remove("dark");
+    document.body.classList.add("dark");
   }
 };
+
 const ColorModeButton = (props: Props) => {
-  const [colorMode, setColorMode] = useRecoilState(colorModeState);
-  const isDark = colorMode === "dark";
+  const [colorTheme, setColorTheme] = useState<"light" | "dark">();
+  const isDark = colorTheme == "dark";
   const Icon = isDark ? (
-    <IconMoon width={24} height={24} fill={colorVars.primary} />
-  ) : (
     <IconSun width={24} height={24} fill={colorVars.primary} />
+  ) : (
+    <IconMoon width={24} height={24} fill={colorVars.primary} />
   );
 
   useEffect(() => {
-    const isDark =
-      colorModeValue === "dark" ||
-      (!("colorMode" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-    setColorMode(isDark ? "dark" : "light");
+    setColorTheme(
+      window.localStorage.getItem("colorTheme") as "light" | "dark" | undefined
+    );
   }, []);
-  useEffect(() => {
-    setDarkClass(colorMode === "dark");
-  }, [colorMode]);
-  const buttonClickHandler = () => {
-    setColorMode(isDark ? "light" : "dark");
-    localStorage.setItem("colorMode", isDark ? "light" : "dark");
+
+  const handleColorThemeToggle = () => {
+    setColorTheme(isDark ? "light" : "dark");
+    setThemeClass(isDark);
+    window.localStorage.setItem("colorTheme", isDark ? "light" : "dark");
   };
 
   return (
     <button
       {...props}
-      onClick={buttonClickHandler}
+      onClick={handleColorThemeToggle}
       aria-label={`${isDark ? "라이트" : "다크"}모드로 변경하기`}
     >
       {Icon}

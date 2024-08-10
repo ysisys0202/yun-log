@@ -1,18 +1,19 @@
 import "@/styles/reset.css";
 import "@/styles/global.css";
-import { css } from "@emotion/react";
-import { Nanum_Gothic } from "next/font/google";
 import dynamic from "next/dynamic";
+import Script from "next/dist/client/script";
 import { AppProps } from "next/app";
+import { css } from "@emotion/react";
 import { RecoilRoot } from "recoil";
+import GlobalStyles from "@/styles/cssVariables";
+import { Nanum_Gothic } from "next/font/google";
 import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
-import GlobalStyles from "@/styles/cssVariables";
 
 const GlobalHeader = dynamic(() => import("@/container/layouts/GlobalHeader"), {
-  ssr: false,
+  ssr: true,
 });
 const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
   ssr: true,
@@ -26,6 +27,10 @@ const defaultFont = Nanum_Gothic({
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
+      <Script
+        src="/scripts/controlColorTheme.js"
+        strategy="beforeInteractive"
+      />
       <GlobalStyles />
       <RecoilRoot>
         <Layout className={defaultFont.className} style={S}>
