@@ -19,24 +19,20 @@ type Props = {
 const PostContent = ({ post, mdx }: Props) => {
   const { title, createdAt, thumbNailImage, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
+  console.log(compiledSource);
   const postComponents = {
     h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant={"h1"} element={"h2"} color={colorVars.primary}>
+      <Typography variant="h1" element="h2" color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
     h2: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant={"h2"} element={"h3"} color={colorVars.primary}>
+      <Typography variant="h2" element="h3" color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
     h3: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant={"h3"} element={"h4"} color={colorVars.primary}>
-        {props.children}
-      </Typography>
-    ),
-    p: (props: React.HTMLProps<HTMLParagraphElement>) => (
-      <Typography variant={"body1"} element={"p"} color={colorVars.secondary}>
+      <Typography variant="h3" element="h4" color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
@@ -62,9 +58,6 @@ const PostContent = ({ post, mdx }: Props) => {
         subTitle={subTitle}
         category={category}
       />
-      <Typography variant="body1" element="p" color={colorVars.primary}>
-        {post.intro}
-      </Typography>
       <div css={S.markdown}>
         <MDXRemote
           compiledSource={compiledSource}

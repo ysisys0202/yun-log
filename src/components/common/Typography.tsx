@@ -1,89 +1,109 @@
-import { HTMLProps } from "react";
-import { css } from "@emotion/react";
+import { SerializedStyles, css } from "@emotion/react";
 import {
   TypographyElementType,
   TypographyVariantType,
 } from "@/types/typography";
 import { media } from "@/constants/breakPoints";
+import { typography } from "@/constants/typography";
 
 type Props = {
   variant: TypographyVariantType;
   element: TypographyElementType;
   color?: string;
+  fontWeight?: number;
   className?: string;
   children: React.ReactNode;
-} & HTMLProps<HTMLElement>;
+  css?: SerializedStyles;
+} & React.HTMLAttributes<HTMLElement>;
+
 const Typography = ({
-  variant,
-  element,
+  variant = "body1",
+  element = "p",
   color,
-  className = "",
+  fontWeight,
+  className,
   children,
+  css: propsCss,
+  ...rest
 }: Props) => {
   const Component = element;
+  const styles = [
+    S.default,
+    S[variant],
+    css`
+      color: ${color};
+    `,
+    propsCss,
+  ];
+
   return (
     <Component
-      className={`typography-${variant} ${className}`}
-      style={{ color }}
-      css={S}
+      css={styles}
+      className={`typography-${variant} ${className ?? ""}}`}
+      {...rest}
     >
       {children}
     </Component>
   );
 };
-const S = css`
-  line-height: 1.4;
-  letter-spacing: 0.00938em;
-  &[class^="typography-h"] {
-    font-weight: 700;
-  }
-  &[class^="typography-body"] {
-    font-weight: 400;
-  }
-  &.typography-h1 {
-    font-size: 32px;
-  }
-  &.typography-h2 {
-    font-size: 28px;
-  }
-  &.typography-h3 {
-    font-size: 22px;
-  }
-  &.typography-h4 {
-    font-size: 20px;
-  }
-  &.typography-body1 {
-    font-size: 16px;
-  }
-  &.typography-body2 {
-    font-size: 14px;
-  }
-  &.typography-subtitle1 {
-    font-size: 18px;
-    font-weight: 700;
-  }
-  @media ${media.md} {
-    &.typography-h1 {
-      font-size: 36px;
+
+const S = {
+  default: css`
+    line-height: ${typography.lineheight.default};
+    letter-spacing: ${typography.letterspacing.default};
+    &[class^="typography-h"] {
+      font-weight: 700;
     }
-    &.typography-h2 {
-      font-size: 32px;
+    &[class^="typography-body"] {
+      font-weight: 400;
     }
-    &.typography-h3 {
-      font-size: 28px;
+  `,
+  heading: css`
+    font-weight: ${typography.weight[700]};
+  `,
+  body: css`
+    font-weight: ${typography.weight[400]};
+  `,
+  h1: css`
+    font-size: ${typography.size["5xl"]};
+    @media ${media.md} {
+      font-size: ${typography.size["6xl"]};
     }
-    &.typography-h4 {
-      font-size: 24px;
+  `,
+  h2: css`
+    font-size: ${typography.size["4xl"]};
+    @media ${media.md} {
+      font-size: ${typography.size["5xl"]};
     }
-    &.typography-body1 {
-      font-size: 16px;
+  `,
+  h3: css`
+    font-size: ${typography.size["2xl"]};
+    @media ${media.md} {
+      font-size: ${typography.size["4xl"]};
     }
-    &.typography-body2 {
-      font-size: 15px;
+  `,
+  h4: css`
+    font-size: ${typography.size["xl"]};
+    @media ${media.md} {
+      font-size: ${typography.size["3xl"]};
     }
-    &.typography-subtitle1 {
-      font-size: 18px;
+  `,
+  body1: css`
+    font-size: ${typography.size["md"]};
+  `,
+  body2: css`
+    font-size: ${typography.size["xs"]};
+    @media ${media.md} {
+      font-size: ${typography.size["sm"]};
     }
-  }
-`;
+  `,
+  subtitle1: css`
+    font-size: ${typography.size["lg"]};
+    font-size: ${typography.weight["700"]};
+    @media ${media.md} {
+      font-size: ${typography.size["xl"]};
+    }
+  `,
+};
+
 export default Typography;

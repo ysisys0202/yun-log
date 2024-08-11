@@ -1,11 +1,11 @@
 import "@/styles/reset.css";
 import "@/styles/global.css";
+import GlobalStyles from "@/styles/GlobalStyles";
 import dynamic from "next/dynamic";
 import Script from "next/dist/client/script";
 import { AppProps } from "next/app";
 import { css } from "@emotion/react";
 import { RecoilRoot } from "recoil";
-import GlobalStyles from "@/styles/cssVariables";
 import { Nanum_Gothic } from "next/font/google";
 import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";

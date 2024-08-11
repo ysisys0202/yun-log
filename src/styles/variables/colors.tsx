@@ -1,7 +1,7 @@
-import { Global, css } from "@emotion/react";
+import { css } from "@emotion/react";
 import { colors } from "@/constants/index";
 
-const globalStyles = css`
+export const colorSet = css`
   :root {
     --color-primary: ${colors.gray[100]};
     --color-secondary: ${colors.gray[90]};
@@ -25,7 +25,3 @@ const globalStyles = css`
     --color-green-background: ${colors.green[100]};
   }
 `;
-
-const GlobalStyles = () => <Global styles={globalStyles} />;
-
-export default GlobalStyles;
