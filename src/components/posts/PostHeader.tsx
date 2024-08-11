@@ -72,7 +72,7 @@ const PostHeader = ({
         <DefinitionItem
           label="최종 수정일"
           value={formattedDate}
-          color={colorVars.primary}
+          color={colorVars.tertiary}
           css={S.postInfo}
         />
       </div>
