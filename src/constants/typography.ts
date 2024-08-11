@@ -13,7 +13,7 @@ export const typography = {
   },
   weight: {
     "400": 400,
-    "700": 500,
+    "700": 700,
     "800": 800,
   },
   lineheight: {
