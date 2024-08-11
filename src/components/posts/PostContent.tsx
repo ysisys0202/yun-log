@@ -96,6 +96,16 @@ const S = {
         border: 1px solid ${colorVars.border};
       }
     }
+
+    ol {
+      list-style: decimal;
+    }
+    ul {
+      list-style: disc;
+    }
+    li {
+      margin-left: 16px;
+    }
   `,
 };
 
