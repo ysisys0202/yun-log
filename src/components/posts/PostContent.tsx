@@ -79,8 +79,10 @@ const S = {
     }
   `,
   markdown: css`
-    white-space: pre-wrap;
     word-break: keep-all;
+    p {
+      white-space: pre-wrap;
+    }
     img {
       width: 100%;
       max-width: 400px;
