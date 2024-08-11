@@ -19,7 +19,7 @@ type Props = {
 const PostContent = ({ post, mdx }: Props) => {
   const { title, createdAt, thumbNailImage, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
-  console.log(compiledSource);
+
   const postComponents = {
     h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
       <Typography variant="h1" element="h2" color={colorVars.primary}>
@@ -79,6 +79,8 @@ const S = {
     }
   `,
   markdown: css`
+    white-space: pre-wrap;
+    word-break: keep-all;
     img {
       width: 100%;
       max-width: 400px;
