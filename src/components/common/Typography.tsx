@@ -27,6 +27,7 @@ const Typography = ({
   ...rest
 }: Props) => {
   const Component = element;
+
   const styles = [
     S.default,
     S[variant],
@@ -39,7 +40,7 @@ const Typography = ({
   return (
     <Component
       css={styles}
-      className={`typography-${variant} ${className ?? ""}}`}
+      className={`typography-${variant} ${className ?? ""}`}
       {...rest}
     >
       {children}
