@@ -2,9 +2,9 @@ import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { PostDetailType } from "@/types/post";
+import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";
 import PostHeader from "@/components/posts/PostHeader";
-import { colorVars } from "@/constants/cssVariables";
 
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
@@ -84,6 +84,17 @@ const S = {
     img {
       width: 100%;
       max-width: 400px;
+    }
+    table {
+      background-color: ${colorVars.backgroundGlobal};
+      thead {
+        border-bottom: 2px solid ${colorVars.border};
+      }
+      th,
+      td {
+        padding: 10px 16px;
+        border: 1px solid ${colorVars.border};
+      }
     }
   `,
 };
