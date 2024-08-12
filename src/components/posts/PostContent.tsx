@@ -114,6 +114,21 @@ const S = {
     li {
       margin-left: 16px;
     }
+    blockquote {
+      position: relative;
+      padding: 12px 36px;
+      background-color: ${colorVars.backgroundElement};
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 70%;
+        background-color: ${colors.green[100]};
+      }
+    }
   `,
 };
 
