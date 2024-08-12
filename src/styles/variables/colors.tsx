@@ -1,27 +1,28 @@
 import { css } from "@emotion/react";
 import { colors } from "@/constants/index";
+import { themeColor } from "@/constants/colors";
 
 export const colorSet = css`
   :root {
-    --color-primary: ${colors.gray[100]};
-    --color-secondary: ${colors.gray[90]};
-    --color-tertiary: ${colors.gray[80]};
-    --color-background-element: ${colors.gray[20]};
-    --color-background-global: ${colors.colors.white};
-    --color-border: ${colors.gray[30]};
-    --color-green-primary: ${colors.green[100]};
-    --color-green-border: ${colors.green[50]};
-    --color-green-background: ${colors.green[10]};
+    --color-primary: ${themeColor.light.primary};
+    --color-secondary: ${themeColor.light.secondary};
+    --color-tertiary: ${themeColor.light.tertiary};
+    --color-background-element: ${themeColor.light.backgroundElement};
+    --color-background-global: ${themeColor.light.backgroundGlobal};
+    --color-border: ${themeColor.light.border};
+    --color-green-primary: ${themeColor.light.greenPrimary};
+    --color-green-border: ${themeColor.light.greenBorder};
+    --color-green-background: ${themeColor.light.greenBackground};
   }
   :root .dark {
-    --color-primary: ${colors.gray[20]};
-    --color-secondary: ${colors.gray[30]};
-    --color-tertiary: ${colors.gray[40]};
-    --color-background-element: ${colors.gray[20]};
-    --color-background-global: ${colors.gray[100]};
-    --color-border: ${colors.gray[60]};
-    --color-green-primary: ${colors.green[10]};
-    --color-green-border: ${colors.green[50]};
-    --color-green-background: ${colors.green[100]};
+    --color-primary: ${themeColor.dark.primary};
+    --color-secondary: ${themeColor.dark.secondary};
+    --color-tertiary: ${themeColor.dark.tertiary};
+    --color-background-element: ${themeColor.dark.backgroundElement};
+    --color-background-global: ${themeColor.dark.backgroundGlobal};
+    --color-border: ${themeColor.dark.border};
+    --color-green-primary: ${themeColor.dark.greenPrimary};
+    --color-green-border: ${themeColor.dark.greenBorder};
+    --color-green-background: ${themeColor.dark.greenBackground};
   }
 `;
