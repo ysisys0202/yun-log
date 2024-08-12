@@ -5,11 +5,14 @@ import { PostDetailType } from "@/types/post";
 import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";
 import PostHeader from "@/components/posts/PostHeader";
+import { colors } from "@/constants";
+import { CalloutProps } from "@/components/posts/Callout";
 
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
 const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
+const Callout = dynamic(() => import("@/components/posts/Callout"));
 
 type Props = {
   post: PostDetailType;
@@ -19,7 +22,7 @@ type Props = {
 const PostContent = ({ post, mdx }: Props) => {
   const { title, createdAt, thumbNailImage, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
-
+  console.log(post);
   const postComponents = {
     h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
       <Typography variant="h1" element="h2" color={colorVars.primary}>
@@ -36,7 +39,7 @@ const PostContent = ({ post, mdx }: Props) => {
         {props.children}
       </Typography>
     ),
-    code(props: React.HTMLProps<HTMLPreElement>) {
+    code: (props: React.HTMLProps<HTMLPreElement>) => {
       const { children, className } = props;
       const language = className?.split("-")[1];
       return (
@@ -45,6 +48,10 @@ const PostContent = ({ post, mdx }: Props) => {
         </Codeblock>
       );
     },
+    Callout: ({ children, ...rest }: CalloutProps) => (
+      //@ts-ignore
+      <Callout {...rest}>{children.props.children}</Callout>
+    ),
     PostImage,
     Spacing,
   };
@@ -98,7 +105,6 @@ const S = {
         border: 1px solid ${colorVars.border};
       }
     }
-
     ol {
       list-style: decimal;
     }
