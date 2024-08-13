@@ -8,9 +8,12 @@ import PostHeader from "@/components/posts/PostHeader";
 import { colors } from "@/constants";
 import { CalloutProps } from "@/components/posts/Callout";
 
-const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
+const HighlightText = dynamic(
+  () => import("@/components/common/HighlightText")
+);
+const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
 const Callout = dynamic(() => import("@/components/posts/Callout"));
 
@@ -57,6 +60,7 @@ const PostContent = ({ post, mdx }: Props) => {
     },
     PostImage,
     Spacing,
+    HighlightText,
   };
 
   return (
