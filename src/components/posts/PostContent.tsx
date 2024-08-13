@@ -48,10 +48,13 @@ const PostContent = ({ post, mdx }: Props) => {
         </Codeblock>
       );
     },
-    Callout: ({ children, ...rest }: CalloutProps) => (
-      //@ts-ignore
-      <Callout {...rest}>{children.props.children}</Callout>
-    ),
+    Callout: ({ children, ...rest }: CalloutProps) => {
+      const content =
+        //@ts-ignore
+        children.type === "p" ? children.props.children : children;
+
+      return <Callout {...rest}>{content}</Callout>;
+    },
     PostImage,
     Spacing,
   };
