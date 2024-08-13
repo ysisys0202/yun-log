@@ -12,40 +12,40 @@ export type CalloutProps = {
 const Callout = ({ icon = "💡", title, children }: CalloutProps) => {
   return (
     <article css={S.self}>
-      <header css={S.header}>
-        <Typography variant="body1" element="span">
-          {icon}
-        </Typography>
+      <Typography variant="body1" element="span" css={S.icon}>
+        {icon}
+      </Typography>
+      {title && (
         <Typography
           variant="body1"
           element="h5"
           color={colorVars.primary}
-          css={css`
-            font-weight: ${typography.weight[700]} !important;
-          `}
+          css={S.title}
         >
           {title}
         </Typography>
-      </header>
-      <div>
-        <Typography variant="body2" element="p" color={colorVars.tertiary}>
-          {children}
-        </Typography>
-      </div>
+      )}
+      <Typography variant="body2" element="p" color={colorVars.tertiary}>
+        {children}
+      </Typography>
     </article>
   );
 };
 
 const S = {
   self: css`
-    padding: 8px 12px;
+    position: relative;
+    padding: 11px 8px 12px 28px;
     background-color: ${colorVars.backgroundElement};
   `,
-  header: css`
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  icon: css`
+    position: absolute;
+    top: 12px;
+    left: 8px;
+  `,
+  title: css`
     margin-bottom: 8px;
+    font-weight: ${typography.weight[700]} !important;
   `,
 };
 export default Callout;
