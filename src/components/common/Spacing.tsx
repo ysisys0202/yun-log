@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 
 type Props = {
-  size: "sm" | "md" | "lg";
-  backgroundColor: string;
+  size?: "sm" | "md" | "lg";
+  backgroundColor?: string;
 };
 
 const Spacing = ({ size = "sm", backgroundColor = "transparent" }: Props) => {
