@@ -125,7 +125,8 @@ const S = {
         left: 16px;
         transform: translateY(-50%);
         width: 3px;
-        height: 70%;
+        height: 85%;
+        border-radius: 2px;
         background-color: ${colors.green[100]};
       }
     }
