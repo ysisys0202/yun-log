@@ -4,6 +4,7 @@ import Typography from "@/components/common/Typography";
 import DefinitionItem from "@/components/common/DefinitionItem";
 import { LinkTag } from "@/components/common/Tag";
 import { colorVars } from "@/constants/cssVariables";
+import Divider from "@/components/common/Divider";
 
 type Props = {
   title: string;
@@ -41,7 +42,7 @@ const PostHeader = ({
           css={S.headerImage}
         />
       )}
-      <div css={S.titleBox}>
+      <div>
         <LinkTag
           variant="outlined"
           borderColor={colorVars.primary}
@@ -76,18 +77,17 @@ const PostHeader = ({
           css={S.postInfo}
         />
       </div>
+      <Divider height="2px" style={S.divider} />
     </header>
   );
 };
 
 const S = {
   headerImage: css`
+    margin-bottom: 24px;
     width: 100%;
     height: 240px;
     object-fit: cover;
-  `,
-  titleBox: css`
-    padding: 24px 0;
   `,
   title: css`
     margin-top: 8px;
@@ -97,6 +97,9 @@ const S = {
   `,
   postInfo: css`
     margin-top: 4px;
+  `,
+  divider: css`
+    margin: 24px 0 48px;
   `,
 };
 
