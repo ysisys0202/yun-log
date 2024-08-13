@@ -7,6 +7,7 @@ import { media } from "@/constants/breakPoints";
 import PostHeader from "@/components/posts/PostHeader";
 import { colors } from "@/constants";
 import { CalloutProps } from "@/components/posts/Callout";
+import { typography } from "@/constants/typography";
 
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
@@ -25,7 +26,6 @@ type Props = {
 const PostContent = ({ post, mdx }: Props) => {
   const { title, createdAt, thumbNailImage, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
-  console.log(post);
   const postComponents = {
     h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
       <Typography variant="h1" element="h2" color={colorVars.primary}>
@@ -120,11 +120,18 @@ const S = {
     }
     li {
       margin-left: 16px;
+      &:not(:first-of-type) {
+        margin-top: 8px;
+      }
     }
     blockquote {
       position: relative;
       padding: 12px 36px;
       background-color: ${colorVars.backgroundElement};
+      font-size: ${typography.size["xs"]};
+      @media ${media.md} {
+        font-size: ${typography.size["sm"]};
+      }
       &::before {
         content: "";
         position: absolute;
