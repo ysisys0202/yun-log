@@ -1,4 +1,4 @@
-export type TypographyElementType =
+export type TypographyElement =
   | "h1"
   | "h2"
   | "h3"
@@ -8,7 +8,8 @@ export type TypographyElementType =
   | "p"
   | "span"
   | "strong";
-export type TypographyVariantType =
+
+export type TypographyVariant =
   | "h1"
   | "h2"
   | "h3"
@@ -16,3 +17,5 @@ export type TypographyVariantType =
   | "body1"
   | "body2"
   | "subtitle1";
+
+export type TypographyWeight = 400 | 700 | 800;

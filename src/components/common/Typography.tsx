@@ -1,16 +1,17 @@
 import { SerializedStyles, css } from "@emotion/react";
 import {
-  TypographyElementType,
-  TypographyVariantType,
+  TypographyElement,
+  TypographyVariant,
+  TypographyWeight,
 } from "@/types/typography";
 import { media } from "@/constants/breakPoints";
 import { typography } from "@/constants/typography";
 
 type Props = {
-  variant: TypographyVariantType;
-  element: TypographyElementType;
+  variant: TypographyVariant;
+  element: TypographyElement;
   color?: string;
-  fontWeight?: number;
+  fontWeight?: TypographyWeight;
   className?: string;
   children: React.ReactNode;
   css?: SerializedStyles;
