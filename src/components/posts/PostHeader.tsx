@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
+import Link from "next/link";
 import Image from "next/image";
-import Typography from "@/components/common/Typography";
-import DefinitionItem from "@/components/common/DefinitionItem";
-import { LinkTag } from "@/components/common/Tag";
 import { colorVars } from "@/constants/cssVariables";
-import Divider from "@/components/common/Divider";
+import Typography from "@/components/common/Typography";
+import Tag from "@/components/common/Tag";
+import DefinitionItem from "@/components/common/DefinitionItem";
 
 type Props = {
   title: string;
@@ -32,7 +32,7 @@ const PostHeader = ({
   );
 
   return (
-    <header>
+    <header css={S.self}>
       {headerImage && (
         <Image
           src={headerImage}
@@ -43,15 +43,16 @@ const PostHeader = ({
         />
       )}
       <div>
-        <LinkTag
-          variant="outlined"
-          borderColor={colorVars.primary}
-          textColor={colorVars.primary}
-          size="sm"
-          href={`/posts/${category}`}
-        >
-          {category}
-        </LinkTag>
+        <Link href={`/posts/${category}`}>
+          <Tag
+            variant="outlined"
+            borderColor={colorVars.primary}
+            textColor={colorVars.primary}
+            size="sm"
+          >
+            {category}
+          </Tag>
+        </Link>
         <Typography
           variant="h1"
           element="h1"
@@ -77,12 +78,14 @@ const PostHeader = ({
           css={S.postInfo}
         />
       </div>
-      <Divider height="2px" style={S.divider} />
     </header>
   );
 };
 
 const S = {
+  self: css`
+    padding-bottom: 48px;
+  `,
   headerImage: css`
     margin-bottom: 24px;
     width: 100%;
@@ -97,9 +100,6 @@ const S = {
   `,
   postInfo: css`
     margin-top: 4px;
-  `,
-  divider: css`
-    margin: 24px 0 48px;
   `,
 };
 

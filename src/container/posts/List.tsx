@@ -1,4 +1,4 @@
-import { LinkTag } from "@/components/common/Tag";
+import Tag from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import SectionTitle from "@/components/home/SectionTitle";
 import { PostCardType } from "@/components/posts/PostCard";
@@ -24,20 +24,21 @@ const PostListContainer = ({ postList }: { postList: PostCardType[] }) => {
         <TagList className="tab-list">
           {postCategories &&
             postCategories.map((category: CategoriesInfo) => (
-              <LinkTag
-                key={category.name}
-                variant="outlined"
-                textColor={colorVars.greenPrimary}
-                borderColor={colorVars.greenBorder}
-                backgroundColor={
-                  currentCategory === category.name
-                    ? colorVars.greenBackground
-                    : "transparent"
-                }
-                href={`/posts/${category.name}`}
-              >
-                {category.name} {`(${category.fileLength})`}
-              </LinkTag>
+              <Link href={`/posts/${category.name}`}>
+                <Tag
+                  key={category.name}
+                  variant="outlined"
+                  textColor={colorVars.greenPrimary}
+                  borderColor={colorVars.greenBorder}
+                  backgroundColor={
+                    currentCategory === category.name
+                      ? colorVars.greenBackground
+                      : "transparent"
+                  }
+                >
+                  {category.name} {`(${category.fileLength})`}
+                </Tag>
+              </Link>
             ))}
         </TagList>
       </div>

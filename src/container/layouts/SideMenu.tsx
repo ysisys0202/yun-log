@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRouter } from "next/router";
 import { css } from "@emotion/react";
-import { ColorSetType } from "@/types/colorTheme";
+import { useRecoilState, useRecoilValue } from "recoil";
+import Link from "next/link";
 import { CategoriesInfo } from "@/types/post";
 import { colors } from "@/constants/colors";
 import { media } from "@/constants/breakPoints";
@@ -11,11 +11,14 @@ import { mobileMenuState } from "@/store/mobileMenu";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import Logo from "@/components/common/Logo";
 import MenuButton from "@/components/common/MenuButton";
-import { LinkTag } from "@/components/common/Tag";
+import Tag from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { colorVars } from "@/constants/cssVariables";
 
 const SideMenu = () => {
+  const router = useRouter();
+  const query = router.query;
+  const currentCategory = query.category as string;
   const [mount, setMount] = useState(false);
   const postCategories = useRecoilValue(categories);
   const [mobileMenuActive, setMobileMenuActive] =
@@ -51,15 +54,25 @@ const SideMenu = () => {
         <TagList className="tab-list">
           {postCategories &&
             postCategories.map((category: CategoriesInfo) => (
-              <LinkTag
-                key={category.name}
-                variant="outlined"
-                borderColor={colorVars.greenBorder}
-                textColor={colorVars.greenPrimary}
-                href={`/posts/${category.name}`}
-              >
-                {category.name} {`(${category.fileLength})`}
-              </LinkTag>
+              <Link href={`/posts/${category.name}`}>
+                <Tag
+                  key={category.name}
+                  variant="outlined"
+                  backgroundColor={
+                    currentCategory === category.name
+                      ? colorVars.greenPrimary
+                      : "transparent"
+                  }
+                  borderColor={colorVars.greenBorder}
+                  textColor={
+                    currentCategory === category.name
+                      ? colorVars.greenBackground
+                      : colorVars.greenPrimary
+                  }
+                >
+                  {category.name} {`(${category.fileLength})`}
+                </Tag>
+              </Link>
             ))}
         </TagList>
       </aside>

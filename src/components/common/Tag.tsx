@@ -1,6 +1,5 @@
 import React, { HTMLProps } from "react";
-import Link, { LinkProps } from "next/link";
-import { css } from "@emotion/react";
+import { SerializedStyles, css } from "@emotion/react";
 import { colors } from "@/constants/colors";
 import { colorVars } from "@/constants/cssVariables";
 
@@ -9,93 +8,72 @@ type TagProps = {
   backgroundColor?: string;
   textColor?: string;
   borderColor?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md";
   children: React.ReactNode;
   variant?: "contained" | "outlined";
+  propsCss?: SerializedStyles;
 } & Omit<HTMLProps<HTMLDivElement>, "size">;
 
 const Tag = ({
   className = "",
   backgroundColor = "transparent",
-  textColor,
-  borderColor = colors.white,
+  textColor = colorVars.primary,
+  borderColor = colorVars.border,
   size = "md",
   children,
   variant = "contained",
+  propsCss,
+  ...rest
 }: TagProps) => {
-  const style = {
-    backgroundColor,
-    color: textColor,
-    borderColor,
-  };
+  const dynamicStyles = [
+    css`
+      background-color: ${backgroundColor};
+      color: ${textColor};
+      border-color: ${borderColor};
+    `,
+    propsCss,
+  ];
+  const styles = [
+    S.defalut,
+    S.size[size],
+    S.variant[variant],
+    ...dynamicStyles,
+  ];
 
-  if (!textColor) {
-    textColor = colorVars.primary;
-  }
-  if (!borderColor) {
-    borderColor = colorVars.border;
-  }
   return (
-    <div
-      className={`${className} size-${size} ${variant}`}
-      style={style}
-      css={S}
-    >
+    <div css={styles} {...rest}>
       {children}
     </div>
   );
 };
-type LinkTagProps = TagProps & LinkProps;
 
-const LinkTag = ({
-  className = "",
-  backgroundColor = "#",
-  textColor,
-  borderColor,
-  size = "md",
-  children,
-  variant = "contained",
-  href,
-  ...rest
-}: LinkTagProps) => {
-  return (
-    <Link href={href}>
-      <Tag
-        {...{
-          className,
-          backgroundColor,
-          textColor,
-          borderColor,
-          size,
-          variant,
-        }}
-      >
-        {children}
-      </Tag>
-    </Link>
-  );
+const S = {
+  defalut: css`
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+  `,
+  size: {
+    sm: css`
+      padding: 4px 12px;
+      font-size: 12px;
+      line-height: 1.4;
+    `,
+    md: css`
+      padding: 4px 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    `,
+  },
+  variant: {
+    contained: css`
+      border: none;
+    `,
+    outlined: css`
+      border: 1px solid;
+    `,
+  },
 };
-const S = css`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  &.size-sm {
-    padding: 4px 12px;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  &.size-md {
-    padding: 4px 12px;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-  &.contained {
-    border: none;
-  }
-  &.outlined {
-    border: 1px solid;
-  }
-`;
+
 export default Tag;
-export { LinkTag };
