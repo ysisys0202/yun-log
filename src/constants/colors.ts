@@ -31,7 +31,7 @@ export const themeColor: ColorThemeSetType = {
     primary: gray[100],
     secondary: gray[90],
     tertiary: gray[80],
-    backgroundElement: gray[20],
+    backgroundElement: gray[30],
     backgroundGlobal: colors.white,
     border: gray[30],
     greenPrimary: green[100],
