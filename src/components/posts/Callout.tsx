@@ -12,9 +12,11 @@ export type CalloutProps = {
 const Callout = ({ icon = "💡", title, children }: CalloutProps) => {
   return (
     <article css={S.self}>
-      <Typography variant="body1" element="span" css={S.icon}>
-        {icon}
-      </Typography>
+      {icon !== "none" && (
+        <Typography variant="body1" element="span" css={S.icon}>
+          {icon}
+        </Typography>
+      )}
       {title && (
         <Typography
           variant="body1"
