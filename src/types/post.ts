@@ -3,7 +3,7 @@ export type PostDetailType = {
   title: string;
   subTitle: string;
   intro: string;
-  thumbNailImage: string;
+  thumbnail: string;
   isFeatured: boolean;
   createdAt: string;
   content: string;

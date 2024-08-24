@@ -19,7 +19,7 @@ const PostDetail = ({ post, mdx }: Props) => {
       <MyHead
         title={post.title}
         description={post.createdAt}
-        ogImage={post.thumbNailImage}
+        ogImage={post.thumbnail}
       />
       <PostContent {...{ post, mdx }} />
     </>

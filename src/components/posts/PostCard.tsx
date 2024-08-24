@@ -1,20 +1,20 @@
 import { green } from "@/constants/colors";
 import { css } from "@emotion/react";
 import Image from "next/image";
-import ViewMoreButton from "./ViewMoreButton";
 import Link from "next/link";
-import Typography from "../common/Typography";
-import { PostCardVariantType, PostDetailType } from "@/types/post";
-import Tag from "../common/Tag";
 import { media } from "@/constants/breakPoints";
 import { colorVars } from "@/constants/cssVariables";
+import { PostCardVariantType, PostDetailType } from "@/types/post";
+import ViewMoreButton from "@/components/posts/ViewMoreButton";
+import Typography from "@/components/common/Typography";
+import Tag from "@/components/common/Tag";
 
 type Props = {
   type: PostCardVariantType;
   post: PostDetailType;
 };
 
-export type PostCardType = {
+export type PostCard = {
   id: string;
   title: string;
   link: string;
@@ -22,7 +22,7 @@ export type PostCardType = {
   createdAt: string;
   description: string;
   intro: string;
-  thumbNailImage: string;
+  thumbnail: string;
 };
 
 const PostCard = ({ post, type }: Props) => {
@@ -52,8 +52,8 @@ const PostCard = ({ post, type }: Props) => {
         </div>
         <div className="image-area">
           <Image
-            src="/images/home/profile.jpg"
-            alt="aa"
+            src={post.thumbnail}
+            alt={post.title}
             width="300"
             height="220"
           />
@@ -101,6 +101,7 @@ const VerticalStyle = css`
     margin-top: 16px;
     aspect-ratio: 400/300;
     overflow: hidden;
+    border: 1px solid ${colorVars.border};
     img {
       width: 100%;
       height: 100%;

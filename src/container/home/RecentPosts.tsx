@@ -22,7 +22,7 @@ const postList = [
     modifiedDate: "2023년 09월 03일",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
+    thumbnailImage: "/images/home/profile.jpg",
   },
   {
     id: "123",
@@ -32,7 +32,7 @@ const postList = [
     modifiedDate: "2023년 09월 03일",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
+    thumbnailImage: "/images/home/profile.jpg",
   },
   {
     id: "123",
@@ -42,7 +42,7 @@ const postList = [
     modifiedDate: "2023년 09월 03일",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, natus.",
-    thumbNailImage: "/images/home/profile.jpg",
+    thumbnailImage: "/images/home/profile.jpg",
   },
   {
     id: "123",

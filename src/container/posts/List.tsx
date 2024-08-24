@@ -1,7 +1,7 @@
 import Tag from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import SectionTitle from "@/components/home/SectionTitle";
-import { PostCardType } from "@/components/posts/PostCard";
+import { PostCard } from "@/components/posts/PostCard";
 import PostList from "@/components/posts/PostList";
 import { colorVars } from "@/constants/cssVariables";
 import { categories } from "@/store/categories";
@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
-const PostListContainer = ({ postList }: { postList: PostCardType[] }) => {
+const PostListContainer = ({ postList }: { postList: PostCard[] }) => {
   const router = useRouter();
   const query = router.query;
   const currentCategory = query.category as string;

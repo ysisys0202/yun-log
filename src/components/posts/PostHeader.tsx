@@ -33,15 +33,6 @@ const PostHeader = ({
 
   return (
     <header css={S.self}>
-      {headerImage && (
-        <Image
-          src={headerImage}
-          alt={title}
-          width={1200}
-          height={500}
-          css={S.headerImage}
-        />
-      )}
       <div>
         <Link href={`/posts/${category}`}>
           <Tag

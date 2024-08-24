@@ -1,9 +1,7 @@
 import { css } from "@emotion/react";
-import PostCard, { PostCardType } from "./PostCard";
-import { gray } from "@/constants/colors";
-import Link from "next/link";
-import { PostCardVariantType } from "@/types/post";
 import { media } from "@/constants/breakPoints";
+import { PostCardVariantType } from "@/types/post";
+import PostCard from "@/components/posts/PostCard";
 
 type Props = {
   postList: any;
