@@ -1,28 +1,12 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import Link from "next/link";
+import { css } from "@emotion/react";
 import { green } from "@/constants/colors";
-import useMediaQuery from "@/hooks/useMediaQuery";
-import { media } from "@/constants/breakPoints";
-import { useRecoilState } from "recoil";
-import { mobileMenuState } from "@/store/mobileMenu";
-import Typography from "@/components/common/Typography";
-import ColorModeButton from "@/components/common/ColorModeButton";
-import dynamic from "next/dynamic";
 import { colorVars } from "@/constants/cssVariables";
-
-const MenuButton = dynamic(() => import("@/components/common/MenuButton"), {
-  ssr: false,
-});
+import { media } from "@/constants/breakPoints";
+import { gnbHeightMb, gnbHeightPc, gnbSideSpacing } from "@/constants/size";
+import Typography from "@/components/common/Typography";
 
 const GlobalHeader = () => {
-  const isMediaMd = useMediaQuery(media.md);
-  const [mobileMenuActive, setMobileMenuActive] =
-    useRecoilState(mobileMenuState);
-  const mobileMenuButtonClickHandler = () => {
-    setMobileMenuActive((prevState: boolean) => !prevState);
-  };
-
   return (
     <header css={S} style={{ borderBottom: `1px solid ${colorVars.border}` }}>
       <nav>
@@ -42,14 +26,6 @@ const GlobalHeader = () => {
             </li>
           ))}
         </ul>
-        <ColorModeButton className="ml-auto mr-4" />
-        {!isMediaMd && (
-          <MenuButton
-            onClick={mobileMenuButtonClickHandler}
-            isActive={mobileMenuActive}
-            className="mobile-menu-button"
-          />
-        )}
       </nav>
     </header>
   );
@@ -73,11 +49,14 @@ const S = css`
   top: 0;
   right: 0;
   z-index: 50;
-  padding: 0 20px;
+  padding: 0 ${gnbSideSpacing}px;
   width: 100%;
+  height: ${gnbHeightMb}px;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-
+  @media ${media.md} {
+    height: ${gnbHeightPc}px;
+  }
   nav {
     display: flex;
     justify-content: space-between;
@@ -110,10 +89,6 @@ const S = css`
         }
       }
     }
-  }
-  .mobile-menu-button {
-    position: relative;
-    z-index: 1000;
   }
 `;
 export default GlobalHeader;

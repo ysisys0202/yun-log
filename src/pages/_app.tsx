@@ -10,6 +10,14 @@ import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import { useRouter } from "next/router";
+import ColorModeButton from "@/components/common/ColorModeButton";
+import {
+  contentSideSpacingMb,
+  contentSideSpacingPc,
+  gnbSideSpacing,
+} from "@/constants/size";
 
 const GlobalHeader = dynamic(() => import("@/container/layouts/GlobalHeader"), {
   ssr: false,
@@ -19,6 +27,9 @@ const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
+  const isHome = router.asPath === "/";
+  const isMobile = !useMediaQuery(media.md);
   return (
     <>
       <Script
@@ -27,10 +38,11 @@ const App = ({ Component, pageProps }: AppProps) => {
       />
       <GlobalStyles />
       <RecoilRoot>
-        <Layout style={S}>
+        <Layout>
           <SideMenu />
-          <div className="content-area">
-            <GlobalHeader />
+          <div className="content-area" css={S.contentArea}>
+            {(!isHome || isMobile) && <GlobalHeader />}
+            <ColorModeButton css={S.colorModeButton} />
             <BackGround />
             <Content>
               <Component {...pageProps} />
@@ -42,16 +54,21 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-const S = css`
-  .content-area {
+const S = {
+  contentArea: css`
     width: 100%;
-  }
-  @media ${media.md} {
-    .content-area {
+    @media ${media.md} {
       margin-left: auto;
       width: 80%;
       max-width: calc(100% - 220px);
     }
-  }
-`;
+  `,
+  colorModeButton: css`
+    position: absolute;
+    top: 16px;
+    right: ${gnbSideSpacing}px;
+    z-index: 100;
+  `,
+};
+
 export default App;

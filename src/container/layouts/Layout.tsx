@@ -1,19 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { SerializedStyles, css } from "@emotion/react";
-import { useRecoilState } from "recoil";
-import { colorModeState, value as colorModeValue } from "@/store/colorMode";
 
 const Layout = ({
   children,
-  style,
+  propsCss,
   className,
 }: {
   children: React.ReactNode;
-  style: SerializedStyles;
-  className: string;
+  propsCss?: SerializedStyles;
+  className?: string;
 }) => {
   return (
-    <div className={className} css={style}>
+    <div className={className} css={propsCss}>
       {children}
     </div>
   );
