@@ -17,7 +17,7 @@ export const typography = {
     "800": 800,
   },
   lineheight: {
-    default: 1.4,
+    default: 1.6,
   },
   letterspacing: {
     default: "0.00938em",
