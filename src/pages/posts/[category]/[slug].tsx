@@ -27,7 +27,7 @@ const PostDetail = ({ post, mdx }: Props) => {
 };
 
 export const getStaticPaths = async () => {
-  const postFiles = getPosts();
+  const postFiles = getPosts({});
 
   return {
     paths: postFiles.map((post: any) => `/posts/${post.category}/${post.slug}`),

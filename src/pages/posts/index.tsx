@@ -1,12 +1,10 @@
-import PostList from "@/components/posts/PostList";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getPosts } from "../../../libs/posts-util";
 import PostListContainer from "@/container/posts/List";
-import { PostCardType } from "@/components/posts/PostCard";
-import { GetStaticPropsContext } from "next";
+import { PostCard } from "@/components/posts/PostCard";
 import MyHead from "@/components/common/MyHead";
 
-const AllPosts = ({ allPostList }: { allPostList: PostCardType[] }) => {
+const AllPosts = ({ allPostList }: { allPostList: PostCard[] }) => {
   const [mount, setMount] = useState(false);
   useEffect(() => {
     setMount(true);
@@ -22,12 +20,12 @@ const AllPosts = ({ allPostList }: { allPostList: PostCardType[] }) => {
   );
 };
 
-export function getStaticProps() {
-  const allPostList = getPosts();
+export const getStaticProps = () => {
+  const allPostList = getPosts({});
   return {
     props: {
       allPostList,
     },
   };
-}
+};
 export default AllPosts;

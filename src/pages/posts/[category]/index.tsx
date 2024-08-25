@@ -2,14 +2,14 @@ import PostListContainer from "@/container/posts/List";
 import React, { useEffect, useState } from "react";
 import { getCategories, getPosts } from "../../../../libs/posts-util";
 import { GetStaticPropsContext } from "next";
-import { PostCardType } from "@/components/posts/PostCard";
+import { PostCard } from "@/components/posts/PostCard";
 import MyHead from "@/components/common/MyHead";
 
 const FilteredPostList = ({
   postList,
   category,
 }: {
-  postList: PostCardType[];
+  postList: PostCard[];
   category: any;
 }) => {
   const [mount, setMount] = useState(false);
@@ -27,7 +27,7 @@ const FilteredPostList = ({
   );
 };
 
-export function getStaticPaths() {
+export const getStaticPaths = () => {
   const categories = getCategories();
   const paths = categories.map((category) => `/posts/${category}`);
 
@@ -35,15 +35,16 @@ export function getStaticPaths() {
     paths,
     fallback: false,
   };
-}
-export function getStaticProps(context: GetStaticPropsContext) {
+};
+
+export const getStaticProps = (context: GetStaticPropsContext) => {
   const category = context.params?.category as string;
-  const postList = getPosts(category);
+  const postList = getPosts({ category });
   return {
     props: {
       postList,
       category,
     },
   };
-}
+};
 export default FilteredPostList;
