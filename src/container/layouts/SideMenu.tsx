@@ -54,9 +54,8 @@ const SideMenu = () => {
         <TagList className="tab-list">
           {postCategories &&
             postCategories.map((category: CategoriesInfo) => (
-              <Link href={`/posts/${category.name}`}>
+              <Link href={`/posts/${category.name}`} key={category.name}>
                 <Tag
-                  key={category.name}
                   variant="outlined"
                   backgroundColor={
                     currentCategory === category.name
