@@ -1,17 +1,15 @@
-import Image from "next/image";
-import HomeSection from "./HomeSection";
 import { css } from "@emotion/react";
-import SectionTitle from "@/components/home/SectionTitle";
-import Typography from "@/components/common/Typography";
 import { colorVars } from "@/constants/cssVariables";
 import { green } from "@/constants/colors";
+import Typography from "@/components/common/Typography";
+import HomeSection from "@/container/home/HomeSection";
 
 const Profile = () => {
   return (
-    <HomeSection>
-      <Typography variant="h1" element="h1">
+    <HomeSection css={S.self}>
+      <Typography variant="h1" element="h1" css={S.title}>
         WELCOME!
-        <br /> <span css={S.name}>YUN</span> 의 기술 블로그입니다
+        <br /> <span css={S.name}>YUN</span> 의 기술 블로그입니다.
       </Typography>
       <Typography variant="subtitle1" element="p" css={S.description}>
         Javascript / React / Next.js 등 FE 개발 스택 이야기
@@ -29,6 +27,12 @@ const Profile = () => {
   );
 };
 const S = {
+  self: css`
+    padding: 80px;
+  `,
+  title: css`
+    line-height: 1.2;
+  `,
   name: css`
     position: relative;
     padding-right: 20px;
