@@ -31,7 +31,15 @@ type PostSort = "latest" | "order";
 const postsDirectory = path.join(process.cwd(), "posts");
 
 export const getCategories = () => {
-  return fs.readdirSync(postsDirectory);
+  const categories = fs.readdirSync(postsDirectory);
+  return categories.map((category) => {
+    const categoryPath = path.join(postsDirectory, category);
+    const files = fs.readdirSync(categoryPath);
+    return {
+      name: category,
+      fileLength: files.length,
+    };
+  });
 };
 
 export const getPostFiles = (category: string) => {
@@ -41,7 +49,7 @@ export const getPostFiles = (category: string) => {
 
 export const getPostAllFiles = (): PostFile[] => {
   const categories = getCategories();
-  const allPosts = categories.map((category) => getPostFiles(category));
+  const allPosts = categories.map((category) => getPostFiles(category.name));
   return allPosts.flat();
 };
 

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { CategoriesInfo } from "@/types/post";
 import { colors } from "@/constants/colors";
 import { media } from "@/constants/breakPoints";
-import { categories } from "@/store/categories";
 import { mobileMenuState } from "@/store/mobileMenu";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import Logo from "@/components/common/Logo";
@@ -14,13 +13,14 @@ import MenuButton from "@/components/common/MenuButton";
 import Tag from "@/components/common/Tag";
 import TagList from "@/components/common/TagList";
 import { colorVars } from "@/constants/cssVariables";
+import useNavCategories from "@/hooks/useNavCategories";
 
 const SideMenu = () => {
   const router = useRouter();
   const query = router.query;
   const currentCategory = query.category as string;
   const [mount, setMount] = useState(false);
-  const postCategories = useRecoilValue(categories);
+  const { navCategories } = useNavCategories();
   const [mobileMenuActive, setMobileMenuActive] =
     useRecoilState(mobileMenuState);
   const isMediaMd = useMediaQuery(media.md);
@@ -52,27 +52,26 @@ const SideMenu = () => {
           )}
         </header>
         <TagList className="tab-list">
-          {postCategories &&
-            postCategories.map((category: CategoriesInfo) => (
-              <Link href={`/posts/${category.name}`} key={category.name}>
-                <Tag
-                  variant="outlined"
-                  backgroundColor={
-                    currentCategory === category.name
-                      ? colorVars.greenPrimary
-                      : "transparent"
-                  }
-                  borderColor={colorVars.greenBorder}
-                  textColor={
-                    currentCategory === category.name
-                      ? colorVars.greenBackground
-                      : colorVars.greenPrimary
-                  }
-                >
-                  {category.name} {`(${category.fileLength})`}
-                </Tag>
-              </Link>
-            ))}
+          {navCategories.map((category: CategoriesInfo) => (
+            <Link href={`/posts/${category.name}`} key={category.name}>
+              <Tag
+                variant="outlined"
+                backgroundColor={
+                  currentCategory === category.name
+                    ? colorVars.greenPrimary
+                    : "transparent"
+                }
+                borderColor={colorVars.greenBorder}
+                textColor={
+                  currentCategory === category.name
+                    ? colorVars.greenBackground
+                    : colorVars.greenPrimary
+                }
+              >
+                {category.name} {`(${category.fileLength})`}
+              </Tag>
+            </Link>
+          ))}
         </TagList>
       </aside>
     )

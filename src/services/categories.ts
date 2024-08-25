@@ -1,4 +1,6 @@
-export const fetchCategories = async () => {
+import { Category } from "@/types/category";
+
+export const fetchCategories = async (): Promise<Category[] | undefined> => {
   try {
     const response = await fetch("/api/getFileInfo");
     if (!response.ok) {
@@ -8,5 +10,6 @@ export const fetchCategories = async () => {
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    return undefined;
   }
 };

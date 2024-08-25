@@ -4,13 +4,14 @@ import { getCategories, getPosts } from "../../../../libs/posts-util";
 import { GetStaticPropsContext } from "next";
 import { PostCard } from "@/components/posts/PostCard";
 import MyHead from "@/components/common/MyHead";
+import { Category } from "@/types/category";
 
 const FilteredPostList = ({
   postList,
   category,
 }: {
   postList: PostCard[];
-  category: any;
+  category: Category;
 }) => {
   const [mount, setMount] = useState(false);
   useEffect(() => {
@@ -19,8 +20,8 @@ const FilteredPostList = ({
   return (
     <>
       <MyHead
-        title={`${category} 카테고리 게시물 목록`}
-        description={`이윤슬 개발 블로그의 ${category} 카테고리 게시물 목록입니다.`}
+        title={`${category} 게시글 목록`}
+        description={`${category} 게시글 목록입니다.`}
       />
       {mount && <PostListContainer postList={postList} />}
     </>
@@ -29,7 +30,7 @@ const FilteredPostList = ({
 
 export const getStaticPaths = () => {
   const categories = getCategories();
-  const paths = categories.map((category) => `/posts/${category}`);
+  const paths = categories.map((category) => `/posts/${category.name}`);
 
   return {
     paths,
