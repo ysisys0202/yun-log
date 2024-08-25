@@ -6,22 +6,16 @@ import Script from "next/dist/client/script";
 import { AppProps } from "next/app";
 import { css } from "@emotion/react";
 import { RecoilRoot } from "recoil";
-import { Nanum_Gothic } from "next/font/google";
 import { media } from "@/constants/breakPoints";
 import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
 
 const GlobalHeader = dynamic(() => import("@/container/layouts/GlobalHeader"), {
-  ssr: true,
+  ssr: false,
 });
 const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
   ssr: true,
-});
-
-const defaultFont = Nanum_Gothic({
-  subsets: ["latin"],
-  weight: ["400", "700", "800"],
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -33,7 +27,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       />
       <GlobalStyles />
       <RecoilRoot>
-        <Layout className={defaultFont.className} style={S}>
+        <Layout style={S}>
           <SideMenu />
           <div className="content-area">
             <GlobalHeader />
