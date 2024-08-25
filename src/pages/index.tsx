@@ -1,8 +1,8 @@
 import { getPosts } from "../../libs/posts-util";
-import FeaturePosts from "@/container/home/FeaturePosts";
-import Profile from "@/container/home/Profile";
-import RecentPosts from "@/container/home/RecentPosts";
 import MyHead from "@/components/common/MyHead";
+import Profile from "@/container/home/Profile";
+import FeaturePostList from "@/container/home/FeaturePostList";
+import RecentPostList from "@/container/home/RecentPostList";
 
 type Props = {
   allPostList: any;
@@ -14,8 +14,8 @@ const Homepage = ({ allPostList, featuredPostList }: Props) => {
     <>
       <MyHead title="홈" />
       <Profile />
-      <FeaturePosts postList={featuredPostList} />
-      <RecentPosts postList={allPostList} />
+      <FeaturePostList postList={featuredPostList} />
+      <RecentPostList postList={allPostList} />
     </>
   );
 };
