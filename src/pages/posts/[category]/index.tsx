@@ -13,17 +13,13 @@ const FilteredPostList = ({
   postList: PostData[];
   category: Category;
 }) => {
-  const [mount, setMount] = useState(false);
-  useEffect(() => {
-    setMount(true);
-  }, []);
   return (
     <>
       <MyHead
         title={`${category} 게시글 목록`}
         description={`${category} 게시글 목록입니다.`}
       />
-      {mount && <PostListContainer postList={postList} />}
+      <PostListContainer postList={postList} />
     </>
   );
 };
