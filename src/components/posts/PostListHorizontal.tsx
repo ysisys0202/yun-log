@@ -14,7 +14,7 @@ const PostListHorizontal = ({ postList, propsCss }: Props) => {
   return (
     <ul css={styles}>
       {postList.map((post) => (
-        <li key={post.slug}>
+        <li key={post.slug} css={S.postItem}>
           <PostCard
             title={post.title}
             category={post.category}
@@ -31,23 +31,29 @@ const PostListHorizontal = ({ postList, propsCss }: Props) => {
 
 const S = {
   self: css`
-    display: flex;
-    align-items: stretch;
-    flex-wrap: wrap;
-    li {
-      margin-left: -1px;
-      width: calc(50% + 1px);
-      &:nth-of-type(2) ~ li {
-        margin-top: -1px;
-      }
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    @media ${media.sm} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media ${media.md} {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  `,
+  postItem: css`
+    margin-left: -1px;
+    &:nth-of-type(1) ~ li {
+      margin-top: -1px;
     }
     @media ${media.sm} {
-      li {
-        margin-left: -1px;
-        width: calc(25% + 1px);
-        &:nth-of-type(2) ~ li {
-          margin-top: 0px;
-        }
+      &:nth-of-type(2) {
+        margin-top: 0 !important;
+      }
+    }
+    @media ${media.md} {
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        margin-top: 0 !important;
       }
     }
   `,

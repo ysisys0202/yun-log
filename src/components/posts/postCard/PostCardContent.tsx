@@ -4,10 +4,11 @@ import Tag from "@/components/common/Tag";
 import ViewMoreButton from "@/components/posts/ViewMoreButton";
 import { SerializedStyles, css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 type Props = {
   title: string;
-  description: string;
+  description?: string;
   category: string;
   createdAt: string;
   propsCss?: SerializedStyles;
@@ -24,15 +25,16 @@ const PostCardContent = ({
   titleLineLength = 1,
   descriptionLineLength = 3,
 }: Props) => {
-  const styles = [S.self];
+  const styles = [];
   propsCss && styles.push(propsCss);
+  const isMobile = !useMediaQuery(media.md);
   return (
     <div css={styles}>
       <Tag
         variant="outlined"
         borderColor={colorVars.border}
         textColor={colorVars.tertiary}
-        size="sm"
+        size={isMobile ? "sm" : "md"}
       >
         {category}
       </Tag>
@@ -49,19 +51,21 @@ const PostCardContent = ({
       >
         {title}
       </Typography>
-      <Typography
-        variant="body1"
-        element="p"
-        color={colorVars.secondary}
-        css={[
-          S.description,
-          css`
-            -webkit-line-clamp: ${descriptionLineLength};
-          `,
-        ]}
-      >
-        {description}
-      </Typography>
+      {description && (
+        <Typography
+          variant="body1"
+          element="p"
+          color={colorVars.secondary}
+          css={[
+            S.description,
+            css`
+              -webkit-line-clamp: ${descriptionLineLength};
+            `,
+          ]}
+        >
+          {description}
+        </Typography>
+      )}
       <Typography
         variant="body2"
         element="p"
@@ -74,14 +78,10 @@ const PostCardContent = ({
   );
 };
 const S = {
-  self: css`
-    margin-top: 16px;
-  `,
   title: css`
     margin-top: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 700;
     display: -webkit-box;
     -webkit-box-orient: vertical;
   `,

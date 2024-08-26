@@ -46,13 +46,16 @@ const PostCard = ({
 };
 const S = {
   self: css`
-    padding: 24px 24px 32px;
+    padding: 16px 16px 24px;
     @media ${media.md} {
-      padding: 16px 16px 24px;
+      padding: 24px 24px 32px;
     }
   `,
   content: css`
     margin-top: 16px;
+    @media ${media.md} {
+      margin-top: 12px;
+    }
   `,
 };
 

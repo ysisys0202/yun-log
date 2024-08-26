@@ -6,6 +6,7 @@ import PostCardBox from "./PostCardBox";
 import { PostItem } from "@/types/post";
 import { media } from "@/constants/breakPoints";
 import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 type Props = {
   propsCss?: SerializedStyles;
@@ -24,15 +25,17 @@ const PostListItem = ({
 }: Props) => {
   const styles = [S.self];
   propsCss && styles.push(propsCss);
+  const isMobile = !useMediaQuery(media.sm);
   return (
-    <PostCardBox>
-      <Link href={`/posts/${category}/${slug}`} css={styles}>
+    <PostCardBox css={styles}>
+      <Link href={`/posts/${category}/${slug}`} css={S.cardInner}>
         <PostCardContent
           title={title}
-          description={intro}
+          description={isMobile ? "" : intro}
           category={category}
           createdAt={createdAt}
           propsCss={S.content}
+          descriptionLineLength={2}
         />
         <PostCardThumbnail
           thumbnail={thumbnail}
@@ -48,6 +51,10 @@ const PostListItem = ({
 };
 const S = {
   self: css`
+    border-left: none;
+    border-right: none;
+  `,
+  cardInner: css`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -59,13 +66,19 @@ const S = {
     }
   `,
   content: css`
-    width: calc(100% - 220px);
+    width: calc(100% - 140px);
+    @media ${media.sm} {
+      width: calc(100% - 200px);
+    }
     @media ${media.md} {
       width: calc(100% - 340px);
     }
   `,
   thumbnail: css`
-    width: 240px;
+    width: 120px;
+    @media ${media.sm} {
+      width: 180px;
+    }
     @media ${media.md} {
       width: 300px;
     }

@@ -2,6 +2,7 @@ import { SerializedStyles, css } from "@emotion/react";
 import { green } from "@/constants/colors";
 import { HTMLAttributes } from "react";
 import { colorVars } from "@/constants/cssVariables";
+import { media } from "@/constants/breakPoints";
 
 type Props = {
   children: React.ReactNode;
@@ -28,10 +29,16 @@ const S = {
       position: absolute;
       top: 0;
       left: 0;
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
       background-color: transparent;
       transition: background-color 200ms ease-in-out;
+    }
+    @media ${media.md} {
+      &::after {
+        width: 16px;
+        height: 16px;
+      }
     }
     &:hover {
       &::after {
