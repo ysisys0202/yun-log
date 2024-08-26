@@ -2,17 +2,17 @@ import { isClient } from "@/services/common";
 import { useEffect, useState } from "react";
 
 function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState<boolean>(false);
+  const [matches, setMatches] = useState<boolean>(() => {
+    if (isClient) {
+      return window.matchMedia(query).matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    if (!isClient) {
-      return;
-    }
+    if (!isClient) return;
     const mediaQuery = window.matchMedia(query);
     const updateMatches = () => {
-      if (mediaQuery.matches === matches) {
-        return;
-      }
       setMatches(mediaQuery.matches);
     };
     updateMatches();
