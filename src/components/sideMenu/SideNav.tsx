@@ -52,6 +52,7 @@ const S = {
     span {
       position: relative;
       padding-right: 24px;
+      font-weight: 400 !important;
       &::after {
         content: "";
         position: absolute;
