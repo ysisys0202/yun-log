@@ -3,7 +3,7 @@ import { fetchCategories } from "@/services/categories";
 import { Category } from "@/types/category";
 import { useRouter } from "next/router";
 
-type NavCategory = {
+export type NavCategory = {
   link: string;
 } & Category;
 

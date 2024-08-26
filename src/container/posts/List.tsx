@@ -1,18 +1,37 @@
-import SectionTitle from "@/components/home/SectionTitle";
+import { useRouter } from "next/router";
+import { css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
 import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
 import { PostData } from "@/types/post";
-import { css } from "@emotion/react";
-import { useRouter } from "next/router";
+import { Category } from "@/types/category";
+import useNavCategories from "@/hooks/useNavCategories";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
+import CategoryTagList from "@/components/posts/CategoryTagList";
 
 const PostListContainer = ({ postList }: { postList: PostData[] }) => {
   const router = useRouter();
   const query = router.query;
-  const currentCategory = query.category as string;
+  const currentCategory = (query.category ?? "전체") as string;
+  const { navCategories } = useNavCategories();
+  const currentCategoryPostLength = navCategories.filter(
+    (category: Category) => category.name === currentCategory
+  )[0]?.fileLength;
+  const isMobile = !useMediaQuery(media.md);
   return (
     <div css={S.self}>
-      <SectionTitle>{currentCategory ?? "전체"}</SectionTitle>
+      {isMobile ? (
+        <CategoryTagList
+          categories={navCategories}
+          currentCategory={currentCategory}
+        />
+      ) : (
+        <SectionTitle>
+          {currentCategory} ({currentCategoryPostLength})
+        </SectionTitle>
+      )}
+
       <PostListVertical postList={postList} propsCss={S.list} />
     </div>
   );
