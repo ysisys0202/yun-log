@@ -12,7 +12,6 @@ type Props = {
   category: string;
   createdAt: string;
   propsCss?: SerializedStyles;
-  titleLineLength?: number;
   descriptionLineLength?: number;
 };
 
@@ -22,7 +21,6 @@ const PostCardContent = ({
   category,
   createdAt,
   propsCss,
-  titleLineLength = 1,
   descriptionLineLength = 3,
 }: Props) => {
   const styles = [];
@@ -42,14 +40,10 @@ const PostCardContent = ({
         variant="subtitle1"
         element="h3"
         color={colorVars.primary}
-        css={[
-          S.title,
-          css`
-            -webkit-line-clamp: ${titleLineLength};
-          `,
-        ]}
+        className="post-card-title"
+        css={S.title}
       >
-        {title}
+        <span css={[S.titleInner]}> {title}</span>
       </Typography>
       {description && (
         <Typography
@@ -80,10 +74,22 @@ const PostCardContent = ({
 const S = {
   title: css`
     margin-top: 8px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
+  `,
+  titleInner: css`
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background-color: ${colorVars.secondary};
+      transition: width 200ms ease-in-out;
+    }
   `,
   description: css`
     margin-top: 4px;

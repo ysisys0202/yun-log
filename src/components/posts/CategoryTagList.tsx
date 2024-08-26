@@ -15,14 +15,14 @@ const CategoryTagList = ({ categories, currentCategory }: Props) => {
       {categories.map((category) => {
         const isActive = currentCategory === category.name;
         return (
-          <Link href={category.link}>
+          <Link href={category.link} key={category.name}>
             <Tag
               variant="outlined"
               size="md"
               textColor={isActive ? colorVars.primary : colorVars.tertiary}
               backgroundColor={
                 isActive
-                  ? colorVars.greenBackground
+                  ? colorVars.backgroundElement
                   : colorVars.backgroundGlobal
               }
               borderColor={isActive ? colorVars.primary : colorVars.tertiary}

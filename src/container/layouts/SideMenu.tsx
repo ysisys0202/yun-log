@@ -7,10 +7,7 @@ import SideNav from "@/components/sideMenu/SideNav";
 
 const SideMenu = () => {
   return (
-    <aside
-      css={S.self}
-      style={{ borderRight: `1px solid ${colorVars.border}` }}
-    >
+    <aside css={S.self}>
       <Link href="/" className="logo" css={S.logo}>
         <Logo />
         <strong className="visually-hidden">YUN 개발 블로그</strong>
@@ -30,9 +27,10 @@ const S = {
     padding: 16px 32px;
     width: 80%;
     height: 100dvh;
-    background-color: ${colorVars.greenBackground};
     transform: translateX(100vw);
     transition: transform 200ms ease-in-out;
+    background-color: ${colorVars.backgroundGlobal};
+    border-right: 1px solid ${colorVars.tertiary};
     @media ${media.md} {
       width: 20%;
       min-width: 220px;

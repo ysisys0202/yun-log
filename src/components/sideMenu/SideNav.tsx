@@ -26,7 +26,10 @@ const SideNav = () => {
             >
               <Link href={link}>
                 <Typography variant="subtitle1" element="span">
-                  {name} ({fileLength})
+                  {name}
+                </Typography>
+                <Typography variant="body2" element="span">
+                  ({fileLength})
                 </Typography>
               </Link>
             </li>
@@ -39,7 +42,7 @@ const SideNav = () => {
 
 const S = {
   self: css`
-    margin-top: 80px;
+    margin-top: 120px;
   `,
   navList: css`
     display: flex;
@@ -49,7 +52,19 @@ const S = {
   `,
 
   navItem: css`
-    span {
+    a {
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: calc(100% - 42px);
+        height: 2px;
+        background-color: transparent;
+      }
+    }
+    span:last-of-type {
       position: relative;
       padding-right: 24px;
       font-weight: 400 !important;
@@ -58,16 +73,20 @@ const S = {
         position: absolute;
         top: 2px;
         right: 0;
-        width: 12px;
-        height: 12px;
-        background-color: transparent;
       }
     }
     &.is-active,
     &:hover {
-      span {
+      span:last-of-type {
         &::after {
-          background-color: ${colorVars.greenPrimary};
+          content: "👀";
+        }
+      }
+    }
+    &.is-active {
+      a {
+        &::after {
+          background-color: ${colorVars.secondary};
         }
       }
     }

@@ -9,6 +9,7 @@ import useMediaQuery from "@/hooks/useMediaQuery";
 import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
 import CategoryTagList from "@/components/posts/CategoryTagList";
+import Typography from "@/components/common/Typography";
 
 const PostListContainer = ({ postList }: { postList: PostData[] }) => {
   const router = useRouter();
@@ -28,7 +29,11 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
         />
       ) : (
         <SectionTitle>
-          {currentCategory} ({currentCategoryPostLength})
+          {currentCategory}
+
+          <Typography variant="body1" element="span">
+            {""} ({currentCategoryPostLength})
+          </Typography>
         </SectionTitle>
       )}
 

@@ -78,7 +78,7 @@ const S = css`
         right: 0;
         width: 0px;
         height: 2px;
-        background-color: ${green[100]};
+        background-color: ${colorVars.secondary};
         transition: width 200ms ease-in-out;
       }
       &:hover {
