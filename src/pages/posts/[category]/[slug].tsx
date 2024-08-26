@@ -4,12 +4,12 @@ import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import { getPostData, getPosts } from "../../../../libs/posts-util";
-import { PostDetailType } from "@/types/post";
+import { PostData } from "@/types/post";
 import MyHead from "@/components/common/MyHead";
 import PostContent from "@/components/posts/PostContent";
 
 type Props = {
-  post: PostDetailType;
+  post: PostData;
   mdx: MDXRemoteSerializeResult;
 };
 

@@ -3,6 +3,7 @@ import { colorVars } from "@/constants/cssVariables";
 import { green } from "@/constants/colors";
 import Typography from "@/components/common/Typography";
 import HomeSection from "@/container/home/HomeSection";
+import { media } from "@/constants/breakPoints";
 
 const Profile = () => {
   return (
@@ -28,7 +29,10 @@ const Profile = () => {
 };
 const S = {
   self: css`
-    padding: 80px;
+    padding: 40px;
+    @media ${media.md} {
+      padding: 80px;
+    }
   `,
   title: css`
     line-height: 1.2;

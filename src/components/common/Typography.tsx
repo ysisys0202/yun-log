@@ -14,7 +14,7 @@ type Props = {
   fontWeight?: TypographyWeight;
   className?: string;
   children: React.ReactNode;
-  css?: SerializedStyles;
+  css?: SerializedStyles | SerializedStyles[];
 } & React.HTMLAttributes<HTMLElement>;
 
 const Typography = ({

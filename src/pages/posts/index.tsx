@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../../../libs/posts-util";
 import PostListContainer from "@/container/posts/List";
-import { PostCard } from "@/components/posts/PostCard";
 import MyHead from "@/components/common/MyHead";
+import { PostData } from "@/types/post";
 
-const AllPosts = ({ allPostList }: { allPostList: PostCard[] }) => {
+const AllPosts = ({ allPostList }: { allPostList: PostData[] }) => {
   const [mount, setMount] = useState(false);
   useEffect(() => {
     setMount(true);

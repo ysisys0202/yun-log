@@ -2,15 +2,15 @@ import PostListContainer from "@/container/posts/List";
 import React, { useEffect, useState } from "react";
 import { getCategories, getPosts } from "../../../../libs/posts-util";
 import { GetStaticPropsContext } from "next";
-import { PostCard } from "@/components/posts/PostCard";
 import MyHead from "@/components/common/MyHead";
 import { Category } from "@/types/category";
+import { PostData } from "@/types/post";
 
 const FilteredPostList = ({
   postList,
   category,
 }: {
-  postList: PostCard[];
+  postList: PostData[];
   category: Category;
 }) => {
   const [mount, setMount] = useState(false);
