@@ -19,7 +19,11 @@ const SideNav = () => {
         {navCategories.map(({ name, fileLength, link }) => {
           const isActive = currentCategory === name;
           return (
-            <li css={S.navItem} className={`${isActive ? "is-active" : ""}`}>
+            <li
+              key={name}
+              css={S.navItem}
+              className={`${isActive ? "is-active" : ""}`}
+            >
               <Link href={link}>
                 <Typography variant="subtitle1" element="span">
                   {name} ({fileLength})
