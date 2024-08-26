@@ -1,59 +1,197 @@
-import { css } from "@emotion/react";
+import { Global, css } from "@emotion/react";
 import { colorVars } from "@/constants/cssVariables";
 import { green } from "@/constants/colors";
 import Typography from "@/components/common/Typography";
-import HomeSection from "@/container/home/HomeSection";
 import { media } from "@/constants/breakPoints";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import NameSvg from "public/images/home/name.svg";
+import { gnbHeightMb } from "@/constants/size";
 
 const Profile = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollY } = useScroll();
+  const [sectionTop, setSectionTop] = useState<number>(0);
+  const [sectionBottom, setSectionBottom] = useState<number>(0);
+  const [opacity, setOpacity] = useState(1);
+  const [translateY, setTranslateY] = useState(0);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const sectionRect = sectionRef.current.getBoundingClientRect();
+    setSectionTop(sectionRect.top + window.scrollY);
+    setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
+  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (!sectionRef.current) return;
+    if (latest > sectionTop && latest < sectionBottom) {
+      const inSectionScrollRatio =
+        (latest - sectionTop) / (sectionBottom - sectionTop);
+      const translateYStartPoint = 0.2;
+      const translateYEndPoint = 0.6;
+      if (inSectionScrollRatio < translateYStartPoint) {
+        setTranslateY(0);
+      }
+      if (inSectionScrollRatio > translateYStartPoint) {
+        setTranslateY(-220);
+      }
+      if (
+        inSectionScrollRatio >= translateYStartPoint &&
+        inSectionScrollRatio <= translateYEndPoint
+      ) {
+        const inSectionScrollPostion =
+          inSectionScrollRatio - translateYStartPoint;
+        const inSectionScrollProgress =
+          inSectionScrollPostion / (translateYEndPoint - translateYStartPoint);
+
+        setTranslateY(inSectionScrollProgress * -220);
+      }
+      const opcityStartPoint = 0.4;
+      const opcityEndPoint = 0.7;
+      if (inSectionScrollRatio < opcityStartPoint) {
+        setOpacity(1);
+      }
+      if (inSectionScrollRatio > opcityEndPoint) {
+        setOpacity(0);
+      }
+      if (
+        inSectionScrollRatio >= opcityStartPoint &&
+        inSectionScrollRatio <= opcityEndPoint
+      ) {
+        const inSectionScrollPostion = inSectionScrollRatio - opcityStartPoint;
+        const inSectionScrollProgress =
+          inSectionScrollPostion / (opcityEndPoint - opcityStartPoint);
+        setOpacity(1 - inSectionScrollProgress);
+      }
+    }
+  });
   return (
-    <HomeSection css={S.self}>
-      <Typography variant="h1" element="h1" css={S.title}>
-        WELCOME!
-        <br /> <span css={S.name}>YUN</span> 의 기술 블로그입니다.
-      </Typography>
-      <Typography variant="subtitle1" element="p" css={S.description}>
-        Javascript / React / Next.js 등 FE 개발 스택 이야기
-        <br />
-        FE 개발자로서 알게 되고 생각한 것 등
-        <Typography variant="body1" element="span" color={colorVars.tertiary}>
-          (이를테면 삽질한 기억이라거나 ⛏️😇)
+    <section css={S.self} ref={sectionRef}>
+      <Global
+        styles={css`
+          :root {
+            --icon-book: url(/images/home/book_dark.png);
+            .dark {
+              --icon-book: url(/images/home/book_light.png);
+            }
+          }
+        `}
+      />
+      <motion.div
+        css={S.titleArea}
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        <strong css={S.titleText}>Welcome!</strong>
+        <h1 css={[S.titleText, S.title]}>
+          <span>It's</span> <span className="visually-hidden">YUN</span>
+          <NameSvg viewBox="0 0 59 22" fill={colorVars.primary} />
+          <span> 's Dev Log</span>
+        </h1>
+      </motion.div>
+      <motion.div
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        <Typography variant="subtitle1" element="p" css={S.description}>
+          FE 개발자 YUN의 기록을 담고 있습니다.
+          <br />
+          Javascript / React / Next.js 등 FE 개발 스택 이야기
+          <br />
+          FE 개발자로서 고민하고 깨달은 것 등
+          <Typography variant="body1" element="span" color={colorVars.tertiary}>
+            (이를테면 삽질한 기억이라거나 ⛏️😇)
+          </Typography>
+          <br />
+          여러가지 이야기를 공유합니다.
+          <br />
+          자주 놀러와주세요 👋
         </Typography>
-        <br />
-        여러가지 이야기를 공유합니다.
-        <br />
-        자주 놀러와주세요 👋
-      </Typography>
-    </HomeSection>
+      </motion.div>
+    </section>
   );
 };
 const S = {
   self: css`
-    padding: 40px;
+    position: sticky;
+    top: ${gnbHeightMb}px;
+    padding: 48px 48px 140px 48px;
     @media ${media.md} {
-      padding: 80px;
+      top: 0;
+      padding: 80px 80px 100px 80px;
+      margin-bottom: 40px;
+    }
+  `,
+  titleArea: css``,
+  titleText: css`
+    line-height: 1.2;
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    @media ${media.sm} {
+      font-size: 42px !important;
+    }
+    @media ${media.md} {
+      font-size: 52px !important;
     }
   `,
   title: css`
-    line-height: 1.2;
-  `,
-  name: css`
-    position: relative;
-    padding-right: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    span {
+      flex-shrink: 0;
+    }
+    svg {
+      margin: 4px -6px 4px 6px;
+      width: 74px;
+      height: auto;
+    }
     &::after {
       content: "";
-      position: absolute;
-      top: 6px;
-      right: 4px;
-      width: 12px;
-      height: 12px;
-      background-color: ${green[100]};
+      margin-bottom: 2px;
+      width: 32px;
+      height: 32px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-image: var(--icon-book);
     }
+    @media ${media.sm} {
+      svg {
+        margin: 10px -6px 10px 6px;
+        width: 82px;
+      }
+      &::after {
+        content: "";
+        margin-bottom: 4px;
+        width: 52px;
+        height: 52px;
+      }
+    }
+    @media ${media.md} {
+      svg {
+        width: 100px;
+      }
+      &::after {
+        width: 52px;
+        height: 52px;
+      }
+    }
+  `,
+  name: css`
+    color: ${green[100]};
   `,
   description: css`
     margin-top: 24px;
-    font-weight: 400;
-    line-height: 1.6;
+    font-weight: 400 !important;
   `,
 };
 
