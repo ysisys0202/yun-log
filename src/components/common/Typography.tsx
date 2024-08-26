@@ -30,10 +30,11 @@ const Typography = ({
   const Component = element;
 
   const styles = [
-    S.default,
-    S[variant],
+    typographyStyle.default,
+    typographyStyle[variant],
     css`
       color: ${color};
+      font-weight: ${fontWeight};
     `,
     propsCss,
   ];
@@ -49,22 +50,17 @@ const Typography = ({
   );
 };
 
-const S = {
+export const typographyStyle = {
   default: css`
     line-height: ${typography.lineheight.default};
     letter-spacing: ${typography.letterspacing.default};
-    &[class^="typography-h"] {
-      font-weight: 700;
+    &[class^="typography-h"],
+    &[class^="typography-subtitle"] {
+      font-weight: 600;
     }
     &[class^="typography-body"] {
       font-weight: 400;
     }
-  `,
-  heading: css`
-    font-weight: ${typography.weight[700]};
-  `,
-  body: css`
-    font-weight: ${typography.weight[400]};
   `,
   h1: css`
     font-size: ${typography.size["5xl"]};
@@ -92,6 +88,9 @@ const S = {
   `,
   body1: css`
     font-size: ${typography.size["md"]};
+    @media ${media.md} {
+      font-size: ${typography.size["lg"]};
+    }
   `,
   body2: css`
     font-size: ${typography.size["xs"]};

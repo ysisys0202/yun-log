@@ -1,7 +1,8 @@
+import { Global, css } from "@emotion/react";
 import { colorSet } from "@/styles/variables/colors";
 import { colorVars } from "@/constants/cssVariables";
-import { Global, css } from "@emotion/react";
 import { typography } from "@/constants/typography";
+import { typographyStyle } from "@/components/common/Typography";
 
 const GlobalStyles = () => {
   return (
@@ -11,7 +12,6 @@ const GlobalStyles = () => {
         css`
           html,
           body {
-            font-size: ${typography.size.md};
             color: ${colorVars.secondary};
             font-family: "Pretendard Variable", Pretendard, -apple-system,
               BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
@@ -21,6 +21,7 @@ const GlobalStyles = () => {
             font-weight: ${typography.weight[400]};
             line-height: ${typography.lineheight.default};
             letter-spacing: ${typography.letterspacing.default};
+            ${typographyStyle.body1}
           }
         `,
       ]}

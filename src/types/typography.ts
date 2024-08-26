@@ -18,4 +18,4 @@ export type TypographyVariant =
   | "body2"
   | "subtitle1";
 
-export type TypographyWeight = 400 | 700 | 800;
+export type TypographyWeight = 400 | 500 | 600 | 700 | 800;
