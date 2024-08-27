@@ -5,10 +5,7 @@ export type ColorSematicType =
   | "tertiary"
   | "backgroundElement"
   | "backgroundGlobal"
-  | "border"
-  | "greenPrimary"
-  | "greenBorder"
-  | "greenBackground";
+  | "border";
 
 export type ColorSetType = {
   [key in ColorSematicType]: string;

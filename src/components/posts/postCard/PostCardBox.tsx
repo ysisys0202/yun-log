@@ -1,5 +1,4 @@
 import { SerializedStyles, css } from "@emotion/react";
-import { green } from "@/constants/colors";
 import { HTMLAttributes } from "react";
 import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";

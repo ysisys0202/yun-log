@@ -1,6 +1,5 @@
 import { Global, css } from "@emotion/react";
 import { colorVars } from "@/constants/cssVariables";
-import { green } from "@/constants/colors";
 import Typography from "@/components/common/Typography";
 import { media } from "@/constants/breakPoints";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
@@ -203,9 +202,7 @@ const S = {
       }
     }
   `,
-  name: css`
-    color: ${green[100]};
-  `,
+
   description: css`
     margin-top: 24px;
     font-weight: 400 !important;
