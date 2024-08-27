@@ -6,7 +6,7 @@ import { media } from "@/constants/breakPoints";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import NameSvg from "public/images/home/name.svg";
-import { gnbHeightMb } from "@/constants/size";
+import { gnbHeightMb, gnbHeightPc } from "@/constants/size";
 
 type Props = {
   setHeaderHide: React.Dispatch<React.SetStateAction<boolean>>;
@@ -144,7 +144,7 @@ const S = {
     padding: 48px 48px 140px 48px;
     @media ${media.md} {
       top: 0;
-      padding: 80px 80px 100px 80px;
+      padding: ${gnbHeightPc - 80}px 80px 100px 80px;
       margin-bottom: 40px;
     }
   `,
