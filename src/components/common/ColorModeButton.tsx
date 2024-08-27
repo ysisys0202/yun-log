@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import IconSun from "public/icons/sun.svg";
 import IconMoon from "public/icons/moon.svg";
 import { colorVars } from "@/constants/cssVariables";
+import IconButton from "@/components/common/IconButton";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -16,7 +17,8 @@ const setThemeClass = (isDark: boolean) => {
 const ColorModeButton = (props: Props) => {
   const [colorTheme, setColorTheme] = useState<"light" | "dark">();
   const isDark = colorTheme == "dark";
-  const Icon = isDark ? (
+  const label = `${isDark ? "라이트" : "다크"}모드로 변경하기`;
+  const icon = isDark ? (
     <IconSun width={24} height={24} fill={colorVars.primary} />
   ) : (
     <IconMoon width={24} height={24} fill={colorVars.primary} />
@@ -35,13 +37,14 @@ const ColorModeButton = (props: Props) => {
   };
 
   return (
-    <button
-      {...props}
+    <IconButton
+      element={"button"}
+      name={label}
+      icon={icon}
       onClick={handleColorThemeToggle}
-      aria-label={`${isDark ? "라이트" : "다크"}모드로 변경하기`}
-    >
-      {Icon}
-    </button>
+      aria-label={label}
+      {...props}
+    />
   );
 };
 

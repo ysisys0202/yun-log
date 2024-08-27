@@ -3,6 +3,7 @@ import "@/styles/global.css";
 import GlobalStyles from "@/styles/GlobalStyles";
 import dynamic from "next/dynamic";
 import Script from "next/dist/client/script";
+import { useRouter } from "next/router";
 import { AppProps } from "next/app";
 import { css } from "@emotion/react";
 import { RecoilRoot } from "recoil";
@@ -11,13 +12,9 @@ import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import Layout from "@/container/layouts/Layout";
 import useMediaQuery from "@/hooks/useMediaQuery";
-import { useRouter } from "next/router";
-import ColorModeButton from "@/components/common/ColorModeButton";
-import {
-  contentSideSpacingMb,
-  contentSideSpacingPc,
-  gnbSideSpacing,
-} from "@/constants/size";
+
+import { gnbSideSpacing } from "@/constants/size";
+import UtilButtonBox from "@/components/common/UtilButtonBox";
 
 const GlobalHeader = dynamic(() => import("@/container/layouts/GlobalHeader"), {
   ssr: false,
@@ -42,7 +39,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <SideMenu />
           <div className="content-area" css={S.contentArea}>
             {(!isHome || isMobile) && <GlobalHeader />}
-            <ColorModeButton css={S.colorModeButton} />
+            <UtilButtonBox />
             <BackGround />
             <Content>
               <Component {...pageProps} />
@@ -62,12 +59,6 @@ const S = {
       width: 80%;
       max-width: calc(100% - 220px);
     }
-  `,
-  colorModeButton: css`
-    position: absolute;
-    top: 16px;
-    right: ${gnbSideSpacing}px;
-    z-index: 100;
   `,
 };
 
