@@ -1,14 +1,13 @@
 import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { PostDetailType } from "@/types/post";
+import { PostData } from "@/types/post";
 import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";
 import PostHeader from "@/components/posts/PostHeader";
 import { colors } from "@/constants";
 import { CalloutProps } from "@/components/posts/Callout";
 import { typography } from "@/constants/typography";
-
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
 const HighlightText = dynamic(
@@ -17,32 +16,49 @@ const HighlightText = dynamic(
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
 const Callout = dynamic(() => import("@/components/posts/Callout"));
-
+const Image = dynamic(() => import("next/image"));
 type Props = {
-  post: PostDetailType;
+  post: PostData;
   mdx: MDXRemoteSerializeResult;
 };
 
 const PostContent = ({ post, mdx }: Props) => {
-  const { title, createdAt, thumbNailImage, subTitle, category } = post;
+  const { title, createdAt, thumbnail, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
   const postComponents = {
-    h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
+    h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
       <Typography variant="h1" element="h2" color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
-    h2: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant="h2" element="h3" color={colorVars.primary}>
+    h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <Typography variant="h3" element="h3" color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
-    h3: (props: React.HTMLProps<HTMLHeadingElement>) => (
-      <Typography variant="h3" element="h4" color={colorVars.primary}>
+    h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <Typography variant="h4" element="h4" color={colorVars.primary}>
         {props.children}
       </Typography>
     ),
-    code: (props: React.HTMLProps<HTMLPreElement>) => {
+    h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <Typography variant="subtitle1" element="h5" color={colorVars.primary}>
+        {props.children}
+      </Typography>
+    ),
+    img: (props: React.HTMLProps<HTMLImageElement>) => {
+      console.log(props);
+      return (
+        <Image
+          src={props.src as string}
+          alt={props.alt as string}
+          width={500}
+          height={500}
+          layout="intrinsic"
+        />
+      );
+    },
+    code: (props: React.HTMLAttributes<HTMLPreElement>) => {
       const { children, className } = props;
       const language = className?.split("-")[1];
       return (
@@ -68,14 +84,13 @@ const PostContent = ({ post, mdx }: Props) => {
       <PostHeader
         title={title}
         createdAt={createdAt}
-        headerImage={thumbNailImage}
         subTitle={subTitle}
         category={category}
       />
       <div css={S.markdown}>
         <MDXRemote
           compiledSource={compiledSource}
-          scope={{ ...scope, ...frontmatter }}
+          scope={{ ...scope, ...frontmatter, colors }}
           components={postComponents}
           frontmatter={frontmatter}
         />
@@ -97,9 +112,9 @@ const S = {
     p {
       white-space: pre-wrap;
     }
-    img {
-      width: 100%;
-      max-width: 400px;
+    del {
+      font-size: 14px;
+      color: ${colorVars.border};
     }
     table {
       background-color: ${colorVars.backgroundGlobal};
