@@ -5,26 +5,38 @@ import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";
 import { gnbHeightMb, gnbHeightPc, gnbSideSpacing } from "@/constants/size";
 import Typography from "@/components/common/Typography";
+import { useRouter } from "next/router";
 
 const GlobalHeader = () => {
+  const router = useRouter();
+  const { pathname, query } = router;
+  console.log(pathname);
+  const { category, slug } = query;
+
   return (
     <header css={S} style={{ borderBottom: `1px solid ${colorVars.border}` }}>
       <nav>
         <h2 className="visually-hidden">블로그 대메뉴</h2>
         <ul>
-          {globalMenus.map((globalMenu) => (
-            <li key={globalMenu.id}>
-              <Link href={globalMenu.link}>
-                <Typography
-                  variant="subtitle1"
-                  element="span"
-                  color={colorVars.primary}
-                >
-                  {globalMenu.name}
-                </Typography>
-              </Link>
-            </li>
-          ))}
+          {globalMenus.map((menu) => {
+            const isActive =
+              menu.name === "홈"
+                ? pathname === "/"
+                : pathname.includes("/posts") && !slug;
+            return (
+              <li key={menu.id} className={`${isActive ? "is-active" : ""}`}>
+                <Link href={menu.link}>
+                  <Typography
+                    variant="subtitle1"
+                    element="span"
+                    color={colorVars.primary}
+                  >
+                    {menu.name}
+                  </Typography>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </header>
@@ -75,17 +87,16 @@ const S = css`
         content: "";
         position: absolute;
         bottom: -2px;
-        right: 0;
-        width: 0px;
+        left: 0;
+        width: 100%;
         height: 2px;
-        background-color: ${colorVars.secondary};
-        transition: width 200ms ease-in-out;
+        background-color: transparent;
       }
-      &:hover {
+    }
+    &.is-active {
+      a {
         &::after {
-          left: 0;
-          right: auto;
-          width: 100%;
+          background-color: ${colorVars.secondary};
         }
       }
     }
