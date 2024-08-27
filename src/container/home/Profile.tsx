@@ -6,9 +6,23 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import NameSvg from "public/images/home/name.svg";
 import { gnbHeightMb, gnbHeightPc } from "@/constants/size";
+import useScrollEffectValue from "@/hooks/useScrollEffectValue";
 
 type Props = {
   setHeaderHide: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const translateYEffect = {
+  defaultValue: 0,
+  targetValue: -220,
+  startPoint: 0.2,
+  endPoint: 0.6,
+};
+const opacityEffect = {
+  defaultValue: 1,
+  targetValue: 0,
+  startPoint: 0.4,
+  endPoint: 0.65,
 };
 
 const Profile = ({ setHeaderHide }: Props) => {
@@ -18,6 +32,7 @@ const Profile = ({ setHeaderHide }: Props) => {
   const [sectionBottom, setSectionBottom] = useState<number>(0);
   const [opacity, setOpacity] = useState(1);
   const [translateY, setTranslateY] = useState(0);
+  const { calculateScrollEffectValue } = useScrollEffectValue();
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -35,47 +50,25 @@ const Profile = ({ setHeaderHide }: Props) => {
       setHeaderHide(true);
     }
 
-    // profile scroll animation / 추후 hook으로 분리예정
     if (latest > sectionTop && latest < sectionBottom) {
       const inSectionScrollRatio =
         (latest - sectionTop) / (sectionBottom - sectionTop);
-      const translateYStartPoint = 0.2;
-      const translateYEndPoint = 0.6;
-      if (inSectionScrollRatio < translateYStartPoint) {
-        setTranslateY(0);
-      }
-      if (inSectionScrollRatio > translateYStartPoint) {
-        setTranslateY(-220);
-      }
-      if (
-        inSectionScrollRatio >= translateYStartPoint &&
-        inSectionScrollRatio <= translateYEndPoint
-      ) {
-        const inSectionScrollPostion =
-          inSectionScrollRatio - translateYStartPoint;
-        const inSectionScrollProgress =
-          inSectionScrollPostion / (translateYEndPoint - translateYStartPoint);
+      calculateScrollEffectValue({
+        currentScrollPoint: inSectionScrollRatio,
+        setValue: setTranslateY,
+        ...translateYEffect,
+      });
+      calculateScrollEffectValue({
+        currentScrollPoint: inSectionScrollRatio,
+        setValue: setOpacity,
+        ...opacityEffect,
+      });
 
-        setTranslateY(inSectionScrollProgress * -220);
-      }
-      const opcityStartPoint = 0.4;
-      const opcityEndPoint = 0.65;
-      if (inSectionScrollRatio < opcityStartPoint) {
-        setOpacity(1);
+      if (inSectionScrollRatio < opacityEffect.startPoint) {
         setHeaderHide(true);
       }
-      if (inSectionScrollRatio > opcityEndPoint) {
-        setOpacity(0);
+      if (inSectionScrollRatio > opacityEffect.endPoint) {
         setHeaderHide(false);
-      }
-      if (
-        inSectionScrollRatio >= opcityStartPoint &&
-        inSectionScrollRatio <= opcityEndPoint
-      ) {
-        const inSectionScrollPostion = inSectionScrollRatio - opcityStartPoint;
-        const inSectionScrollProgress =
-          inSectionScrollPostion / (opcityEndPoint - opcityStartPoint);
-        setOpacity(1 - inSectionScrollProgress);
       }
     }
   });
@@ -150,13 +143,13 @@ const S = {
   titleArea: css``,
   titleText: css`
     line-height: 1.2;
-    font-size: 32px !important;
-    font-weight: 800 !important;
+    font-size: 32px;
+    font-weight: 800;
     @media ${media.sm} {
-      font-size: 42px !important;
+      font-size: 42px;
     }
     @media ${media.md} {
-      font-size: 52px !important;
+      font-size: 52px;
     }
   `,
   title: css`
