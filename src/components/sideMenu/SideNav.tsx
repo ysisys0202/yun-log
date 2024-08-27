@@ -64,22 +64,28 @@ const S = {
         background-color: transparent;
       }
     }
-    span:last-of-type {
-      position: relative;
-      padding-right: 24px;
+    span {
       font-weight: 400 !important;
-      &::after {
-        content: "";
-        position: absolute;
-        top: 2px;
-        right: 0;
+      &:last-of-type {
+        position: relative;
+        padding-right: 24px;
+        font-weight: 400 !important;
+        &::after {
+          content: "";
+          position: absolute;
+          top: 2px;
+          right: 0;
+        }
       }
     }
     &.is-active,
     &:hover {
-      span:last-of-type {
-        &::after {
-          content: "👀";
+      span {
+        font-weight: 600 !important;
+        &:last-of-type {
+          &::after {
+            content: "👀";
+          }
         }
       }
     }
