@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import NameSvg from "public/images/home/name.svg";
 import { gnbHeightMb, gnbHeightPc } from "@/constants/size";
 import useScrollEffectValue from "@/hooks/useScrollEffectValue";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 type Props = {
   setHeaderHide: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +34,7 @@ const Profile = ({ setHeaderHide }: Props) => {
   const [opacity, setOpacity] = useState(1);
   const [translateY, setTranslateY] = useState(0);
   const { calculateScrollEffectValue } = useScrollEffectValue();
-
+  const isMobile = !useMediaQuery(media.md);
   useEffect(() => {
     if (!sectionRef.current) return;
     const sectionRect = sectionRef.current.getBoundingClientRect();
@@ -47,7 +48,7 @@ const Profile = ({ setHeaderHide }: Props) => {
     if (latest === 0) {
       setOpacity(1);
       setTranslateY(0);
-      setHeaderHide(true);
+      !isMobile && setHeaderHide(true);
     }
 
     if (latest > sectionTop && latest < sectionBottom) {
@@ -64,10 +65,10 @@ const Profile = ({ setHeaderHide }: Props) => {
         ...opacityEffect,
       });
 
-      if (inSectionScrollRatio < opacityEffect.startPoint) {
+      if (!isMobile && inSectionScrollRatio < opacityEffect.startPoint) {
         setHeaderHide(true);
       }
-      if (inSectionScrollRatio > opacityEffect.endPoint) {
+      if (!isMobile && inSectionScrollRatio > opacityEffect.endPoint) {
         setHeaderHide(false);
       }
     }

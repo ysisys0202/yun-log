@@ -5,6 +5,8 @@ import FeaturePostList from "@/container/home/FeaturePostList";
 import RecentPostList from "@/container/home/RecentPostList";
 import AppContainer from "@/container/layouts/AppContainer";
 import { useState } from "react";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import { media } from "@/constants/breakPoints";
 
 type Props = {
   allPostList: any;
@@ -12,7 +14,10 @@ type Props = {
 };
 
 const Homepage = ({ allPostList, featuredPostList }: Props) => {
-  const [headerHide, setHeaderHide] = useState<boolean>(true);
+  const isMobile = !useMediaQuery(media.md);
+  const [headerHide, setHeaderHide] = useState<boolean>(
+    isMobile ? false : true
+  );
   return (
     <AppContainer headerHide={headerHide}>
       <MyHead title="홈" />
