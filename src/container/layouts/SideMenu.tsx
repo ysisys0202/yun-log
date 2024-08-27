@@ -34,6 +34,7 @@ const S = {
     @media ${media.md} {
       width: 20%;
       min-width: 220px;
+      max-width: 380px;
       transform: translateX(0);
     }
   `,
