@@ -1,4 +1,5 @@
 import { GetStaticPropsContext } from "next";
+import { css } from "@emotion/react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
@@ -6,8 +7,13 @@ import remarkFrontmatter from "remark-frontmatter";
 import { getPostData, getPosts } from "../../../../libs/posts-util";
 import { PostData } from "@/types/post";
 import MyHead from "@/components/common/AppHead";
-import PostContent from "@/components/posts/PostContent";
 import AppContainer from "@/container/layouts/AppContainer";
+import PostContent from "@/components/posts/PostContent";
+import PostComment from "@/components/posts/PostComment";
+import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
+import { media } from "@/constants/breakPoints";
+import Typography from "@/components/common/Typography";
+import { colorVars } from "@/constants/cssVariables";
 
 type Props = {
   post: PostData;
@@ -22,9 +28,22 @@ const PostDetail = ({ post, mdx }: Props) => {
         description={post.createdAt}
         ogImage={post.thumbnail}
       />
-      <PostContent {...{ post, mdx }} />
+      <div css={S.self}>
+        <PostContent {...{ post, mdx }} />
+        <PostComment />
+      </div>
     </AppContainer>
   );
+};
+
+const S = {
+  self: css`
+    padding: 32px 48px 80px;
+    max-width: 860px;
+    @media ${media.md} {
+      padding: 48px 56px 80px;
+    }
+  `,
 };
 
 export const getStaticPaths = async () => {

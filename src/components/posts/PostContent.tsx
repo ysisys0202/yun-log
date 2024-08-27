@@ -8,6 +8,7 @@ import PostHeader from "@/components/posts/PostHeader";
 import { colors } from "@/constants";
 import { CalloutProps } from "@/components/posts/Callout";
 import { typography } from "@/constants/typography";
+
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
 const HighlightText = dynamic(
@@ -101,10 +102,9 @@ const PostContent = ({ post, mdx }: Props) => {
 
 const S = {
   self: css`
-    padding: 24px;
-    max-width: 860px;
+    margin-top: 24px;
     @media ${media.md} {
-      margin: 32px;
+      margin-top: 32px;
     }
   `,
   markdown: css`
