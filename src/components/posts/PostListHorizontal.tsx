@@ -45,6 +45,7 @@ const S = {
     margin-left: -1px;
     article {
       border-right: none;
+      height: 100%;
     }
     &:nth-of-type(1) ~ li {
       margin-top: -1px;
