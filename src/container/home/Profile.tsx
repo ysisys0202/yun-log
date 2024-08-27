@@ -8,7 +8,11 @@ import { useEffect, useRef, useState } from "react";
 import NameSvg from "public/images/home/name.svg";
 import { gnbHeightMb } from "@/constants/size";
 
-const Profile = () => {
+type Props = {
+  setHeaderHide: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Profile = ({ setHeaderHide }: Props) => {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const [sectionTop, setSectionTop] = useState<number>(0);
@@ -22,12 +26,17 @@ const Profile = () => {
     setSectionTop(sectionRect.top + window.scrollY);
     setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
   }, []);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (!sectionRef.current) return;
+    //페이지 최상단 일 때 값 초기화
     if (latest === 0) {
       setOpacity(1);
       setTranslateY(0);
+      setHeaderHide(true);
     }
+
+    // profile scroll animation / 추후 hook으로 분리예정
     if (latest > sectionTop && latest < sectionBottom) {
       const inSectionScrollRatio =
         (latest - sectionTop) / (sectionBottom - sectionTop);
@@ -51,12 +60,14 @@ const Profile = () => {
         setTranslateY(inSectionScrollProgress * -220);
       }
       const opcityStartPoint = 0.4;
-      const opcityEndPoint = 0.7;
+      const opcityEndPoint = 0.65;
       if (inSectionScrollRatio < opcityStartPoint) {
         setOpacity(1);
+        setHeaderHide(true);
       }
       if (inSectionScrollRatio > opcityEndPoint) {
         setOpacity(0);
+        setHeaderHide(false);
       }
       if (
         inSectionScrollRatio >= opcityStartPoint &&

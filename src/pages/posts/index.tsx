@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../../../libs/posts-util";
 import PostListContainer from "@/container/posts/List";
-import MyHead from "@/components/common/MyHead";
+import MyHead from "@/components/common/AppHead";
 import { PostData } from "@/types/post";
+import AppContainer from "@/container/layouts/AppContainer";
 
 const AllPosts = ({ allPostList }: { allPostList: PostData[] }) => {
   return (
-    <>
+    <AppContainer>
       <MyHead
         title="모든 게시물 목록"
         description="이윤슬 개발 블로그의 모든 포스트 목록입니다."
       />
       {<PostListContainer postList={allPostList} />}
-    </>
+    </AppContainer>
   );
 };
 

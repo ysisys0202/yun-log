@@ -1,5 +1,4 @@
 import Head from "next/head";
-import React from "react";
 
 type Props = {
   title?: string;
@@ -9,11 +8,11 @@ type Props = {
 };
 const MyHead = ({
   title,
-  keyword = "개발, 프론트엔드, 자바스크립트, 리액트, 넥스트",
-  description = "프론트엔드 개발자 이윤슬의 개발 블로그입니다.",
+  keyword = "웹 개발, 프론트엔드, html, css, 자바스크립트, 리액트, 넥스트",
+  description = "프론트엔드 개발자 Yun의 개발 기록",
   ogImage = "",
 }: Props) => {
-  const siteName = "이윤슬 개발 블로그";
+  const siteName = "Yun's Dev Log";
   return (
     <Head>
       <title>{title ? `${title} | ${siteName}` : siteName}</title>

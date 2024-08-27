@@ -5,8 +5,9 @@ import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import { getPostData, getPosts } from "../../../../libs/posts-util";
 import { PostData } from "@/types/post";
-import MyHead from "@/components/common/MyHead";
+import MyHead from "@/components/common/AppHead";
 import PostContent from "@/components/posts/PostContent";
+import AppContainer from "@/container/layouts/AppContainer";
 
 type Props = {
   post: PostData;
@@ -15,14 +16,14 @@ type Props = {
 
 const PostDetail = ({ post, mdx }: Props) => {
   return (
-    <>
+    <AppContainer>
       <MyHead
         title={post.title}
         description={post.createdAt}
         ogImage={post.thumbnail}
       />
       <PostContent {...{ post, mdx }} />
-    </>
+    </AppContainer>
   );
 };
 
