@@ -119,13 +119,6 @@ const Profile = ({ setHeaderHide }: Props) => {
           <br />
           자주 놀러와주세요 👋
         </Typography>
-        <Typography variant="body1" element="p" css={S.feedback}>
-          게시글에 대한 오류 지적, 내용 보충, 질문 등의 피드백은 언제나
-          환영입니다.
-          <br />
-          <a href="mailto:ysisys0202@gmail.com">ysisys0202@gmail.com</a>으로
-          전달주세요.
-        </Typography>
       </motion.div>
     </section>
   );
@@ -200,12 +193,6 @@ const S = {
   description: css`
     margin-top: 24px;
     font-weight: 400 !important;
-  `,
-  feedback: css`
-    margin-top: 12px;
-    a {
-      text-decoration: underline;
-    }
   `,
 };
 
