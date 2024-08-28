@@ -1,13 +1,18 @@
-import { css } from "@emotion/react";
-import HomeSection from "@/container/home/HomeSection";
-import SectionTitle from "@/components/home/SectionTitle";
+import { SerializedStyles, css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
 import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
+import { PostData } from "@/types/post";
+import HomeSection from "@/container/home/HomeSection";
+import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
 
-const RecentPosts = ({ postList }: { postList: any }) => {
+type Props = {
+  postList: PostData[];
+};
+
+const RecentPosts = ({ postList }: Props) => {
   return (
-    <HomeSection>
+    <HomeSection css={S.self}>
       <SectionTitle>최근 게시글</SectionTitle>
       <PostListVertical postList={postList} propsCss={S.list} />
     </HomeSection>
@@ -15,6 +20,12 @@ const RecentPosts = ({ postList }: { postList: any }) => {
 };
 
 const S = {
+  self: css`
+    padding-bottom: 0;
+    @media ${media.md} {
+      padding-bottom: 0;
+    }
+  `,
   list: css`
     margin: 16px -${contentSideSpacingMb}px 0;
     @media ${media.md} {

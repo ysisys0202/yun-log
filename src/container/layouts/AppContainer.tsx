@@ -9,6 +9,7 @@ import BackGround from "@/container/layouts/BackGround";
 import Content from "@/container/layouts/Content";
 import { media } from "@/constants/breakPoints";
 import { css } from "@emotion/react";
+import GlobalFooter from "./GlobalFooter";
 
 type Props = {
   headerHide?: boolean;
@@ -22,6 +23,7 @@ const AppContainer = ({ headerHide, children }: Props) => {
       <UtilButtonBox />
       <BackGround />
       <Content>{children}</Content>
+      <GlobalFooter />
     </div>
   );
 };

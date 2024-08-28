@@ -44,15 +44,15 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
 
 const S = {
   self: css`
-    padding: 32px ${contentSideSpacingMb}px;
+    padding: 32px ${contentSideSpacingMb}px 0;
     @media ${media.md} {
-      padding: 40px ${contentSideSpacingPc}px;
+      padding: 40px ${contentSideSpacingPc}px 0;
     }
   `,
   list: css`
-    margin: 16px -${contentSideSpacingMb}px;
+    margin: 16px -${contentSideSpacingMb}px 0;
     @media ${media.md} {
-      margin: 24px -${contentSideSpacingPc}px;
+      margin: 24px -${contentSideSpacingPc}px 0;
     }
   `,
 };
