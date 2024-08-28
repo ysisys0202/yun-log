@@ -1,8 +1,7 @@
-import Typography from "@/components/common/Typography";
+import { css } from "@emotion/react";
 import { colorVars } from "@/constants/cssVariables";
 import { contentSideSpacingMb } from "@/constants/size";
-import { css } from "@emotion/react";
-import React from "react";
+import Typography from "@/components/common/Typography";
 
 const GlobalFooter = () => {
   return (
@@ -32,6 +31,8 @@ const GlobalFooter = () => {
 
 const S = {
   self: css`
+    position: relative;
+    z-index: 1;
     margin-top: -1px;
     padding: 40px ${contentSideSpacingMb}px;
     border-top: 1px solid ${colorVars.tertiary};

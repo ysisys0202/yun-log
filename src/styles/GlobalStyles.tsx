@@ -12,6 +12,7 @@ const GlobalStyles = () => {
         css`
           html,
           body {
+            background-color: ${colorVars.backgroundGlobal};
             color: ${colorVars.secondary};
             font-family: "Pretendard Variable", Pretendard, -apple-system,
               BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",

@@ -10,6 +10,7 @@ import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
 import CategoryTagList from "@/components/posts/CategoryTagList";
 import Typography from "@/components/common/Typography";
+import BackGround from "../layouts/BackGround";
 
 const PostListContainer = ({ postList }: { postList: PostData[] }) => {
   const router = useRouter();
@@ -22,6 +23,7 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
   const isMobile = !useMediaQuery(media.md);
   return (
     <div css={S.self}>
+      <BackGround />
       {isMobile ? (
         <CategoryTagList
           categories={navCategories}
@@ -45,6 +47,7 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
 const S = {
   self: css`
     padding: 32px ${contentSideSpacingMb}px 0;
+    min-height: calc(100vh - 180px);
     @media ${media.md} {
       padding: 40px ${contentSideSpacingPc}px 0;
     }
