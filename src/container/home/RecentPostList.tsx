@@ -8,7 +8,7 @@ import PostListVertical from "@/components/posts/PostListVertical";
 const RecentPosts = ({ postList }: { postList: any }) => {
   return (
     <HomeSection>
-      <SectionTitle>최근 게시물</SectionTitle>
+      <SectionTitle>최근 게시글</SectionTitle>
       <PostListVertical postList={postList} propsCss={S.list} />
     </HomeSection>
   );

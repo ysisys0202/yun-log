@@ -9,8 +9,8 @@ const AllPosts = ({ allPostList }: { allPostList: PostData[] }) => {
   return (
     <AppContainer>
       <MyHead
-        title="모든 게시물 목록"
-        description="이윤슬 개발 블로그의 모든 포스트 목록입니다."
+        title="모든 게시글 목록"
+        description="YUN 개발 블로그의 모든 게시글 목록입니다."
       />
       {<PostListContainer postList={allPostList} />}
     </AppContainer>

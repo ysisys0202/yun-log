@@ -9,7 +9,7 @@ import { PostData } from "@/types/post";
 const FeaturePosts = ({ postList }: { postList: PostData[] }) => {
   return (
     <HomeSection>
-      <SectionTitle>주요 게시물</SectionTitle>
+      <SectionTitle>주요 게시글</SectionTitle>
       <PostListHorizontal postList={postList} propsCss={S.list} />
     </HomeSection>
   );

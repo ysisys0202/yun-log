@@ -57,7 +57,7 @@ const globalMenus = [
   },
   {
     id: "posts",
-    name: "게시물 목록",
+    name: "게시글 목록",
     link: "/posts",
   },
 ];
