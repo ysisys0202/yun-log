@@ -10,6 +10,7 @@ export const colors = {
 export const green = {
   10: "#f4fbf3",
   50: "#cde2ca",
+  70: "#4FA299",
   100: "#5b8982",
 };
 

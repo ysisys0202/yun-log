@@ -1,22 +1,22 @@
 import { css } from "@emotion/react";
 import { TypographyWeight } from "@/types/typography";
+import { green } from "@/constants/colors";
+import { colorVars } from "@/constants/cssVariables";
 
 type Props = {
+  type?: "text" | "background";
   fontWeight?: TypographyWeight;
   textColor?: string;
   backgroundColor?: string;
-  highlightType?: "underline" | "full";
-  decoration?: "underline" | "line-through";
   children: React.ReactNode;
 };
 
 const HighlightText = ({
+  type = "background",
   fontWeight = 400,
-  textColor,
-  backgroundColor,
+  textColor = green[70],
+  backgroundColor = colorVars.backgroundElement,
   children,
-  highlightType = "full",
-  decoration,
 }: Props) => {
   const styles = [
     css`
@@ -24,26 +24,13 @@ const HighlightText = ({
       font-weight: ${fontWeight};
     `,
   ];
-  const highlightStyle = css`
-    position: relative;
-    &::before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      z-index: 1;
-      width: 100%;
-      height: ${highlightType === "full" ? "80%" : "20%"};
-      transform: skewX(-10deg);
-      background-color: ${backgroundColor};
-      opacity: 0.4;
-    }
+  const backgroundStyle = css`
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 0.8em;
+    background-color: ${backgroundColor};
   `;
-  const decorationStyle = css`
-    text-decoration: ${decoration};
-  `;
-  backgroundColor && styles.push(highlightStyle);
-  decoration && styles.push(decorationStyle);
+  type === "background" && styles.push(backgroundStyle);
 
   return <span css={styles}>{children}</span>;
 };
