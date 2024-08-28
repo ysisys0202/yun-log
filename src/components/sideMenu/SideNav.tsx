@@ -42,7 +42,10 @@ const SideNav = () => {
 
 const S = {
   self: css`
-    margin-top: 120px;
+    position: absolute;
+    top: 50%;
+    left: 32px;
+    transform: translateY(-70%);
   `,
   navList: css`
     display: flex;

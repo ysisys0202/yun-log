@@ -30,6 +30,13 @@ const PostDetail = ({ post, mdx }: Props) => {
       />
       <div css={S.self}>
         <PostContent {...{ post, mdx }} />
+        <p css={S.feedback}>
+          게시글의 오류 지적, 내용 보충, 질문 등의 피드백은 언제나 환영입니다.
+          <br />
+          아래 댓글창 혹은
+          {""} <a href="mailto:ysisys0202@gmail.com">ysisys0202@gmail.com</a>
+          으로 남겨주세요.
+        </p>
         <PostComment />
       </div>
     </AppContainer>
@@ -38,10 +45,22 @@ const PostDetail = ({ post, mdx }: Props) => {
 
 const S = {
   self: css`
-    padding: 32px 48px 80px;
+    padding: 32px 24px 80px;
     max-width: 860px;
     @media ${media.md} {
       padding: 48px 56px 80px;
+    }
+  `,
+  feedback: css`
+    margin-top: 48px;
+    font-size: 14px;
+    color: ${colorVars.tertiary};
+    text-align: center;
+    a {
+      text-decoration: underline;
+    }
+    @media ${media.md} {
+      margin-top: 120px;
     }
   `,
 };

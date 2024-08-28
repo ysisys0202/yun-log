@@ -6,11 +6,14 @@ import Script from "next/dist/client/script";
 import { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import Layout from "@/container/layouts/Layout";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import { media } from "@/constants/breakPoints";
 const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
   ssr: true,
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const isMobile = !useMediaQuery(media.md);
   return (
     <>
       <Script
@@ -20,7 +23,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <GlobalStyles />
       <RecoilRoot>
         <Layout>
-          <SideMenu />
+          {!isMobile && <SideMenu />}
           <Component {...pageProps} />
         </Layout>
       </RecoilRoot>

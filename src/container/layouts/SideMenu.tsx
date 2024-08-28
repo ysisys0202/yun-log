@@ -4,6 +4,7 @@ import { media } from "@/constants/breakPoints";
 import Logo from "@/components/common/Logo";
 import { colorVars } from "@/constants/cssVariables";
 import SideNav from "@/components/sideMenu/SideNav";
+import Typography from "@/components/common/Typography";
 
 const SideMenu = () => {
   return (
@@ -27,15 +28,12 @@ const S = {
     padding: 16px 32px;
     width: 80%;
     height: 100dvh;
-    transform: translateX(100vw);
-    transition: transform 200ms ease-in-out;
     background-color: ${colorVars.backgroundGlobal};
     border-right: 1px solid ${colorVars.tertiary};
     @media ${media.md} {
       width: 20%;
       min-width: 220px;
       max-width: 380px;
-      transform: translateX(0);
     }
   `,
   logo: css`
