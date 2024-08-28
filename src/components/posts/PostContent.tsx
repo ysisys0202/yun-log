@@ -8,6 +8,7 @@ import PostHeader from "@/components/posts/PostHeader";
 import { colors } from "@/constants";
 import { CalloutProps } from "@/components/posts/Callout";
 import { typography } from "@/constants/typography";
+import { generateTitleId } from "@/hooks/usePostTOC";
 
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
@@ -27,28 +28,40 @@ const PostContent = ({ post, mdx }: Props) => {
   const { title, createdAt, thumbnail, subTitle, category } = post;
   const { compiledSource, scope, frontmatter } = mdx;
   const postComponents = {
-    h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <Typography variant="h1" element="h2" color={colorVars.primary}>
-        {props.children}
+    h2: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <Typography
+        variant="h3"
+        element="h2"
+        color={colorVars.primary}
+        id={generateTitleId(children as string)}
+        {...rest}
+      >
+        {children}
       </Typography>
     ),
-    h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <Typography variant="h3" element="h3" color={colorVars.primary}>
-        {props.children}
+    h3: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <Typography
+        variant="h4"
+        element="h3"
+        color={colorVars.primary}
+        id={generateTitleId(children as string)}
+        {...rest}
+      >
+        {children}
       </Typography>
     ),
-    h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <Typography variant="h4" element="h4" color={colorVars.primary}>
-        {props.children}
-      </Typography>
-    ),
-    h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <Typography variant="subtitle1" element="h5" color={colorVars.primary}>
-        {props.children}
+    h4: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <Typography
+        variant="subtitle1"
+        element="h4"
+        color={colorVars.primary}
+        id={generateTitleId(children as string)}
+        {...rest}
+      >
+        {children}
       </Typography>
     ),
     img: (props: React.HTMLProps<HTMLImageElement>) => {
-      console.log(props);
       return (
         <Image
           src={props.src as string}
@@ -88,6 +101,7 @@ const PostContent = ({ post, mdx }: Props) => {
         subTitle={subTitle}
         category={category}
       />
+      <nav></nav>
       <div css={S.markdown}>
         <MDXRemote
           compiledSource={compiledSource}

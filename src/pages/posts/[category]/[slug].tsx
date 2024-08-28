@@ -10,10 +10,11 @@ import MyHead from "@/components/common/AppHead";
 import AppContainer from "@/container/layouts/AppContainer";
 import PostContent from "@/components/posts/PostContent";
 import PostComment from "@/components/posts/PostComment";
-import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
 import { media } from "@/constants/breakPoints";
-import Typography from "@/components/common/Typography";
 import { colorVars } from "@/constants/cssVariables";
+import usePostTOC from "@/hooks/usePostTOC";
+import PostTOC from "@/components/posts/PostTOC";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 type Props = {
   post: PostData;
@@ -21,6 +22,8 @@ type Props = {
 };
 
 const PostDetail = ({ post, mdx }: Props) => {
+  const isMobile = !useMediaQuery(media.md);
+  const { TOC } = usePostTOC(post.content);
   return (
     <AppContainer>
       <MyHead
@@ -28,7 +31,7 @@ const PostDetail = ({ post, mdx }: Props) => {
         description={post.createdAt}
         ogImage={post.thumbnail}
       />
-      <div css={S.self}>
+      <div id="post-container" css={S.self}>
         <PostContent {...{ post, mdx }} />
         <p css={S.feedback}>
           게시글의 오류 지적, 내용 보충, 질문 등의 피드백은 언제나 환영입니다.
@@ -39,6 +42,7 @@ const PostDetail = ({ post, mdx }: Props) => {
         </p>
         <PostComment />
       </div>
+      {!isMobile && <PostTOC TOC={TOC} />}
     </AppContainer>
   );
 };
@@ -46,9 +50,14 @@ const PostDetail = ({ post, mdx }: Props) => {
 const S = {
   self: css`
     padding: 32px 24px 80px;
-    max-width: 860px;
     @media ${media.md} {
+      padding: 48px 24px 80px;
+      width: 80%;
+      max-width: calc(100% - 230px);
+    }
+    @media ${media.lg} {
       padding: 48px 56px 80px;
+      max-width: 860px;
     }
   `,
   feedback: css`
@@ -80,10 +89,10 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const postData = getPostData(category, slug);
   const { fileContent } = postData;
   const mdx = await serialize(fileContent, {
-    parseFrontmatter: true,
     mdxOptions: {
       remarkPlugins: [remarkGfm, remarkFrontmatter],
     },
+    parseFrontmatter: true,
   });
 
   return {
