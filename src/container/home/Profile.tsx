@@ -94,9 +94,9 @@ const Profile = ({ setHeaderHide }: Props) => {
       >
         <strong css={S.titleText}>Welcome!</strong>
         <h1 css={[S.titleText, S.title]}>
-          <span>It's</span> <span className="visually-hidden">YUN</span>
+          <span>It&apos;s</span> <span className="visually-hidden">YUN</span>
           <NameSvg viewBox="0 0 59 22" fill={colorVars.primary} />
-          <span> 's Dev Log</span>
+          <span> &apos;s Dev Log</span>
         </h1>
       </motion.div>
       <motion.div
