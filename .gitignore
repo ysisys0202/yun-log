@@ -41,3 +41,6 @@ next-env.d.ts
 
 # history
 .history/*
+
+#.env
+.env
