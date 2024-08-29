@@ -6,8 +6,8 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import NameSvg from "public/images/home/name.svg";
 import { gnbHeightMb, gnbHeightPc } from "@/constants/size";
-import useScrollEffectValue from "@/hooks/useScrollEffectValue";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import { calculateScrollEffectValue } from "@/utils/calculateScrollEffectValue";
 
 type Props = {
   setHeaderHide: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,13 +33,20 @@ const Profile = ({ setHeaderHide }: Props) => {
   const [sectionBottom, setSectionBottom] = useState<number>(0);
   const [opacity, setOpacity] = useState(1);
   const [translateY, setTranslateY] = useState(0);
-  const { calculateScrollEffectValue } = useScrollEffectValue();
   const isMobile = !useMediaQuery(media.md);
+
   useEffect(() => {
-    if (!sectionRef.current) return;
-    const sectionRect = sectionRef.current.getBoundingClientRect();
-    setSectionTop(sectionRect.top + window.scrollY);
-    setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
+    const uodateSectionRect = () => {
+      if (!sectionRef.current) return;
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      setSectionTop(sectionRect.top + window.scrollY);
+      setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
+    };
+
+    uodateSectionRect();
+    window.addEventListener("resize", uodateSectionRect);
+
+    return () => window.removeEventListener("resize", uodateSectionRect);
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -54,16 +61,18 @@ const Profile = ({ setHeaderHide }: Props) => {
     if (latest > sectionTop && latest < sectionBottom) {
       const inSectionScrollRatio =
         (latest - sectionTop) / (sectionBottom - sectionTop);
-      calculateScrollEffectValue({
-        currentScrollPoint: inSectionScrollRatio,
-        setValue: setTranslateY,
-        ...translateYEffect,
-      });
-      calculateScrollEffectValue({
-        currentScrollPoint: inSectionScrollRatio,
-        setValue: setOpacity,
-        ...opacityEffect,
-      });
+      setTranslateY(
+        calculateScrollEffectValue({
+          currentScrollPoint: inSectionScrollRatio,
+          ...translateYEffect,
+        })
+      );
+      setOpacity(
+        calculateScrollEffectValue({
+          currentScrollPoint: inSectionScrollRatio,
+          ...opacityEffect,
+        })
+      );
 
       if (!isMobile && inSectionScrollRatio < opacityEffect.startPoint) {
         setHeaderHide(true);
