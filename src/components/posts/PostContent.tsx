@@ -101,7 +101,6 @@ const PostContent = ({ post, mdx }: Props) => {
         subTitle={subTitle}
         category={category}
       />
-      <nav></nav>
       <div css={S.markdown}>
         <MDXRemote
           compiledSource={compiledSource}
