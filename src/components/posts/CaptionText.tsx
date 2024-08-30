@@ -9,7 +9,7 @@ type Props = {
 const CaptionText = ({ children, className }: Props) => {
   return (
     <Typography
-      variant="subtitle1"
+      variant="body2"
       element="p"
       color={colorVars.tertiary}
       {...(className && { className: className })}
