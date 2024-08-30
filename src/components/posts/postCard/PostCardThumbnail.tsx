@@ -32,6 +32,8 @@ const S = {
     aspect-ratio: 400/300;
     overflow: hidden;
     border: 1px solid ${colorVars.border};
+    border-radius: 8px;
+    isolation: isolate;
     img {
       width: 100%;
       height: 100%;
