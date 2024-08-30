@@ -47,7 +47,7 @@ const S = {
   `,
   title: css`
     margin-bottom: 8px;
-    font-weight: ${typography.weight[700]} !important;
+    font-weight: ${typography.weight[500]} !important;
   `,
 };
 export default Callout;

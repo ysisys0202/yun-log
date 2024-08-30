@@ -14,14 +14,9 @@ const PostImage = ({ src, alt, width, height, caption }: Props) => {
   return (
     <div>
       <Image {...{ src, alt, width, height }} />
-      {!!caption && <CaptionText css={S.caption}>{caption}</CaptionText>}
+      {!!caption && <CaptionText>{caption}</CaptionText>}
     </div>
   );
 };
 
-const S = {
-  caption: css`
-    margin-top: 4px;
-  `,
-};
 export default PostImage;

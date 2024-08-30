@@ -11,7 +11,7 @@ const MarkdownStyle = css`
   }
   del {
     font-size: 14px;
-    color: ${colorVars.border};
+    color: ${colorVars.tertiary};
   }
   table {
     background-color: ${colorVars.backgroundGlobal};
@@ -38,22 +38,20 @@ const MarkdownStyle = css`
   }
   blockquote {
     position: relative;
-    padding: 12px 36px;
+    padding: 12px 24px;
     background-color: ${colorVars.backgroundElement};
-    font-size: ${typography.size["xs"]};
+    font-size: ${typography.size["sm"]};
     @media ${media.md} {
-      font-size: ${typography.size["sm"]};
+      font-size: ${typography.size["md"]};
     }
     &::before {
       content: "";
       position: absolute;
-      top: 50%;
-      left: 16px;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 85%;
-      border-radius: 2px;
-      background-color: ${colors.green[100]};
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: ${colorVars.primary};
     }
   }
 `;
