@@ -12,7 +12,7 @@ type Props = {
 };
 
 const HighlightText = ({
-  type = "background",
+  type = "text",
   fontWeight = 400,
   textColor = green[70],
   backgroundColor = colorVars.backgroundElement,
