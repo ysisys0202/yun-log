@@ -11,12 +11,7 @@ const ViewMoreButton = ({ text = "더보기", icon, className = "" }: Props) => 
   }
   return (
     <div css={S} {...(className && { className: className })}>
-      <Typography
-        variant="body1"
-        element="span"
-        color={colorVars.primary}
-        className="!font-normal"
-      >
+      <Typography variant="body1" element="span" color={colorVars.primary}>
         {text}
       </Typography>
       {icon}
