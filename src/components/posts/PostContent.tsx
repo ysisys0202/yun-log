@@ -19,6 +19,9 @@ const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
 const Callout = dynamic(() => import("@/components/posts/Callout"));
 const Image = dynamic(() => import("next/image"));
+const YoutubePlayer = dynamic(
+  () => import("@/components/common/YoutubePlayer")
+);
 type Props = {
   post: PostData;
   mdx: MDXRemoteSerializeResult;
@@ -91,6 +94,7 @@ const PostContent = ({ post, mdx }: Props) => {
     PostImage,
     Spacing,
     HighlightText,
+    YoutubePlayer,
   };
 
   return (
