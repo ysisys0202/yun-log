@@ -15,8 +15,8 @@ type Props = {
 
 const translateYEffect = {
   defaultValue: 0,
-  targetValue: -220,
-  startPoint: 0.2,
+  targetValue: 180,
+  startPoint: 0,
   endPoint: 0.6,
 };
 const opacityEffect = {
@@ -28,28 +28,16 @@ const opacityEffect = {
 
 const Profile = ({ setHeaderHide }: Props) => {
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollY } = useScroll();
-  const [sectionTop, setSectionTop] = useState<number>(0);
-  const [sectionBottom, setSectionBottom] = useState<number>(0);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
   const [opacity, setOpacity] = useState(1);
   const [translateY, setTranslateY] = useState(0);
   const isMobile = !useMediaQuery(media.md);
 
-  useEffect(() => {
-    const uodateSectionRect = () => {
-      if (!sectionRef.current) return;
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-      setSectionTop(sectionRect.top + window.scrollY);
-      setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
-    };
-
-    uodateSectionRect();
-    window.addEventListener("resize", uodateSectionRect);
-
-    return () => window.removeEventListener("resize", uodateSectionRect);
-  }, []);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (!sectionRef.current) return;
     //페이지 최상단 일 때 값 초기화
     if (latest === 0) {
@@ -57,29 +45,24 @@ const Profile = ({ setHeaderHide }: Props) => {
       setTranslateY(0);
       !isMobile && setHeaderHide(true);
     }
+    setTranslateY(
+      calculateScrollEffectValue({
+        currentScrollPoint: latest,
+        ...translateYEffect,
+      })
+    );
+    setOpacity(
+      calculateScrollEffectValue({
+        currentScrollPoint: latest,
+        ...opacityEffect,
+      })
+    );
 
-    if (latest > sectionTop && latest < sectionBottom) {
-      const inSectionScrollRatio =
-        (latest - sectionTop) / (sectionBottom - sectionTop);
-      setTranslateY(
-        calculateScrollEffectValue({
-          currentScrollPoint: inSectionScrollRatio,
-          ...translateYEffect,
-        })
-      );
-      setOpacity(
-        calculateScrollEffectValue({
-          currentScrollPoint: inSectionScrollRatio,
-          ...opacityEffect,
-        })
-      );
-
-      if (!isMobile && inSectionScrollRatio < opacityEffect.startPoint) {
-        setHeaderHide(true);
-      }
-      if (!isMobile && inSectionScrollRatio > opacityEffect.endPoint) {
-        setHeaderHide(false);
-      }
+    if (!isMobile && latest < opacityEffect.startPoint) {
+      setHeaderHide(true);
+    }
+    if (!isMobile && latest > opacityEffect.endPoint) {
+      setHeaderHide(false);
     }
   });
   return (
@@ -134,8 +117,8 @@ const Profile = ({ setHeaderHide }: Props) => {
 };
 const S = {
   self: css`
-    position: sticky;
-    top: ${gnbHeightMb}px;
+    /* position: sticky;
+    top: ${gnbHeightMb}px; */
     padding: 48px 48px 140px 48px;
     @media ${media.md} {
       top: 0;
