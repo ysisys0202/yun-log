@@ -1,15 +1,24 @@
 import { SerializedStyles, css } from "@emotion/react";
 import { PostData } from "@/types/post";
 import PostListItem from "@/components/posts/postCard/PostListItem";
-
+import { event } from "@/lib/gTag";
 type Props = {
+  section?: string;
   postList: PostData[];
   propsCss?: SerializedStyles;
 };
 
-const PostListVertical = ({ postList, propsCss }: Props) => {
+const PostListVertical = ({ section, postList, propsCss }: Props) => {
   const styles = [S.self];
   propsCss && styles.push(propsCss);
+  const handlePostItemClick = (value: string) => {
+    event({
+      action: "click",
+      category: section || "posts",
+      label: "post-list-item",
+      value,
+    });
+  };
   return (
     <ul css={styles}>
       {postList.map((post) => (
@@ -21,6 +30,9 @@ const PostListVertical = ({ postList, propsCss }: Props) => {
             intro={post.intro}
             thumbnail={post.thumbnail}
             slug={post.slug}
+            onClick={() => {
+              handlePostItemClick(post.title);
+            }}
           />
         </li>
       ))}

@@ -7,11 +7,13 @@ import { PostItem } from "@/types/post";
 import { media } from "@/constants/breakPoints";
 import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import { HTMLAttributes } from "react";
 
 type Props = {
   propsCss?: SerializedStyles;
   className?: string;
-} & PostItem;
+} & PostItem &
+  HTMLAttributes<HTMLElement>;
 
 const PostListItem = ({
   title,
@@ -21,13 +23,13 @@ const PostListItem = ({
   thumbnail,
   slug,
   propsCss,
-  className,
+  ...rest
 }: Props) => {
   const styles = [S.self];
   propsCss && styles.push(propsCss);
   const isMobile = !useMediaQuery(media.sm);
   return (
-    <PostCardBox css={styles}>
+    <PostCardBox css={styles} {...rest}>
       <Link href={`/posts/${category}/${slug}`} css={S.cardInner}>
         <PostCardContent
           title={title}

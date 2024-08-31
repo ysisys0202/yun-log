@@ -3,15 +3,24 @@ import { PostData } from "@/types/post";
 import { media } from "@/constants/breakPoints";
 import PostCard from "@/components/posts/postCard/PostCard";
 import { colorVars } from "@/constants/cssVariables";
-
+import { event } from "@/lib/gTag";
 type Props = {
+  section?: string;
   postList: PostData[];
   propsCss?: SerializedStyles;
 };
 
-const PostListHorizontal = ({ postList, propsCss }: Props) => {
+const PostListHorizontal = ({ section, postList, propsCss }: Props) => {
   const styles = [S.self];
   propsCss && styles.push(propsCss);
+  const handlePostCardClick = (value: string) => {
+    event({
+      action: "click",
+      category: section || "posts",
+      label: "post-card",
+      value,
+    });
+  };
   return (
     <ul css={styles}>
       {postList.map((post) => (
@@ -23,6 +32,9 @@ const PostListHorizontal = ({ postList, propsCss }: Props) => {
             intro={post.intro}
             thumbnail={post.thumbnail}
             slug={post.slug}
+            onClick={() => {
+              handlePostCardClick(post.title);
+            }}
           />
         </li>
       ))}

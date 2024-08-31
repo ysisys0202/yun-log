@@ -21,14 +21,16 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["@types/gtag.js"]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "public/scripts/controlColorTheme.js"
+    "public/scripts/controlColorTheme.js",
+    "src/lib/ga.js"
   ],
   "exclude": ["node_modules"]
 }

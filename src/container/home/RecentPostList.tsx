@@ -14,7 +14,11 @@ const RecentPosts = ({ postList }: Props) => {
   return (
     <HomeSection css={S.self}>
       <SectionTitle>최근 게시글</SectionTitle>
-      <PostListVertical postList={postList} propsCss={S.list} />
+      <PostListVertical
+        postList={postList}
+        propsCss={S.list}
+        section="home-recent-posts"
+      />
     </HomeSection>
   );
 };

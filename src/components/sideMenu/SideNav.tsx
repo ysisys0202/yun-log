@@ -4,12 +4,20 @@ import useCategoriesInfo from "@/hooks/useNavCategories";
 import Typography from "@/components/common/Typography";
 import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
-
+import { event } from "@/lib/gTag";
 const SideNav = () => {
   const router = useRouter();
   const { pathname, query } = router;
   const currentCategory = pathname === "/posts" ? "전체" : query.category;
   const { navCategories } = useCategoriesInfo();
+  const handleSideNavItem = (value: string) => {
+    event({
+      action: "click",
+      category: "side-nav",
+      label: "side-nav_item",
+      value,
+    });
+  };
   return (
     <nav css={S.self}>
       <Typography variant="h4" element="h2">
@@ -24,7 +32,12 @@ const SideNav = () => {
               css={S.navItem}
               className={`${isActive ? "is-active" : ""}`}
             >
-              <Link href={link}>
+              <Link
+                href={link}
+                onClick={() => {
+                  handleSideNavItem(name);
+                }}
+              >
                 <Typography variant="subtitle1" element="span">
                   {name}
                 </Typography>

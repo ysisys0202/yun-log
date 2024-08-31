@@ -5,11 +5,13 @@ import PostCardThumbnail from "@/components/posts/postCard/PostCardThumbnail";
 import PostCardContent from "@/components/posts/postCard/PostCardContent";
 import { PostItem } from "@/types/post";
 import { media } from "@/constants/breakPoints";
+import { HTMLAttributes } from "react";
 
 type Props = {
   propsCss?: SerializedStyles;
   className?: string;
-} & PostItem;
+} & PostItem &
+  HTMLAttributes<HTMLElement>;
 
 const PostCard = ({
   title,

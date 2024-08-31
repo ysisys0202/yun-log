@@ -39,7 +39,11 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
         </SectionTitle>
       )}
 
-      <PostListVertical postList={postList} propsCss={S.list} />
+      <PostListVertical
+        postList={postList}
+        propsCss={S.list}
+        section={`posts-${currentCategory}`}
+      />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";
 import { gnbHeightMb, gnbHeightPc, gnbSideSpacing } from "@/constants/size";
 import Typography from "@/components/common/Typography";
+import { event } from "@/lib/gTag";
 
 type Props = {
   isHide?: boolean;
@@ -15,6 +16,14 @@ const GlobalHeader = ({ isHide }: Props) => {
   const { pathname, query } = router;
   const { slug } = query;
 
+  const handleNavItemClick = (value: string) => {
+    event({
+      action: "click",
+      category: "global-header",
+      label: "global-header_item",
+      value,
+    });
+  };
   return (
     <header css={S.self} className={`${isHide ? "is-hide" : ""}`}>
       <nav css={S.nav}>
@@ -31,7 +40,12 @@ const GlobalHeader = ({ isHide }: Props) => {
                 css={S.navItem}
                 className={`${isActive ? "is-active" : ""}`}
               >
-                <Link href={menu.link}>
+                <Link
+                  href={menu.link}
+                  onClick={() => {
+                    handleNavItemClick(menu.name);
+                  }}
+                >
                   <Typography
                     variant="subtitle1"
                     element="span"

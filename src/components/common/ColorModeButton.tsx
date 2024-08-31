@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, useEffect, useState } from "react";
+import { ButtonHTMLAttributes } from "react";
 import IconSun from "public/icons/sun.svg";
 import IconMoon from "public/icons/moon.svg";
 import { colorVars } from "@/constants/cssVariables";
@@ -7,7 +7,7 @@ import useColorTheme from "@/hooks/useColorTheme";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 
-const ColorModeButton = (props: Props) => {
+const ColorModeButton = ({ onClick, ...rest }: Props) => {
   const { colorTheme, handleColorThemeToggle } = useColorTheme();
   const isDark = colorTheme === "dark";
   const label = `${isDark ? "라이트" : "다크"}모드로 변경하기`;
@@ -22,9 +22,12 @@ const ColorModeButton = (props: Props) => {
       element={"button"}
       name={label}
       icon={icon}
-      onClick={handleColorThemeToggle}
+      onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        handleColorThemeToggle();
+        onClick && onClick(event);
+      }}
       aria-label={label}
-      {...props}
+      {...rest}
     />
   );
 };
