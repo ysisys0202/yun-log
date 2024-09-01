@@ -21,13 +21,13 @@ const translateYEffect = {
   defaultValue: 0,
   targetValue: 180,
   startPoint: 0,
-  endPoint: 0.6,
+  endPoint: 0.5,
 };
 const opacityEffect = {
   defaultValue: 1,
   targetValue: 0,
-  startPoint: 0.4,
-  endPoint: 0.65,
+  startPoint: 0.3,
+  endPoint: 0.45,
 };
 
 const Profile = ({ setHeaderHide }: Props) => {
