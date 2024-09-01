@@ -10,7 +10,9 @@ const GlobalStyles = () => {
       styles={[
         colorSet,
         css`
-          html,
+          html {
+            ${typographyStyle.body1}
+          }
           body {
             background-color: ${colorVars.backgroundGlobal};
             color: ${colorVars.secondary};
@@ -22,7 +24,6 @@ const GlobalStyles = () => {
             font-weight: ${typography.weight[400]};
             line-height: ${typography.lineheight.default};
             letter-spacing: ${typography.letterspacing.default};
-            ${typographyStyle.body1}
           }
         `,
       ]}
