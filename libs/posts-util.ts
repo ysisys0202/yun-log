@@ -1,26 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 import matter from "gray-matter";
+import { PostData, PostFrontMatter } from "@/types/post";
 
-type PostMetaData = {
-  title: string;
-  subTitle?: string;
-  intro: string;
-  createdAt: string;
-  isFeatured?: boolean;
-  thumbnail: string;
-  order?: number;
-};
-
-type PostData = PostMetaData & {
-  category: string;
-  slug: string;
-  content: string;
-};
-
-type PostFile = {
+export type PostFile = {
   fileName: string;
-  category: string;
+  categoryId: string;
+  categoryName: string;
 };
 
 type PostFilter = "feature";
@@ -34,38 +20,49 @@ export const getCategories = () => {
   return categories.map((category) => {
     const categoryPath = path.join(postsDirectory, category);
     const files = fs.readdirSync(categoryPath);
+    const [id, name] = category.split(".");
     return {
-      name: category,
+      id,
+      name,
       fileLength: files.length,
     };
   });
 };
 
-export const getPostFiles = (category: string) => {
-  const files = fs.readdirSync(`${postsDirectory}/${category}`);
-  return files.map((file) => ({ fileName: file, category }));
+export const getPostFiles = (categoryId: string, categoryName: string) => {
+  const files = fs.readdirSync(
+    `${postsDirectory}/${`${categoryId}.${categoryName}`}`
+  );
+  return files.map((file) => ({ fileName: file, categoryId, categoryName }));
 };
 
 export const getPostAllFiles = (): PostFile[] => {
   const categories = getCategories();
-  const allPosts = categories.map((category) => getPostFiles(category.name));
+  const allPosts = categories.map((category) =>
+    getPostFiles(category.id, category.name)
+  );
   return allPosts.flat();
 };
 
 export const getPostData = (
-  category: string,
+  categoryId: string,
+  categoryName: string,
   postIdentifier: string
 ): PostData => {
   const postSlug = postIdentifier.replace(/\.mdx$/, "");
-  const filePath = path.join(postsDirectory, category, `${postSlug}.mdx`);
+  const filePath = path.join(
+    postsDirectory,
+    `${categoryId}.${categoryName}`,
+    `${postSlug}.mdx`
+  );
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
   const postData = {
-    category,
+    categoryId,
+    categoryName,
     slug: postSlug,
     content,
-    fileContent,
-    ...(data as PostMetaData),
+    ...(data as PostFrontMatter),
   };
 
   return postData;
@@ -113,17 +110,21 @@ export const filterPosts = ({
 };
 
 export const getPosts = ({
-  category,
+  categoryId,
+  categoryName,
   sort = "latest",
   filter,
 }: {
-  category?: string;
+  categoryId?: string;
+  categoryName?: string;
   sort?: PostSort;
   filter?: PostFilter;
 }) => {
-  const postFiles = category ? getPostFiles(category) : getPostAllFiles();
+  const postFiles = categoryName
+    ? getPostFiles(categoryId as string, categoryName)
+    : getPostAllFiles();
   const posts = postFiles.map((post) =>
-    getPostData(post.category, post.fileName)
+    getPostData(post.categoryId, post.categoryName, post.fileName)
   );
   let filteredPosts;
   if (sort) {

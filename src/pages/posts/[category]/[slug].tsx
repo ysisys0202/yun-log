@@ -3,7 +3,11 @@ import { css } from "@emotion/react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
-import { getPostData, getPosts } from "../../../../libs/posts-util";
+import {
+  getCategories,
+  getPostData,
+  getPosts,
+} from "../../../../libs/posts-util";
 import { PostData } from "@/types/post";
 import MyHead from "@/components/common/AppHead";
 import AppContainer from "@/container/layouts/AppContainer";
@@ -77,15 +81,23 @@ export const getStaticPaths = async () => {
   const postFiles = getPosts({});
 
   return {
-    paths: postFiles.map((post: any) => `/posts/${post.category}/${post.slug}`),
+    paths: postFiles.map((post) => `/posts/${post.categoryName}/${post.slug}`),
     fallback: false,
   };
 };
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
-  const category = context.params?.category as string;
+  const categories = getCategories();
+  const currentCategoryName = context.params?.category as string;
+  console.log(currentCategoryName);
+  const currentCategroryId = categories.filter(
+    (category) => category.name === currentCategoryName
+  )[0]?.id;
+  if (!currentCategroryId) {
+    throw new Error("카테고리를 찾을 수 없습니다.");
+  }
   const slug = context.params?.slug as string;
-  const postData = getPostData(category, slug);
+  const postData = getPostData(currentCategroryId, currentCategoryName, slug);
   const { content } = postData;
   const mdx = await serialize(content, {
     mdxOptions: {

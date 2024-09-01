@@ -17,7 +17,7 @@ type Props = {
 
 const PostListItem = ({
   title,
-  category,
+  categoryName,
   createdAt,
   intro,
   thumbnail,
@@ -30,11 +30,11 @@ const PostListItem = ({
   const isMobile = !useMediaQuery(media.sm);
   return (
     <PostCardBox css={styles} {...rest}>
-      <Link href={`/posts/${category}/${slug}`} css={S.cardInner}>
+      <Link href={`/posts/${categoryName}/${slug}`} css={S.cardInner}>
         <PostCardContent
           title={title}
           description={isMobile ? "" : intro}
-          category={category}
+          categoryName={categoryName}
           createdAt={createdAt}
           propsCss={S.content}
           descriptionLineLength={2}

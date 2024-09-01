@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchCategories } from "@/services/categories";
-import { Category } from "@/types/category";
-import { useRouter } from "next/router";
+import { Category } from "@/types/post";
 
 export type NavCategory = {
   link: string;
@@ -21,11 +20,13 @@ const useNavCategories = () => {
           );
           const navCategories = [
             {
+              id: "all",
               name: "전체",
               fileLength: allCategoryLength,
               link: "/posts",
             },
-            ...fetchedCategories.map(({ name, fileLength }) => ({
+            ...fetchedCategories.map(({ id, name, fileLength }) => ({
+              id,
               name,
               fileLength,
               link: `/posts/${name}`,

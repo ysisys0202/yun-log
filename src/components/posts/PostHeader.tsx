@@ -11,7 +11,7 @@ type Props = {
   subTitle?: string;
   createdAt: string;
   headerImage?: string;
-  category: string;
+  categoryName: string;
 };
 
 const PostHeader = ({
@@ -19,7 +19,7 @@ const PostHeader = ({
   subTitle,
   createdAt,
   headerImage,
-  category,
+  categoryName,
 }: Props) => {
   const dateOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -34,14 +34,14 @@ const PostHeader = ({
   return (
     <header css={S.self}>
       <div>
-        <Link href={`/posts/${category}`}>
+        <Link href={`/posts/${categoryName}`}>
           <Tag
             variant="outlined"
             borderColor={colorVars.primary}
             textColor={colorVars.primary}
             size="sm"
           >
-            {category}
+            {categoryName}
           </Tag>
         </Link>
         <Typography

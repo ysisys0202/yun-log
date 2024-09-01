@@ -1,7 +1,6 @@
 import { colorVars } from "@/constants/cssVariables";
 import Typography from "@/components/common/Typography";
 import Tag from "@/components/common/Tag";
-import ViewMoreButton from "@/components/posts/ViewMoreButton";
 import { SerializedStyles, css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
 import useMediaQuery from "@/hooks/useMediaQuery";
@@ -9,7 +8,7 @@ import useMediaQuery from "@/hooks/useMediaQuery";
 type Props = {
   title: string;
   description?: string;
-  category: string;
+  categoryName: string;
   createdAt: string;
   propsCss?: SerializedStyles;
   descriptionLineLength?: number;
@@ -18,7 +17,7 @@ type Props = {
 const PostCardContent = ({
   title,
   description,
-  category,
+  categoryName,
   createdAt,
   propsCss,
   descriptionLineLength = 3,
@@ -34,7 +33,7 @@ const PostCardContent = ({
         textColor={colorVars.tertiary}
         size={isMobile ? "sm" : "md"}
       >
-        {category}
+        {categoryName}
       </Tag>
       <Typography
         variant="subtitle1"

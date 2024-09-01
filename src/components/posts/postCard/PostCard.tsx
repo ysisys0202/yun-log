@@ -15,7 +15,7 @@ type Props = {
 
 const PostCard = ({
   title,
-  category,
+  categoryName,
   createdAt,
   intro,
   thumbnail,
@@ -27,7 +27,7 @@ const PostCard = ({
   propsCss && styles.push(propsCss);
   return (
     <PostCardBox css={styles} {...rest}>
-      <Link href={`/posts/${category}/${slug}`}>
+      <Link href={`/posts/${categoryName}/${slug}`}>
         <PostCardThumbnail
           thumbnail={thumbnail}
           title={title}
@@ -38,7 +38,7 @@ const PostCard = ({
         <PostCardContent
           title={title}
           description={intro}
-          category={category}
+          categoryName={categoryName}
           createdAt={createdAt}
           propsCss={S.content}
         />

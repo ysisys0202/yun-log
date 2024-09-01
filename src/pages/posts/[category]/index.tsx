@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getCategories, getPosts } from "../../../../libs/posts-util";
 import { GetStaticPropsContext } from "next";
 import MyHead from "@/components/common/AppHead";
-import { Category } from "@/types/category";
-import { PostData } from "@/types/post";
+import { PostData, Category } from "@/types/post";
 import AppContainer from "@/container/layouts/AppContainer";
 
 const FilteredPostList = ({
@@ -36,12 +35,22 @@ export const getStaticPaths = () => {
 };
 
 export const getStaticProps = (context: GetStaticPropsContext) => {
-  const category = context.params?.category as string;
-  const postList = getPosts({ category });
+  const categories = getCategories();
+  const currentCategoryName = context.params?.category as string;
+  const currentCategroryId = categories.filter(
+    (category) => category.name === currentCategoryName
+  )[0].id;
+  if (!currentCategroryId) {
+    throw new Error("카테고리를 찾을 수 없습니다.");
+  }
+  const postList = getPosts({
+    categoryId: currentCategroryId,
+    categoryName: currentCategoryName,
+  });
   return {
     props: {
       postList,
-      category,
+      currentCategoryName,
     },
   };
 };

@@ -11,7 +11,7 @@ type Props = {
 };
 
 const PostContent = ({ postData, mdx }: Props) => {
-  const { title, createdAt, thumbnail, subTitle, category } = postData;
+  const { title, createdAt, thumbnail, subTitle, categoryName } = postData;
 
   return (
     <article css={S.self}>
@@ -19,7 +19,7 @@ const PostContent = ({ postData, mdx }: Props) => {
         title={title}
         createdAt={createdAt}
         subTitle={subTitle}
-        category={category}
+        categoryName={categoryName}
       />
       <PostMarkdown mdx={mdx} postData={postData} />
     </article>

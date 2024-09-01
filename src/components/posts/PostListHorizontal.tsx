@@ -27,7 +27,7 @@ const PostListHorizontal = ({ section, postList, propsCss }: Props) => {
         <li key={post.slug} css={S.postItem}>
           <PostCard
             title={post.title}
-            category={post.category}
+            categoryName={post.categoryName}
             createdAt={post.createdAt}
             intro={post.intro}
             thumbnail={post.thumbnail}
