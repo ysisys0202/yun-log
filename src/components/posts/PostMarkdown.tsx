@@ -4,6 +4,7 @@ import { generateTitleId } from "@/hooks/usePostTOC";
 import { CalloutProps } from "@/components/posts/Callout";
 import MarkdownStyle from "@/styles/MarkdownStyle";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { PostData } from "@/types/post";
 
 const Spacing = dynamic(() => import("@/components/common/Spacing"));
 const Typography = dynamic(() => import("@/components/common/Typography"));
@@ -19,11 +20,13 @@ const YoutubePlayer = dynamic(
 );
 
 type Props = {
+  postData: PostData;
   mdx: MDXRemoteSerializeResult;
 };
 
-const PostMarkdown = ({ mdx }: Props) => {
-  const { compiledSource, scope, frontmatter } = mdx;
+const PostMarkdown = ({ postData, mdx }: Props) => {
+  const { compiledSource } = mdx;
+  const { content, ...frontmatter } = postData;
   const markdownComponents = {
     h2: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <Typography
@@ -96,7 +99,7 @@ const PostMarkdown = ({ mdx }: Props) => {
         compiledSource={compiledSource}
         scope={{ ...frontmatter }}
         components={markdownComponents}
-        frontmatter={frontmatter}
+        frontmatter={{ ...frontmatter }}
       />
     </div>
   );

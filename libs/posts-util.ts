@@ -16,7 +16,6 @@ type PostData = PostMetaData & {
   category: string;
   slug: string;
   content: string;
-  fileContent: string;
 };
 
 type PostFile = {

@@ -3,9 +3,9 @@ import { colorVars } from "@/constants/cssVariables";
 import Typography from "@/components/common/Typography";
 import { media } from "@/constants/breakPoints";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import NameSvg from "public/images/home/name.svg";
-import { gnbHeightMb, gnbHeightPc } from "@/constants/size";
+import { gnbHeightPc } from "@/constants/size";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { calculateScrollEffectValue } from "@/utils/calculateScrollEffectValue";
 
@@ -33,16 +33,16 @@ const Profile = ({ setHeaderHide }: Props) => {
     offset: ["start start", "end start"],
   });
 
-  const [opacity, setOpacity] = useState(1);
-  const [translateY, setTranslateY] = useState(0);
+  const [opacity, setOpacity] = useState(opacityEffect.defaultValue);
+  const [translateY, setTranslateY] = useState(translateYEffect.defaultValue);
   const isMobile = !useMediaQuery(media.md);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (!sectionRef.current) return;
-    //페이지 최상단 일 때 값 초기화
+    //스크롤이 섹션 상단 위로 올라갔을 때 초기화
     if (latest === 0) {
-      setOpacity(1);
-      setTranslateY(0);
+      setOpacity(opacityEffect.defaultValue);
+      setTranslateY(translateYEffect.defaultValue);
       !isMobile && setHeaderHide(true);
     }
     setTranslateY(
@@ -117,11 +117,8 @@ const Profile = ({ setHeaderHide }: Props) => {
 };
 const S = {
   self: css`
-    /* position: sticky;
-    top: ${gnbHeightMb}px; */
-    padding: 48px 48px 140px 48px;
+    padding: 48px 48px 100px 48px;
     @media ${media.md} {
-      top: 0;
       padding: ${gnbHeightPc - 80}px 80px 100px 80px;
       margin-bottom: 40px;
     }

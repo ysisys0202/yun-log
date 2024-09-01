@@ -6,12 +6,12 @@ import PostHeader from "@/components/posts/PostHeader";
 import PostMarkdown from "@/components/posts/PostMarkdown";
 
 type Props = {
-  post: PostData;
+  postData: PostData;
   mdx: MDXRemoteSerializeResult;
 };
 
-const PostContent = ({ post, mdx }: Props) => {
-  const { title, createdAt, thumbnail, subTitle, category } = post;
+const PostContent = ({ postData, mdx }: Props) => {
+  const { title, createdAt, thumbnail, subTitle, category } = postData;
 
   return (
     <article css={S.self}>
@@ -21,7 +21,7 @@ const PostContent = ({ post, mdx }: Props) => {
         subTitle={subTitle}
         category={category}
       />
-      <PostMarkdown mdx={mdx} />
+      <PostMarkdown mdx={mdx} postData={postData} />
     </article>
   );
 };

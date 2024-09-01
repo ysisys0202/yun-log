@@ -33,7 +33,6 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-youtube": "^10.1.0",
     "recoil": "^0.7.7",
-    "remark-frontmatter": "^5.0.0",
     "typescript": "5.2.2"
   },
   "devDependencies": {

@@ -3,7 +3,6 @@ import { css } from "@emotion/react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
-import remarkFrontmatter from "remark-frontmatter";
 import { getPostData, getPosts } from "../../../../libs/posts-util";
 import { PostData } from "@/types/post";
 import MyHead from "@/components/common/AppHead";
@@ -17,22 +16,22 @@ import PostTOC from "@/components/posts/PostTOC";
 import useMediaQuery from "@/hooks/useMediaQuery";
 
 type Props = {
-  post: PostData;
+  postData: PostData;
   mdx: MDXRemoteSerializeResult;
 };
 
-const PostDetail = ({ post, mdx }: Props) => {
+const PostDetail = ({ postData, mdx }: Props) => {
   const isMobile = !useMediaQuery(media.md);
-  const { TOC } = usePostTOC(post.content);
+  const { TOC } = usePostTOC(postData.content);
   return (
     <AppContainer>
       <MyHead
-        title={post.title}
-        description={post.createdAt}
-        ogImage={post.thumbnail}
+        title={postData.title}
+        description={postData.createdAt}
+        ogImage={postData.thumbnail}
       />
       <div id="post-container" css={S.self}>
-        <PostContent {...{ post, mdx }} />
+        <PostContent {...{ postData, mdx }} />
         <p css={S.feedback}>
           게시글의 오류 지적, 내용 보충, 질문 등의 피드백은 언제나 환영입니다.
           <br />
@@ -87,17 +86,16 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const category = context.params?.category as string;
   const slug = context.params?.slug as string;
   const postData = getPostData(category, slug);
-  const { fileContent } = postData;
-  const mdx = await serialize(fileContent, {
+  const { content } = postData;
+  const mdx = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [remarkGfm, remarkFrontmatter],
+      remarkPlugins: [remarkGfm],
     },
-    parseFrontmatter: true,
   });
 
   return {
     props: {
-      post: postData,
+      postData: postData,
       mdx,
     },
   };
