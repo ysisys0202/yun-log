@@ -2,12 +2,16 @@ import { Global, css } from "@emotion/react";
 import { colorVars } from "@/constants/cssVariables";
 import Typography from "@/components/common/Typography";
 import { media } from "@/constants/breakPoints";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { useRef } from "react";
 import NameSvg from "public/images/home/name.svg";
 import { gnbHeightPc } from "@/constants/size";
 import useMediaQuery from "@/hooks/useMediaQuery";
-import { calculateScrollEffectValue } from "@/utils/calculateScrollEffectValue";
 
 type Props = {
   setHeaderHide: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,31 +37,25 @@ const Profile = ({ setHeaderHide }: Props) => {
     offset: ["start start", "end start"],
   });
 
-  const [opacity, setOpacity] = useState(opacityEffect.defaultValue);
-  const [translateY, setTranslateY] = useState(translateYEffect.defaultValue);
   const isMobile = !useMediaQuery(media.md);
+
+  const translateY = useTransform(
+    scrollYProgress,
+    [translateYEffect.startPoint, translateYEffect.endPoint],
+    [translateYEffect.defaultValue, translateYEffect.targetValue]
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [opacityEffect.startPoint, opacityEffect.endPoint],
+    [opacityEffect.defaultValue, opacityEffect.targetValue]
+  );
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (!sectionRef.current) return;
     //스크롤이 섹션 상단 위로 올라갔을 때 초기화
     if (latest === 0) {
-      setOpacity(opacityEffect.defaultValue);
-      setTranslateY(translateYEffect.defaultValue);
       !isMobile && setHeaderHide(true);
     }
-    setTranslateY(
-      calculateScrollEffectValue({
-        currentScrollPoint: latest,
-        ...translateYEffect,
-      })
-    );
-    setOpacity(
-      calculateScrollEffectValue({
-        currentScrollPoint: latest,
-        ...opacityEffect,
-      })
-    );
-
     if (!isMobile && latest < opacityEffect.startPoint) {
       setHeaderHide(true);
     }
@@ -65,6 +63,7 @@ const Profile = ({ setHeaderHide }: Props) => {
       setHeaderHide(false);
     }
   });
+
   return (
     <section css={S.self} ref={sectionRef}>
       <Global
