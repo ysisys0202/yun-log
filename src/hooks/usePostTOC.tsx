@@ -8,6 +8,7 @@ export type Heading = {
 
 export const generateTitleId = (title: string) => {
   return title
+    .trim()
     .replace(/[^\p{L}\s-]/gu, "")
     .replace(/\s+/g, "-")
     .toLowerCase();
