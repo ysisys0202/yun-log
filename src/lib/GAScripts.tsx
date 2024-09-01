@@ -9,6 +9,7 @@ const GAScripts = () => {
         strategy="afterInteractive"
       />
       <Script
+        id="ga-gtag"
         dangerouslySetInnerHTML={{
           __html: `
                 window.dataLayer = window.dataLayer || [];
