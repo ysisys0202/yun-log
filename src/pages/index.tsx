@@ -8,9 +8,10 @@ import BackGround from "@/container/layouts/BackGround";
 import Profile from "@/container/home/Profile";
 import FeaturePostList from "@/container/home/FeaturePostList";
 import RecentPostList from "@/container/home/RecentPostList";
+import { PostData } from "@/types/post";
 type Props = {
-  allPostList: any;
-  featuredPostList: any;
+  allPostList: PostData[];
+  featuredPostList: PostData[];
 };
 
 const Homepage = ({ allPostList, featuredPostList }: Props) => {
