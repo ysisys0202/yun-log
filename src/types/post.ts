@@ -17,6 +17,7 @@ export type PostFrontMatter = {
   thumbnail: string;
   order?: number;
   isFeatured?: boolean;
+  keywords: string;
 };
 
 export type PostData = PostFrontMatter & {

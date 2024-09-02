@@ -33,6 +33,7 @@ const PostDetail = ({ postData, mdx }: Props) => {
         title={postData.title}
         description={postData.createdAt}
         ogImage={postData.thumbnail}
+        keywords={postData.keywords}
       />
       <div id="post-container" css={S.self}>
         <PostContent {...{ postData, mdx }} />
