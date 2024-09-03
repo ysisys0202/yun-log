@@ -61,17 +61,6 @@ const PostMarkdown = ({ postData, mdx }: Props) => {
         {children}
       </Typography>
     ),
-    img: (props: React.HTMLProps<HTMLImageElement>) => {
-      return (
-        <Image
-          src={props.src as string}
-          alt={props.alt as string}
-          width={500}
-          height={500}
-          layout="intrinsic"
-        />
-      );
-    },
     code: (props: React.HTMLAttributes<HTMLPreElement>) => {
       const { children, className } = props;
       const language = className?.split("-")[1];
