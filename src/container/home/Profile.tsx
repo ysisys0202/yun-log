@@ -116,7 +116,7 @@ const Profile = ({ setHeaderHide }: Props) => {
 };
 const S = {
   self: css`
-    padding: 48px 48px 100px 48px;
+    padding: 48px 32px 100px;
     @media ${media.md} {
       padding: ${gnbHeightPc - 80}px 80px 100px 80px;
       margin-bottom: 40px;
@@ -125,7 +125,7 @@ const S = {
   titleArea: css``,
   titleText: css`
     line-height: 1.2;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
     @media ${media.sm} {
       font-size: 42px;
@@ -142,6 +142,7 @@ const S = {
       flex-shrink: 0;
     }
     svg {
+      flex-shrink: 0;
       margin: 4px -6px 4px 6px;
       width: 74px;
       height: auto;
