@@ -1,0 +1,493 @@
+---
+title: this 바인딩 알아보기
+intro: "자바스크립트에서 this를 사용해보신 적이 있으신가요? 아마 생각과 다른 값이 나와 당황스러우셨던 적도 있을 것 같은데요. 자바스크립트에서 this는 함수 호출 방식에 따라 값이 동적으로 바인딩 되기 때문에 이에 대해 잘 알아두지 않으면 함정에 빠지게 되는 경우가 종종 있습니다. this 바인딩에 대해 정리해보며 함정을 슉슉 피할 수 있는 슈퍼 개발자가 되어보겠습니다."
+isFeatured: true
+createdAt: "2024-08-08"
+thumbnail : "https://drive.google.com/uc?export=view&id=1SKIK-J9lzuVqUZEZXkvbAX09u5z4B5OT" 
+keywords: "자바스크립트, javascript, this, this 바인딩, this binding, arrow function, call, apply, bind"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## this란 무엇일까요?
+<br/> 
+this는 자신이 속한 객체 또는 자신이 생성할 인스턴스를 가리키는 자기 참조 변수를 의미합니다. this를 통해 자신이 속한 객체 또는 생성할 인스턴스의 프로퍼티나 메서드에 접근할 수 있게 됩니다.
+<br/> 
+```javascript
+const kevin = {
+  name: "케빈",
+  introduce() {
+	  console.log(`Bello! Me ${this.name}!`);
+  },
+  printThis() {
+	  console.log(this);
+  },
+};
+
+kevin.introduce(); // "Bello! Me 케빈!"
+kevin.printThis();
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1DbVWd26uvnbjZZlv2-qhu8zTz3xunho0" alt="kevin 객체의 this" width="600" height="139" caption="kevin.printThis의 출력 값, this는 kevin 객체."/>
+<br/> 
+이렇게 this를 통해 객체에 정의된 name에 접근할 수 있습니다.
+<br/> 
+<Callout title="객체 메서드 축약 표현">
+객체에서 메서드를 선언할 때 ES6에서 나온 객체 메서드 축약 표현을 사용하는 것을 권장합니다.
+자바스크립트에서 function 키워드를 사용하여 함수를 선언하면 해당 함수는 일반 함수와 생성자 함수로 모두 사용할 수 있는데요. 이는 function 키워드로 선언된 함수의 프로토타입에 생성자 함수 관련 기능이 포함되어 있기 때문입니다. 
+</Callout>
+<br/> 
+```javascript
+const kevin = {
+	name: "케빈",
+  introduce: function () {
+	  console.log(`Bello! Me ${this.name}!`);
+  }
+};
+  
+const kevinInstance = new kevin.introduce();
+console.log(kevinInstance);
+```
+<br/>  
+<PostImage src="https://drive.google.com/uc?export=view&id=1826Ks3SsmqI7Hm7WPpxX_rexAVAnB_RC" alt="function 키워드를 사용하면 객체 내에 선언된 메서드 임에도 생성자 함수 역할이 가능." width="540" height="90" caption="kevin.introduce 함수로 생성된 인스턴스"/>
+<br/> 
+<Callout icon="none">
+function 키워드를 사용하여 만든 kevin.introduce 메서드는 인스턴스를 만들 수 있는 생성자 함수의 기능도 가지고 있습니다🫢 생성자 함수 관련 기능을 사용하지 않는데 관련 내용을 상속 받으니 비효율적입니다. 
+그럼 이제 객체 메서드 축약 표현을 사용해볼까요?
+</Callout>    
+<br/> 
+```javascript
+const kevin = {
+	name: "케빈",
+  introduce () {
+	  console.log(`Bello! Me ${this.name}!`);
+  }
+};
+
+const kevinInstance = new kevin.introduce();
+console.log(kevinInstance)
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=10pKBD9ysTG8Mi_p1G8vR1fuV8SWlVXdy" alt="객체 축약 표현 사용 시 인스턴스를 생성할 수 없음" width="600" height="69"/>  
+<br/>
+<Callout icon="none">
+객체 메서드 축약 표현으로 선언된 메서드로 인스턴스를 생성하려고 하면 kevin.introduce is not a constructor 에러가 뜨는 것을 확인할 수 있죠. 생성자 함수 관련 상속을 받지 않는 것을 알 수 있습니다. 때문에 보기에도 간결하고 성능도 좋은 객체 메서드 축약 표현을 사용하는 것을 추천드립니다.
+</Callout> 
+<br/>
+<br/>
+<Callout icon="🤔" title="객체의 프로퍼티에서 this를 사용하면 어떻게 될까?">
+ 혹시 객체 리터럴로 객체를 정의할 때 객체 프로퍼티에서 this를 사용해보려고 하신 적이 있나요? (저는 있습니다😅) 프로퍼티에서 this를 참조하면 전역객체가 나오는데요. 객체 리터럴은 실행 컨텍스트를 생성하지 않기 때문에 상위 스코프인 전역 스코프의 this, 즉 전역객체가 this가 됩니다. 그러나 메서드는 함수이기 때문에 함수 호출 시 실행 컨텍스트가 생성되고 this가 바인딩됩니다. 이때 this는 호출 주체인 객체가 됩니다. (예시코드에서는 kevin)
+</Callout>  
+<br/>    
+```javascript
+const kevin = {
+	name: "케빈",
+  nickName: `용감한 ${this.name}`,
+};
+
+console.log(kevin.nickName); // kevin.nickName에서의 this는 전역객체
+```   
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1CRKPnVsrMgTUqyCLYUx72Sun4FDH3ybd" alt="객체의 프로퍼티에서 this를 사용하면 this는 전역객체" width="380" height="40"/>   
+<br/>
+nickName 프로퍼티에서 this는 전역객체이므로 name이 출력되지 않고 있습니다. 
+<br/>
+```javascript
+function Minion(name,character) {        
+	this.name = name;
+  this.character = character;        
+	this.nickName = `${this.character} ${this.name}`;        
+	this.introduce = function () {          
+	console.log(`Bello! Me ${this.name}!`);        
+};        
+	this.printThis = function () {          
+		console.log(this);       
+  }; 
+}
+  
+const kevin = new Minion("케빈", "용감한");  
+console.log(kevin.nickName); //용감한 케빈  
+kevin.introduce(); //Bello Me 케빈!.    
+kevin.printThis();
+```
+<br/> 
+<PostImage src="https://drive.google.com/uc?export=view&id=1r2txHNNN35zaypnusvX8DqudCGvNZG1a" alt="생성자 함수는 호출 시 this가 정해지므로 프로퍼티에서의 this는 생성될 인스턴스" width="600" height="109" caption="this는 kevin 인스턴스"/>   
+<br/>
+생성자 함수에서는 메서드 뿐만 아니라 프로퍼티에서도 this를 사용하여 자기 자신을 참조하는 것이 가능합니다. 인스턴스의 생성 시점, 즉 생성자 함수 호출 시점에 this가 바인딩 되기 때문입니다.
+<br/>
+## this 바인딩이 중요한 이유
+<br/> 
+this 바인딩은 this가 가리킬 객체를 결정하는 것을 의미하는데요. 그렇다면 왜 this 바인딩이 중요할까요? 
+바로 this가 동적으로 바인딩 되기 때문입니다. 아까 생성자 함수에서의 this를 설명하며 생성자 함수 호출 시점에 this가 바인딩된다고 언급했죠? 하지만 자바스크립트에서 this는 바인딩 된 이후에도 함수 호출 방식에 따라 동적으로 바뀌기 때문에 this 바인딩에 대해 알아두는 것이 중요합니다.
+<br/> 
+## 문맥과 함수 호출에 따른 this 바인딩
+<br/>
+먼저 문맥과 함수 호출 방식에 따른 this 바인딩을 표로 정리해보면 이렇습니다.
+<br/> 
+| 문맥 혹은 함수 호출 방식 | this |
+| --- | --- |
+| 전역 | 전역 객체 |
+| 일반 함수 호출 | 전역 객체 / strict mode에서는 undefined |
+| 메서드 호출 | 메서드를 호출한 객체 |
+| 생성자 함수 호출 | 생성자 함수가 생성할 인스턴스 |
+| 이벤트 리스너 함수 호출 | function 키워드 : 이벤트 리스너 함수가 등록된 DOM 요소 <br/> 화살표 함수 : 상위 스코프의 this |
+<br/> 
+### 전역
+<br/> 
+```javascript
+console.log(this); //Window
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1ATz33n8AzSSOdhBQmU7wiD2TS4n98SR4" alt="Window 전역 객체" width="600" height="22"/>
+<br/> 
+전역에서의 this는 전역객체로 브라우저라면 Window, 노드 환경이라면 global이 됩니다. 
+<br/> 
+### 일반 함수 호출
+<br/> 
+```javascript
+function func () {
+	console.log(this);
+}
+
+func();  //Window
+
+function stricFunc () {
+	'use strict'
+	console.log(this);
+}
+
+stricFunc();  //undefined
+```
+<br/> 
+일반 함수에서의 this는 전역 객체입니다. 다만 strict mode에서는 undefined가 됩니다. 
+<br/> 
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = function () {   
+    function getName () {
+      return this.name;
+    }       
+ 		console.log(`Bello! Me ${getName()}!`);        
+ 	};        
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const stuart  = new Minion('스튜어트', "기타치는");
+const introduce = stuart.introduce();
+stuart.printThis();
+```
+<br/> 
+그렇다면 introduce 메서드 내부에서 getName 함수를 선언하고 호출하면 어떻게 될까요?
+<br/> 
+<PostImage src="https://drive.google.com/uc?export=view&id=1jNQbtM89p2DszrK-nkr159T1oOpIbyyW" alt="메서드 내 일반 함수는 전역객체가 바인딩" width="422" height="34"/>
+<br/> 
+이름이 출력되지 않고 있네요🤦‍♀️
+<br/> 
+getName은 일반 함수이기 때문에 this에 전역객체가 바인딩 되기 때문입니다. 
+(이 문제를 해결하는 방법은 [this 정적 바인딩하기](#this-정적-바인딩하기)에서 알아보겠습니다.) 
+<br/> 
+### 메서드 호출
+<br/> 
+```javascript
+const bob = {
+	name:"밥",
+  character:"귀여운",
+	printThis () {
+		console.log(this)
+	}  
+};
+
+bob.printThis();
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1gV5fpeEWkZlsZkaSmV1pTN1kO9nd38Vw" alt="메서드의 this" width="600" height="151" caption="this는 메서드 호출 주체 bob"/>
+<br/> 
+메서드 호출 시 this는 메서드를 호출한 객체입니다.
+<br/>
+```javascript
+const bob = {
+	name:"밥",
+	play () {
+		console.log(`${this.name}와(과) 놀기`)
+	}  
+};
+
+const kevin = {
+	name:"케빈",
+  character:"용감한"
+}
+
+kevin.play = bob.play;
+kevin.play();
+
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1aAuu9Vbbje2_aCZV7CSHZCFpst7D0eTH" alt="메서드 호출 시 생성자 함수 호출 시점의 this와 상관 없이 메서드를 호출한 주체가 this" width="260" height="42" caption="this는 메서드 호출 주체 kevin"/>
+<br/> 
+그렇다면 kevin 객체에 bob.play 메서드를 추가하고, kevin 객체가 play 메서드를 호출하면 어떻게 될까요? 호출 주체인 kevin이 this가 됩니다.
+<br/> 
+```javascript
+const stuart = {
+  name: "스튜어트",
+  play() {
+    console.log(`${this.name}와(과) 놀기`)
+  }
+}
+ 
+const playWithStuart = stuart.play;
+playWithStuart();
+```
+
+<br/> 
+stuart 객체의 메서드를 변수에 할당한 후 호출하면 어떻게 될까요? 
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1XNmj00rT-zqfRCNY2Mml13-MeYMtHN2o" alt="메서드를 변수에 저장하고 호출하면 this는 전역객체" width="356" height="44" caption="this는 전역객체"/>
+<br/>
+이 경우 일반 함수 호출이기 때문에 this에 전역객체가 바인딩되며 의도한대로 스튜어트와 놀 수 없게 됩니다.😢
+<br/> 
+### 생성자 함수 호출
+<br/> 
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = function () {   
+    function getName () {
+      return this.name;
+    }       
+ 		console.log(`Bello! Me ${getName()}!`);        
+ 	};        
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const dave = new Minion("데이브", "엉뚱한");
+dave.printThis();
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1O6kUri5HZNZq0eKrpDAzKs2nGY2b68Gv" alt="메서드를 변수에 저장하고 호출하면 this는 전역객체" width="600" height="105"/>
+<br/> 
+생성자 함수 호출을 통해 인스턴스가 생성되면 생성된 인스턴스가 this에 바인딩 됩니다.
+<br/> 
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = function () {   
+ 		console.log(`Bello! Me ${this.name}!`);        
+ 	};        
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const dave = new Minion("데이브", "엉뚱한");
+const mel = new Minion("멜", "똑똑한");
+
+dave.introduce = mel.introduce;
+dave.introduce();// Bello! Me 데이브!
+```
+<br/> 
+Minion 생성자 함수를 통해 dave와 mel 인스턴스를 만들었습니다. 이 때 생성자 함수가 호출되었으니 this는 dave와 mel 객체를 각각 가리키고 있을 것입니다.
+이 상태에서 dave.introduce에 mel.introduce를 할당하고 dave.introduce를 호출하면 어떻게 될까요?
+이때도 역시 introduce 메서드를 호출한 주체인 dave 객체가 this가 되어 “Bello! Me 데이브!”가 출력됩니다.
+<br/> 
+```javascript
+function sayHello(introduce){
+	introduce();
+}
+
+sayHello(dave.introduce);
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1fBI_8F1ciDXDVDKn37z_YLOP0babeppR" alt="메서드를 콜백함수로 전달해서 호출하면 this는 전역객체" width="294" height="44" caption="this가 전역 객체이기 때문에 제대로 출력이 되지 않고 있습니다."/> 
+<br/>
+또한 이렇게 dave.introduce를 콜백함수로 넘겨 일반 함수로 호출하게 되면 dave.introduce의 this는 전역 객체가 됩니다.
+<br/> 
+### 이벤트 리스너 함수 호출 
+<br/>
+this는 리스너 함수의 두번째 인자로 오는 콜백함수의 형태에 따라 달라집니다.
+<br/> 
+#### - function 키워드를 사용한 경우
+<br/>
+이벤트 리스너가 바인딩된 DOM 요소. event.currentTarget과 동일합니다.
+<br/> 
+```javascript
+const button = document.querySelector("button");
+
+function handleButtonClick(event) {
+  console.log(this); // button
+  console.log(this === event.currentTarget) // true
+}
+
+button.addEventListener("click", handleButtonClick);
+```
+<br/> 
+#### - 화살표 함수를 사용한 경우
+<br/>
+화살표 함수의 상위 스코프의 this, 아래 코드에서는 상위 스코프가 전역이므로 전역객체가 this가 됩니다. 
+따라서 화살표 함수에서는 this를 사용하기 보다 event 객체의 currentTarget을 사용하면 됩니다.
+<br/> 
+```javascript
+const button = document.querySelector("button");
+   
+const handleButtonClick = (event) => {
+  console.log(this); //Window 객체
+};
+
+button.addEventListener("click", handleButtonClick);
+```
+<br/> 
+## this 정적 바인딩하기
+<br/> 
+앞서 살펴보았듯 함수 호출 방식에 따라 this가 동적으로 결정되기 때문에 개발을 하다보면 종종 예상치 못한 에러를 만나게 되는데요. 혼란스럽지 않게 this를 정적으로 바인딩하려면 어떻게 해야할까요?
+<br/> 
+### apply, call, bind
+call, apply, bind는 자바스크립트에서 함수의 this를 **명시적으로 설정할 수 있는 메서드**입니다.
+<br/> 
+#### - call
+call은 함수를 호출하면서 this 값을 명시적으로 지정할 수 있게 해줍니다. call의 첫 번째 인자에는 this로 지정하고 싶은 객체를 전달하며, 그 다음 인자들은 함수의 매개변수로 전달됩니다.
+<br/>
+```javascript
+function intoduce(arg1, arg2) {
+  console.log(`Bello! Me ${this.name}!`);
+}
+
+const kevin = { name: '케빈' };
+
+intoduce.call(kevin, "arg1", "arg2"); // Bello! Me 케빈!
+```
+<br/>
+#### - apply 
+apply 또한 함수를 호출하며 this 값을 지정합니다. call과의 차이점은 두번째 인자인 함수의 매개변수를 배열로 전달해야합니다.
+<br/>
+```javascript
+function intoduce(arg1, arg2) {
+  console.log(`Bello! Me ${this.name}!`);
+}
+
+const kevin = { name: '케빈' };
+
+intoduce.apply(kevin, ["arg1", "arg2"]); // Bello! Me 케빈!
+```
+<br/>
+#### - bind
+bind 메서드는 this 값을 고정한 새로운 함수를 반환합니다. call과 apply와는 달리 bind는 함수를 즉시 호출하지 않고, 나중에 호출할 수 있는 새로운 함수를 만듭니다. bind의 첫 번째 인자는 this로 지정할 객체를 전달하고 두번째 인자부터 함수의 매개변수를 전달합니다.
+<br/>
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = function () {   
+ 		console.log(`Bello! Me ${this.name}!`);        
+ 	};  
+  this.introduce = this.introduce.bind(this)      
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const kevin = new Minion("케빈", "용감한");
+const stuart = new Minion("스튜어트", "기타치는");
+
+kevin.introduce = stuart.introduce;
+kevin.introduce(); // Bello! Me 스튜어트!
+```
+<br/>
+introduce 메서드에 this가 처음 바인딩 될 때의 this를 명시적으로 고정시켰기 때문에 이제 kevin.introduce를 호출해도 this는 stuart 인스턴스가 됩니다.
+그럼 아까 메서드에서 일반 함수를 호출 했을때 this가 전역객체가 되던 현상을 수정해보겠습니다.
+<br/>
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = function () {   
+    function getName () {
+      return this.name;
+    }
+    const getBoundingName = getName.bind(this);      
+ 		console.log(`Bello! Me ${getBoundingName()}!`);        
+ 	};        
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const stuart  = new Minion('스튜어트', "기타치는");
+const introduce = stuart.introduce(); // Bello! Me 스튜어트!
+```
+<br/>
+getName 함수에 bind로 this를 명시적으로 연결하니 this가 잘 출력됩니다.🥳
+<br/>
+### 화살표 함수
+<br/>
+위 세가지 메서드를 사용하여 this를 정적 바인딩할 수도 있지만 조금 번거롭게 느껴집니다. 이 때 화살표 함수를 사용하면 더 깔끔하게 this를 정적으로 바인딩할 수 있습니다. 
+화살표 함수에서의 this는 선언 시점의 상위 스코프의 this를 가리킵니다. 그 이유는 자바스크립트의 스코프체인 때문인데요. 화살표 함수에는 this가 존재하지 않기 때문에 선언 시점의 상위 스코프의 this를 참조하게 됩니다.
+<br/>
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = () => {        
+ 		console.log(`Bello! Me ${this.name}!`);        
+ 	};        
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const dave = new Minion("데이브", "엉뚱한");
+const mel = new Minion("멜", "똑똑한");
+
+dave.introduce = mel.introduce;
+dave.introduce(); // Bello! Me 멜!
+```
+<br/>
+메서드를 호출한 주체가 dave여도 화살표 함수를 선언했을 당시의 this인 mel 인스턴스가 this가 되는 것을 확인할 수 있습니다.
+bind 메서드를 사용할 때 보다 코드도 깔끔해졌습니다.
+<br/>
+```javascript
+function Minion(name,character) {        
+ 	this.name = name;
+  this.character = character;        
+ 	this.nickName = `${this.character} ${this.name}`;        
+ 	this.introduce = () => {   
+    const getName = () => {
+      return this.name;
+    }    
+ 		console.log(`Bello! Me ${getName()}!`);        
+ 	};        
+ 	this.printThis = function () {          
+ 		console.log(this);       
+  }; 
+}
+
+const stuart  = new Minion('스튜어트', "기타치는");
+const introduce = stuart.introduce(); // Bello! Me 스튜어트!
+```
+<br/>
+마찬가지로 getName 함수를 화살표 함수로 변경하니 this를 잘 가리키고 있습니다.
+<br/>
+<Callout icon="🤔" title="왜 선언 시점에 this가 결정될까요?">
+스코프 체인은 실행 컨텍스트의 LexicalEnvironment(렉시컬 환경)의 OuterEnvironmentReference (외부 환경 참조)에 의해 발생하는데요. 실행 컨텍스트가 함수 실행 전에 생성되니까 화살표 함수의 this도 함수 실행 전에 바인딩 되는 것 아닌가? 라고 생각이 들지도 모르겠습니다.(~~저만 그랬나요?~~ 🥸) 실행 컨텍스트는 함수 실행 전에 생성 되는 것이 맞지만 LexicalEnvironment는 코드가 어디에서 정의되었는지에 따라 결정되기 때문에 함수가 선언될 때의 위치에 따라 상위 스코프가 결정되게 됩니다. 그렇기에 화살표 함수의 this는 선언 시점의 상위 스코프의 this로 결정되는 것이죠.
+</Callout>
+<br/>
+<Callout icon="🚨" title="객체에서 메서드를 정의할 때 화살표 함수를 사용하면 안되는 이유">
+객체 리터럴은 실행 컨텍스트를 생성하지 않기 때문에 전역에서의 this 즉, 전역 객체가 바인딩 됩니다. 때문에 앞서 언급했듯 객체 리터럴을 통해 메서드를 정의 할때는 객체 메서드 축약 표현를 사용하는 것이 좋습니다.
+</Callout>
+<br/>
+## 포스팅을 마치며
+<br/>
+오늘은 자바스크립트에서의 this 바인딩에 대해 이야기 해보았는데요. 복잡한 내용 같았지만 핵심은 ‘this를 정적 바인딩 하지 않은 경우 메서드 호출 주체가 this가 된다’ 라고 이해하시면 좋을 것 같습니다. 긴 글 읽어주셔서 감사드리고 이만 글을 마치도록 하겠습니다.👋👋  
+<br/>

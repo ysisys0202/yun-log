@@ -1,0 +1,311 @@
+---
+title: 원시형과 객체형
+intro: "자바스크립트에서 데이터는 크게 원시 타입, 객체 타입으로 구분됩니다. 데이터 타입에 대해 처음 배울 때는 원시형, 객체형의 특징 보다는 그 안에 포함된 각각의 타입에 더 집중해서 공부하였지만 실제로 프로젝트를 진행하면서 객체 타입 데이터의 특성 이해하는 것이 중요하다는 사실을 알게 되었습니다. 그렇기에 오늘은 원시 타입과 객체 타입의 특징과 함께 객체 타입 데이터를 다룰 때 조심해야 할 부분에 대해서 알아보도록 하겠습니다."
+isFeatured: false
+createdAt: "2024-07-28"
+thumbnail : "https://drive.google.com/uc?export=view&id=12UVym-fm2t8p66hBEdPasA8RgGLkFqRw"
+keywords: "자바스크립트, javascript, data type, 원시형, 객체형, 불변성"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## 원시 타입 (Primitive Type)
+<br/>
+- 원시타입에는 총 6가지의 데이터 타입이 있습니다. (아래 표 참고)
+- 변수에 **실제 값이 직접 저장**되는 데이터 타입입니다.
+- **불변한(immutable)** 값이며 재할당 시 기존 메모리 공간을 덮어 쓰는 것이 아니라 새로운 메모리 공간에 값을 저장하고 식별자는 새로운 메모리 주소를 가리키게 됩니다.
+- 원시 값을 갖는 변수를 다른 변수에 복사하면 원본의 **값 자체가 복사**됩니다.
+<br/>
+| 데이터 타입  | 예시 값 | 부연 설명 |
+| --- | --- | --- |
+| 문자열 (string) 타입  | ‘가나다’, ‘1234’ |  |
+| 숫자 (number) 타입  | 123, -123, infinite, NaN (Not a Number) | |
+| boolean 타입  | 논리 값, 참 (true)과 거짓 (false) | |
+| undefined 타입 | undefined (변수에 값이 할당되지 않았을 때 초기 값) |  |
+| null 타입 | null (’값이 없음’을 명시할 때 사용) |  typeof 사용 시 object가 나옴  |
+| symbol 타입 | 변경 불가능한 원시타입 값 | |
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1SeVPcTnmDHVUgCGwWAcncEzvDP-kJsBt" alt="원시형 데이터" width="660" height="795"/>
+> 1. 실제 값 123456가 password 변수에 저장됩니다.
+> 2. password를 복사한 copyPassword는 password의 값 123456을 복사합니다.
+> 3. password에 654321로 값을 재할당하면 기존의 123456 값을 수정하는 것이 아니라 새로운 메모리 공간에 저장되며 password 식별자는 새로운 값이 담긴 메모리 주소를 가르킵니다.
+
+<br/>
+<Callout title="데이터 타입을 확인하고 싶을땐?">
+typeof 연산자를 사용하면 데이터 타입을 문자열로 반환합니다.
+</Callout> 
+<br/>
+```javascript
+console.log(typeof true); // boolean
+console.log(typeof "true") //string
+```
+<br/>
+## 객체 타입 (Object Type)
+<br/>
+- 원시형 데이터가 아닌 모든 데이터 타입이 객체 타입 데이터입니다. (객체, 배열, 함수 등)
+- 객체 데이터는 **크기가 동적으로 바뀔 수 있기에 힙 메모리에 저장**되며 변수에는 **데이터의 메모리 주소가 저장**됩니다.
+- **변경 가능(mutable)**한 값이며 객체의 프로퍼티를 바꾸는 것이 가능합니다.
+- 객체 타입 변수를 다른 변수에 복사하면 원본의 **메모리 주소 값이 복사**됩니다.
+- 같은 주소를 바라보고 있기 때문에 **복사한 객체를 수정하면 원본 객체도 같이 수정됩니다.**
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1PlT7EDKxpr3AAoqW9WGBHwYvJO8Ymkr3" alt="" width="660" height="972"/>
+<br/>
+> 1. userInfo는 객체가 저장된 주소를 저장합니다.
+> 2. copyUserInfo는 userInfo 객체가 저장된 주소 값을 복사합니다.
+> 3. 객체 타입 데이터는 변경 가능한 값이므로 프로퍼티를 바꾸는 것이 가능합니다. userInfo.name이 '김유저'에서 '이유저'로 변경
+> 4. userInfo와 copyUserInfo는 같은 객체를 참조하고 있기 때문에 userInfo.name도 '이유저'가 됩니다. 
+
+<br/>
+<Callout title="배열은 무슨 타입일까?">
+array는 배열이지만 데이터 타입은 **object**로 나오는 걸 볼 수 있습니다. 객체형 데이터 중 function만 예외적으로 **function** 타입을 반환합니다.
+Array.isArray() 메서드를 사용하여 배열인지 아닌지 확인할 수 있습니다.
+</Callout>
+
+<br/>
+```javascript
+const array = [];
+const func = function (){}
+
+console.log(typeof func) //function
+console.log(typeof array); // object
+console.log(Array.isArray(array)) //true
+
+```
+<br/>
+## 🚨객체형 데이터를 다룰 때 주의해야 할 점
+<br/>
+```javascript
+const userInfo = {
+	id: 1,
+	name: "김유저",
+};
+
+const copyUserInfo = userInfo;
+
+copyUserInfo.name = "이유저"; // 복사한 객체에서 데이터 수정
+
+console.log(userInfo.name) // "이유저", 복사한 객체를 수정하였지만 원본 객체도 수정되었다!
+```
+<br/>
+위 코드 처럼 copyUserInfo를 수정하면 원본인 userInfo도 수정됩니다. **두 변수가 같은 메모리 주소를 바라보고 있기 때문입니다.** 원본을 수정하려고 의도한 것이 아니었다면 예기치 못한 에러가 날 수도 있겠죠. 때문에 객체형 데이터를 복사할 때는 원본 데이터에 영향을 미치지 않도록 **불변성을 유지하는 것이 중요합니다.**
+<br/>
+## 불변성을 유지하며 객체 타입 복사하기
+<br/>
+객체의 복사는 얕은 복사와 깊은 복사가 있습니다. <HighlightText type="background" fontWeight={700}>얕은 복사</HighlightText>란 **복사 데이터의 속성이 원본 데이터와 같은 참조를 공유하는 경우**이고 <HighlightText type="background" fontWeight={700}>깊은 복사</HighlightText>는 **원본 데이터와 공유하는 참조값이 없는 복사**로 원본 데이터의 불변성을 유지할 수 있습니다.
+<br/>
+### 얕은 복사(Shallow Copy)
+<br/>
+#### 1. spread 연산자 
+객체와 배열을 쉽게 복사할 수 있는 방법으로 spread 연산자(...)가 있습니다. spread 연산자를 사용하면 배열이나 객체를 펼쳐서 개별 요소로 분리할 수 있습니다. 사용하기도 쉽고 보기에도 간결하기 때문에 저는 많은 경우 spread 연산자를 사용하여 객체 데이터를 복사합니다.
+<br/>
+```javascript
+const user = {
+	id:123456,
+	address: "우리 집",
+};
+const copyUser = {...user};
+
+console.log(user === copyUser) //false
+
+
+const colors = ["빨강", "주황", "노랑"];
+const copyColors = [...colors];
+
+console.log(colors === copyColors) //false
+```
+<br/>
+user와 colors를 spread 연산자로 분리한 후 새로운 객체와 배열로 만들었습니다. 원본 데이터와 비교해보면 false가 나오는 걸 볼 수 있습니다.
+이제 복사 데이터를 변경해도 원본 데이터에 영향이 가지 않습니다.
+<br/>
+```javascript
+const userList = [
+    {
+      id: 1,
+      name: "김유저",
+    },
+    {
+      id: 2,
+      name: "이유저",
+    },
+    {
+      id: 3,
+      name: "박유저",
+    },
+];
+
+const copyUserList = [...userList];
+console.log(userList === copyUserList);// false
+console.log(userList[0] === copyUserList[0]); 
+//true, 같은 메모리 주소를 가지고 있음, 불변성 보장 ❌
+```
+<br/>
+다만 spread 연산자는 얕은 복사를 하기 때문에 최상위 속성만 복사하며 중첩된 객체, 배열의 불변성을 보장하지 않습니다.
+<br/>
+#### 2. Object.asign()
+Object.assign()는 첫 번째 인자인 대상 객체에 두 번째 이후의 인자인 소스 객체들의 속성을 대상 객체에 복사하고 병합한 후 대상 객체를 반환하는 메서드입니다.
+이또한 얕은 복사이기에 중첩 객체 데이터의 불변성은 보장되지 않습니다.
+<br/>
+```javascript
+const targetObj = {
+  a : 1,
+  b : 2
+}
+const sourceObj = {
+  c : 3,
+  d : 4
+}
+
+const assignedObj = Object.assign(targetObj,sourceObj); 
+// targetObj에 sourceObj의 속성을 복사하고 병합한 후 targetObj가 반환
+console.log(assignedObj);
+// {
+//   a : 1,
+//   b : 2,
+//   c : 3,
+//   d : 4
+// }
+console.log(targetObj ===assignedObj) // true
+```
+<br/>
+targetObj에 sourceObj의 속성을 복사한 후 병합할 수 있습니다.
+<br/>
+```javascript 
+const userInfo = { 
+    id : 1,
+    name : "김유저"
+};
+const copyUserInfo = Object.assign({},userInfo); 
+//대상 객체 {}에 userInfo 객체의 속성을 복사하고 병합하여 대상 객체를 반환
+
+console.log(userInfo === copyUserInfo); // false
+```
+<br/>
+이런 식으로 얕은 복사를 할 수 있게 됩니다.
+<br/>
+#### 3. Array.from()
+<br/>
+Array.from()은 원본 배열을 얕게 복사한 새로운 배열을 반환합니다.
+```javascript
+const userList = [
+    {
+      id: 1,
+      name: "김유저",
+    },
+    {
+      id: 2,
+      name: "이유저",
+    },
+    {
+      id: 3,
+      name: "박유저",
+    },
+];
+const copyUserList = Array.from(userList);
+console.log(userList===copyUserList);//false
+
+```
+<br/>
+#### 4. 새로운 배열을 리턴하는 배열 메서드
+<br/>
+배열의 경우 map, filter, slice, concat, reduce 등 **새로운 배열을 리턴하는 배열 메서드**를 사용하여 얕은 복사가 가능합니다.
+대표적으로 많이 쓰이는 map의 경우를 살펴보겠습니다.
+<br/>
+```javascript
+const userList = [
+    {
+      id: 1,
+      name: "김유저",
+    },
+    {
+      id: 2,
+      name: "이유저",
+    },
+    {
+      id: 3,
+      name: "박유저",
+    },
+];
+const copyUserList = userList.map((userItem)=>({...userItem}));
+console.log(userList===copyUserList);//false
+console.log(userList[0] ===copyUserList[0])//false
+
+```
+<br/>
+배열 메서드도 얕은 복사를 하지만 callback 함수 안에서 userList의 원소인 userItem을 다시 한번 복사하는 것이 가능합니다.
+<br/>
+
+### 깊은 복사(Deep Copy)
+깊은 복사를 하기 위해서는 재귀함수를 사용하여 deepCopy 함수를 구현하거나 deepCopy 기능을 제공하는 라이브러리를 사용하시면 됩니다.
+(라고 Chat GPT가 알려줬습니다. 저는 프로젝트에서 깊은 복사를 해본 경험은 없네요😥) 
+프로젝트에 따라 직접 구현 또는 관련 라이브러리 도입을 고민해보면 될 것 같습니다. 저는 공부 목적으로 깊은 복사를 직접 구현해보겠습니다.
+<br/>
+#### 1. deepCopy 함수 구현하기
+<br/>
+> **목표 : 데이터를 돌면서 프로퍼티 혹은 원소가 object 타입이 아닐때까지 재귀적으로 값을 얕은 복사하여 결과적으로 원본 데이터와의 참조 값을 완전히 끊어낸다.**
+> <br/>
+> 1. base case : 인자로 받아온 data의 타입을 체크한 한 후 object 타입이 아니라면 data를 리턴.
+> 2. data가 배열인 경우 : map을 사용하며 원소를 재귀적으로 복사 후 리턴.
+> 3. data가 object인 경우 : for in 반복문을 사용하여 속성을 재귀적으로 복사 후 result에 추가, result 리턴
+
+<br/>
+```javascript
+const deepCopy = (data) => {
+  // null의 type이 object이므로 주의해서 조건에 추가.
+  if (data === null || typeof data !== "object") {
+    return data;
+  }
+  if (Array.isArray(data)) {
+    return data.map((item) => deepCopy(item));
+  }
+  const result = {};
+  for (key in data) {
+    result[key] = deepCopy(data[key]);
+  }
+  return result;
+};
+
+const userList = [
+  {
+    name: "김유저",
+    address: {
+      country: "한국",
+      city: "서울",
+      coordinates: [126.978, 37.5665],
+    },
+    hobbies: ["달리기", "책 읽기"],
+  },
+  {
+    name: "이유저",
+    address: {
+      country: "미국",
+      city: "워싱턴 DC",
+      coordinates: [74.006, 40.7128],
+    },
+    hobbies: ["게임하기", "등산"],
+  },
+  {
+    name: "박유저",
+    address: {
+      country: "일본",
+      city: "도쿄",
+      coordinates: [35.6828, 139.7595],
+    },
+    hobbies: ["영화보기", "테니스"],
+  },
+];
+
+const copiedUserList = deepCopy(userList);
+console.log(
+    userList[1].address.country[0] === copiedUserList[1].address.coordinates[0]
+  ); //false
+```
+재귀적으로 데이터를 얕은 복사하는 deepCopy 함수를 쓰니 배열안의 객체안의 배열의 값을 비교해도 false가 나옵니다 🎉
+<br/>
+(딴소리지만 재귀함수를 사용할 때는 재귀함수 종료 조건인 base case를 잘 설정해줍시다. 
+조건을 data === null <HighlightText type="background">&&</HighlightText> typeof data !== "object"로 넣었다가 눈물이 찔끔 나왔버렸습니다.)
+<PostImage src="https://drive.google.com/uc?export=view&id=1WC-1hkUU_hwYWNap9E6gD7F4FByIEtX-" alt="스택오버플로우" width="440" height="177"/>
+
+<br/>
+## 포스팅을 마치며
+<br/>
+오늘은 원시형 데이터와 객체형 데이터의 특징과 데이터의 불변성을 유지하는 방법에 대해 알아보았습니다. 처음 포스팅을 시작할 때도 이야기했듯이 자바스크립트를 처음 배울 때는 원시형 데이터와 객체형 데이터를 나누는 큰 특징보다는 원시형 데이터에 더 집중해서 공부했었습니다. 그러다 리액트를 접하게 되고 객체형 데이터의 특성을 이해하는 것이 중요하다는 것을 알게 되었습니다. 리액트는 state의 변화에 따라 화면을 리렌더링 하기 때문에 객체를 변경해도 주소 값이 같다면 리렌더링이 안 되는 이슈가 발생할 수 있었기 때문이죠. 따라서 원본 객체와 다른 주소 값을 가지는 새로운 객체를 만들어 원본 객체의 불변성을 유지할 필요가 있었습니다. (물론 리액트를 사용하지 않더라도 복사된 데이터에 의해 원본 데이터가 수정되지 않도록 불변성을 유지하는 것은 중요한 일입니다.) 이때 다시 한 번 느끼게 된 것은 어떤 라이브러리를 사용하더라도 자바스크립트의 특성을 알고 있는 것이 중요하다는 것이었습니다. 만약 객체형 데이터의 특성을 모른다면 리렌더링 이슈가 발생했을 때 왜 이런 이슈가 발생하는지 파악하기 힘들 테니까요. 그리고 빠르게 변화하는 프론트엔드 생태계 특성상 언제 어떤 라이브러리가 리액트의 자리를 대신하게 될지 모르지만 자바스크립트 지식이 탄탄하게 깔려 있다면 쉽게 적응할 수 있다고 생각합니다. 저도 아직 많이 배우는 단계이기에 그런 경지에 오르기 위해 많이 공부하고 노력해야될 것 같습니다. 여기까지 긴 글 읽어주셔서 감사드리고 앞으로도 꾸준히 공부하며 기록하도록 하겠습니다.🤓
