@@ -11,20 +11,30 @@ const setColorThemeClass = (isDark: boolean) => {
 };
 
 const useColorTheme = () => {
+  const [isMatchedDarkTheme, setIsMatchedDarkTheme] = useState<boolean>();
   const [colorTheme, setColorTheme] = useRecoilState(colorThemeState);
   const isDark = colorTheme == "dark";
 
   useEffect(() => {
-    setColorTheme(
-      window.localStorage.getItem("colorTheme") as "light" | "dark"
+    setIsMatchedDarkTheme(
+      window.matchMedia("(prefers-color-scheme: dark)").matches
     );
-  }, []);
+  });
+
+  useEffect(() => {
+    const savedColorTheme = window.localStorage.getItem("colorTheme");
+    if (savedColorTheme) {
+      return setColorTheme(savedColorTheme as "light" | "dark");
+    }
+    setColorTheme(isMatchedDarkTheme ? "dark" : "light");
+  }, [isMatchedDarkTheme]);
 
   const handleColorThemeToggle = () => {
     setColorTheme(isDark ? "light" : "dark");
     setColorThemeClass(isDark);
     window.localStorage.setItem("colorTheme", isDark ? "light" : "dark");
   };
+
   return { colorTheme, handleColorThemeToggle };
 };
 
