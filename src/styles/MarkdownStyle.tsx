@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
-import { colors } from "@/constants";
 import { media } from "@/constants/breakPoints";
+import { green } from "@/constants/colors";
 import { colorVars } from "@/constants/cssVariables";
 import { typography } from "@/constants/typography";
 
-const MarkdownStyle = css`
+const markdownStyle = css`
   word-break: keep-all;
   p {
     white-space: pre-wrap;
@@ -22,6 +22,13 @@ const MarkdownStyle = css`
     td {
       padding: 10px 16px;
       border: 1px solid ${colorVars.border};
+    }
+  }
+  a {
+    text-decoration: underline;
+    &::after {
+      content: "↗️";
+      font-size: 0.6em;
     }
   }
   ol {
@@ -56,4 +63,4 @@ const MarkdownStyle = css`
   }
 `;
 
-export default MarkdownStyle;
+export default markdownStyle;

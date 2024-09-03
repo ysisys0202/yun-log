@@ -1,5 +1,3 @@
-import "@/styles/reset.css";
-import "@/styles/global.css";
 import GlobalStyles from "@/styles/GlobalStyles";
 import dynamic from "next/dynamic";
 import Script from "next/dist/client/script";
