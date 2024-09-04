@@ -1,0 +1,22 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import {colors,green,gray} from "@/constants/colors"
+ 
+<Meta title="Colors" />
+ 
+<ColorPalette>
+  <ColorItem
+    title="Static Colors"
+    colors={{ White: colors.white, Yellow:colors.yellow,Blue:colors.blue,Black:colors.black}}
+  />
+  <ColorItem 
+    title="Static Color Greens" 
+    colors={green} 
+  />
+  <ColorItem 
+    title="Static Color Grays" 
+    subtitle="" 
+    colors={gray} 
+  />
+</ColorPalette
+
+>
