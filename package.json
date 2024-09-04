@@ -39,5 +39,6 @@
     "@svgr/webpack": "6.5.1",
     "@types/react-syntax-highlighter": "^15.5.7",
     "remark-gfm": "3.0"
-  }
+  },
+  "packageManager": "yarn@4.4.1"
 }
