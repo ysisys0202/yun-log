@@ -1,7 +1,8 @@
 /** @type {import('next-sitemap').IConfig} */
 const config = {
-  siteUrl: process.env.SITE_URL || "http://localhost:3000",
+  siteUrl: "https://www.yun-log.com",
   generateRobotsTxt: true,
+  outDir: "./public",
 };
 
 module.exports = config;
