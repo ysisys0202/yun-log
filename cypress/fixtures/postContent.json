@@ -1,0 +1,13 @@
+{
+  "categoryId": "1",
+  "categoryName": "Javascript",
+  "slug": "var는-왜-더이상-사용되지-않을까",
+  "content": "<p>{intro}</p>\n<Spacing size=\"lg\" />\n\n## 프로그래밍에서 변수란?\n<br/>\n프로그래밍에서 변수란 **하나의 값을 저장하기 위해 이름이 붙은 메모리 공간**을 뜻합니다.\n<br/>\n```javascript \nvar password = 123456; \n```\n<br/>\n위와 같이 변수를 선언하고 값을 할당하면 3단계에 걸쳐 변수에 값이 저장됩니다.\n<br/>\n<PostImage src=\"https://drive.google.com/uc?export=view&id=1WtfApWevV7lzHhaKIx6mF-KktJy5wZBo\" alt=\"변수 선언 과정\" width=\"580\" height=\"392\"/>\n<br/>\n> 1. 선언 : 자바스크립트 엔진이 **변수의 식별자를 인식하는 단계**입니다. 식별자만 인식할 뿐 값이 저장되지는 않습니다.\n> 2. 초기화 : 변수 식별자가 인식된 후, **메모리 공간을 확보하고 초기값을 설정하는 단계**입니다. 이 때 식별자는 확보된 메모리 공간의 주소값을 가르킵니다. 초기 값이 명시되어 있지 않은 경우 undefined로 초기화 됩니다.\n> 3. 할당 : 식별자가 가르키고 있는 주소의 **메모리 공간에 값을 저장하는 단계**입니다.\n<br/>\n## var와 const, let의 차이\n<br/>\n이제 자바스크립트에서 변수를 선언할 때 사용하는 세가지 키워드 var와 const,let의 차이점에 대해 알아봅시다.\n<br/>\n### 1. 재선언 , 재할당 가능 여부\n<br/>\n#### 재선언과 재할당이란?\n<br/>\n**재선언** : 이미 선언된 변수 식별자를 다시 사용하여 변수를 선언하는 것을 의미합니다.\n<br/>\n```javascript \nvar password = 123456; \nvar password = 654321; // 이미 사용된 password 식별자를 사용하여 변수를 재선언\n\nconsole.log(654321); // 재선언 시 할당된 654321이 출력된다.\n```\n<br/>\n**재할당** : 변수에 값을 다시 할당하는 것을 의미합니다.\n<br/>\n```javascript \nvar password = 123456; \npassword = 654321; // password 값에 값을 재할당\n\nconsole.log(654321); // 재할당 된 654321 값이 출력된다.\n```\n<br/>\nvar와 const, let의 재선언, 재할당 여부는 아래와 같습니다.",
+  "title": "var는 왜 더이상 사용되지 않을까",
+  "subTitle": "var와 const, let의 차이점 알아보기",
+  "intro": "혹시 자바스크립트에서 var 사용을 지양하라는 말을 들어보셨나요? \n var는 한때 자바스크립트에서 변수를 선언할 수 있는 유일한 키워드였습니다. 하지만 ES6부터 모던 자바스크립트를 사용하는 개발자들은 더 이상 var를 사용하지 않고 있습니다. ES6부터 포함된 const와 let이라는 변수 선언 키워드가 있기 때문입니다. 하지만 var를 사용하지 않는 이유가 그저 오래된 문법이라서일까요? var와 const, let의 차이점을 알아보며 var가 외면받는 이유에 대해 알아보겠습니다.",
+  "isFeatured": true,
+  "createdAt": "2024-07-24",
+  "thumbnail": "https://drive.google.com/uc?export=view&id=1KhO3x8PP7eh40G3ux4RsEg40L32eVkuC",
+  "keywords": "자바스크립트, javascript, 변수, variables, var, const, let, hoisting, 호이스팅, scope"
+}
