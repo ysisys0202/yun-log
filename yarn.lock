@@ -9328,7 +9328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.0":
+"dotenv@npm:^16.0.0, dotenv@npm:^16.4.5":
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 10c0/48d92870076832af0418b13acd6e5a5a3e83bb00df690d9812e94b24aff62b88ade955ac99a05501305b8dc8f1b0ee7638b18493deb6fe93d680e5220936292f
@@ -14841,6 +14841,7 @@ __metadata:
     "@types/react-syntax-highlighter": "npm:^15.5.7"
     autoprefixer: "npm:10.4.15"
     cypress: "npm:^13.14.2"
+    dotenv: "npm:^16.4.5"
     eslint: "npm:8.48.0"
     eslint-config-next: "npm:13.4.19"
     eslint-plugin-storybook: "npm:^0.8.0"
