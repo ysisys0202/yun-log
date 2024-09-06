@@ -70,7 +70,7 @@ const Profile = ({ setHeaderHide }: Props) => {
         styles={css`
           :root {
             --icon-book: url(/images/home/book_dark.png);
-            .dark {
+            [data-color-theme="dark"] {
               --icon-book: url(/images/home/book_light.png);
             }
           }

@@ -28,6 +28,15 @@ const nextConfig = {
   images: {
     domains: ["drive.google.com"],
   },
+  redirects: async () => {
+    return [
+      {
+        source: "/storybook",
+        permanent: true,
+        destination: "/storybook/index.html",
+      },
+    ];
+  },
 };
 
 // Merge MDX config with Next.js config

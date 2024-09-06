@@ -34,7 +34,7 @@ const Typography = ({
     typographyStyle[variant],
     css`
       color: ${color};
-      font-weight: ${fontWeight};
+      font-weight: ${fontWeight} !important;
     `,
     propsCss,
   ];

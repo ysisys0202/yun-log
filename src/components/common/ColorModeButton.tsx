@@ -26,6 +26,7 @@ const ColorModeButton = ({ onClick, ...rest }: Props) => {
         handleColorThemeToggle();
         onClick && onClick(event);
       }}
+      data-color-theme={isDark ? "dark" : "light"}
       aria-label={label}
       {...rest}
     />
