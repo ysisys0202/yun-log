@@ -10,7 +10,7 @@ export const colorSet = css`
     --color-background-global: ${themeColor.light.backgroundGlobal};
     --color-border: ${themeColor.light.border};
   }
-  :root .dark {
+  :root [data-color-theme="dark"] {
     --color-primary: ${themeColor.dark.primary};
     --color-secondary: ${themeColor.dark.secondary};
     --color-tertiary: ${themeColor.dark.tertiary};

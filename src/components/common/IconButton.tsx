@@ -2,13 +2,19 @@ import { SerializedStyles, css } from "@emotion/react";
 import { HtmlHTMLAttributes } from "react";
 
 type Props = {
-  element: "button" | "div";
+  element?: "button" | "div";
   icon: React.ReactNode;
   name: string;
   propsCss?: SerializedStyles;
 } & HtmlHTMLAttributes<HTMLElement>;
 
-const IconButton = ({ element, icon, name, propsCss, ...rest }: Props) => {
+const IconButton = ({
+  element = "button",
+  icon,
+  name,
+  propsCss,
+  ...rest
+}: Props) => {
   const Component = element;
   const styles = [S.self];
   propsCss && styles.push(propsCss);

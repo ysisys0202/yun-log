@@ -4,26 +4,27 @@ import { colorVars } from "@/constants/cssVariables";
 type Props = {
   width?: string;
   height?: string;
-  backgroundColor?: string;
-  style: SerializedStyles;
+  color?: string;
+  propsCss?: SerializedStyles;
+  className?: string;
 };
 
 const Divider = ({
   width = "100%",
   height = "1px",
-  backgroundColor = colorVars.border,
-  style,
+  color = colorVars.border,
+  propsCss,
+  ...props
 }: Props) => {
   const styles = [
     css`
       width: ${width};
       height: ${height};
-      background-color: ${backgroundColor};
+      background-color: ${color};
     `,
-    style,
   ];
-
-  return <div css={styles} aria-hidden="true"></div>;
+  propsCss && styles.push(propsCss);
+  return <div css={styles} aria-hidden="true" {...props}></div>;
 };
 
 export default Divider;

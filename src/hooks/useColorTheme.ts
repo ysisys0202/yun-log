@@ -2,12 +2,8 @@ import { colorThemeState } from "@/store/colorTheme";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-const setColorThemeClass = (isDark: boolean) => {
-  if (isDark) {
-    document.body.classList.remove("dark");
-  } else {
-    document.body.classList.add("dark");
-  }
+const setColotTheme = (colorTheme: string) => {
+  document.body.setAttribute("data-color-theme", colorTheme);
 };
 
 const useColorTheme = () => {
@@ -31,7 +27,7 @@ const useColorTheme = () => {
 
   const handleColorThemeToggle = () => {
     setColorTheme(isDark ? "light" : "dark");
-    setColorThemeClass(isDark);
+    setColotTheme(isDark ? "light" : "dark");
     window.localStorage.setItem("colorTheme", isDark ? "light" : "dark");
   };
 
