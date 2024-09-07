@@ -11,9 +11,7 @@ const SideNav = () => {
   const router = useRouter();
   const { pathname, query } = router;
   const currentCategory = pathname === "/posts" ? "전체" : query.category;
-  // const { navCategories } = useCategoriesInfo();
-  const navCategories: any[] = [];
-  console.log(navCategories.length);
+  const { navCategories } = useCategoriesInfo();
   const handleSideNavItem = (value: string) => {
     event({
       action: "click",

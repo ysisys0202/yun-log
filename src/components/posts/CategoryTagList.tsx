@@ -10,8 +10,7 @@ type Props = {
   currentCategory: string;
 };
 
-const CategoryTagList = ({ currentCategory }: Props) => {
-  const categories: any[] = [];
+const CategoryTagList = ({ categories, currentCategory }: Props) => {
   return (
     <TagList>
       {categories.length === 0 && renderTagSkeletons(3)}
@@ -47,4 +46,5 @@ const renderTagSkeletons = (length: number) => {
   }
   return skeletons;
 };
+
 export default CategoryTagList;
