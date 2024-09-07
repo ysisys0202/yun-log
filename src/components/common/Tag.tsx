@@ -3,7 +3,7 @@ import { SerializedStyles, css } from "@emotion/react";
 import { colors } from "@/constants/colors";
 import { colorVars } from "@/constants/cssVariables";
 
-type TagProps = {
+export type TagProps = {
   className?: string;
   backgroundColor?: string;
   textColor?: string;
@@ -56,12 +56,14 @@ const S = {
   `,
   size: {
     sm: css`
-      padding: 4px 12px;
+      height: 26px;
+      padding: 0 8px;
       font-size: 12px;
-      line-height: 1.4;
+      line-height: 1;
     `,
     md: css`
-      padding: 4px 12px;
+      height: 30px;
+      padding: 0 12px;
       font-size: 14px;
       line-height: 1.4;
     `,
