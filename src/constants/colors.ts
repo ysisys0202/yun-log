@@ -36,6 +36,8 @@ export const themeColor: ColorThemeSetType = {
     backgroundElement: gray[30],
     backgroundGlobal: colors.white,
     border: gray[30],
+    skeletonPrimary: gray[20],
+    skeletonSecondary: gray[10],
   },
   dark: {
     primary: gray[20],
@@ -44,5 +46,7 @@ export const themeColor: ColorThemeSetType = {
     backgroundElement: gray[80],
     backgroundGlobal: gray[90],
     border: gray[60],
+    skeletonPrimary: gray[80],
+    skeletonSecondary: gray[90],
   },
 };
