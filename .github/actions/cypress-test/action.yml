@@ -1,0 +1,31 @@
+name: Cypress Test
+description: Action For Cypress Test
+inputs:
+  cypress-project-id:
+    description: "Cypress Project ID"
+    required: true
+  cypress-record-key:
+    description: "Cypress Record Key"
+    required: true
+  github-token:
+    description: "GitHub Token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Run Cypress tests
+      uses: cypress-io/github-action@v6
+      with:
+        build: yarn build
+        start: yarn start
+        wait-on: "http://localhost:3000"
+        wait-on-timeout: 120
+        record: true
+        parallel: true
+      env:
+        CYPRESS_PROJECT_ID: ${{ inputs.cypress-project-id }}
+        CYPRESS_RECORD_KEY: ${{ inputs.cypress-record-key }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
