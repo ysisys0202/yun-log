@@ -5,7 +5,9 @@ export type ColorSematicType =
   | "tertiary"
   | "backgroundElement"
   | "backgroundGlobal"
-  | "border";
+  | "border"
+  | "skeletonPrimary"
+  | "skeletonSecondary";
 
 export type ColorSetType = {
   [key in ColorSematicType]: string;
