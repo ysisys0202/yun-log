@@ -1,0 +1,768 @@
+---
+title: framer motion으로 스크롤 애니메이션 적용하기
+intro: "제 블로그의 홈 화면에는 블로그 소개 글이 있습니다. 스크롤 할 때 글씨가 천천히 올라가며 점차 투명해집니다. framer motion 라이브러리를 사용하여 해당 효과를 구현한 이야기를 해보겠습니다. 처음 framer motion을 사용할 당시 공식 문서가 굉장히 잘 되어 있음에도 불구하고 원하는 정보를 찾고 적용하기가 어려웠던 기억이 납니다. 이번에 스크롤 애니메이션을 적용하는 과정도 다사다난했는데요. 다시 같은 실수를 반복하지 않기 위해 이 과정을 기록해 두려 합니다."
+isFeatured: false
+createdAt: "2024-09-05"
+thumbnail : "https://drive.google.com/uc?export=view&id=1BygqRiRKneTKSqsYSSr9R4wCL_9uxu82"
+keywords: "framer motion, 프레이머 모션, 애니메이션, aimation, scroll animation, 스크롤 애니메이션, 리액트, react, next.js, 넥스트"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## 들어가기 전에
+<br/>
+- 제가 작업한 환경은 아래와 같습니다.
+    - react : 18.2.0
+    - next : 13.4.19
+    - framer-motion : 10.16.3
+    - emotion : 11.11.1 
+    <br/>
+- framer motion 소개, 설치 방법, 모든 기능을 다루지 않습니다. 이 부분은 [framer motion 공식 문서](https://www.framer.com/motion/introduction/)를 확인해주세요👍
+- 스크롤 애니메이션을 구현하는데 사용한 기능은 motion component, useScroll, useTransform, useMotionValueEvent입니다.
+- 스타일 라이브러리는 emotion을 사용하고 있으나 애니메이션에 관여하지 않습니다. 기본적인 스타일을 적용하기 위해 사용되었습니다.
+- 빠르게 코드를 확인하고 싶으시다면 [최종 코드](#최종-코드)를 확인해주세요.
+<br/>
+## 무엇을 구현할까
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1yUbpwoW0y-YVKc_cDsQzET-V2aoAVQZF" alt="홈 화면 1" width="640" height="334"/>
+<br/>
+블로그 홈 화면을 만들던 당시 Hero 섹션이 좀 심심해보인다는 생각이 들었습니다. 
+'Hero 섹션이 스크롤 속도보다 천천히 올라가면 사용자들에게 더 잘 기억되지 않을까?' 하는 생각에 스크롤 애니메이션을 적용하기로 마음 먹었습니다.
+이때 제가 원하던 애니메이션은 섹션의 특정 지점에서 텍스트의 위치가 천천히 올라가며, 점차 투명해져 텍스트가 사라지는 애니메이션이었습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1K_GxZLgE1dptvP4qaD5I89EUzyew8Ldd" alt="홈 화면 1" width="1072" height="830"/>
+<br/>
+Window 스크롤이 애니메이션 구간을 지날때 스크롤 진행 바율 값(0 ~ 1)으로 css 값 적용하면 될 것 같습니다.
+<br/>
+글로 정리하면 아래와 같습니다.
+<br/>
+>**목표 : 섹션의 특정 구간의 스크롤 진행 비율 값으로 애니메이션을 구현한다.**
+>(이 때 애니메이션이 시작되고 끝나는 구간을 애니메이션 구간이라고 한다.) 
+>(각 css 속성은 기본 값과 목표 값을 가진다.)
+><br/>
+>1. 애니메이션 구간 진입 시 애니메이션이 시작된다. 이 때 진행 비율 값은 0, 적용될 css 값은 기본 값
+>2. 애니메이션 구간을 지날 때의 진행 비율을 가지고 css 속성 값을 계산하여 적용한다. (기본 값 + ((목표 값 - 기본 값) * 진행 비율 값) ) 
+>2-1.  애니메이션 구간의 중간 지점을 지난다. 이 때 진행 비율 값은 0.5, 적용될 css 값은 기본 값 + (목표 값 - 기본 값) * 0.5
+>3. 애니메이션 구간을 벗어날 시 애니메이션은 종료된다. 이 때 진행 비율 값은 1, 적용될 css 값은 목표 값
+<br/>
+## 왜 framer motion을 사용하게 됐는지?
+<br/>
+구현에 앞서 framer morion을 선택한 이유를 말씀드리겠습니다. framer motion은 <HighlightText fontWeight="700">초기 상태 값, 목표 상태 값을 선언하여 간단히 애니메이션을 구현</HighlightText> 할 수 있는 라이브러리입니다. 사용법이 간단하며 코드가 직관적이고 다양한 기능을 제공하기 때문에 이전부터 프로젝트에 사용하고 있었고 또한 <HighlightText fontWeight="700">특정 요소를 타켓으로 스크롤을 추적하는 기능</HighlightText>을 제공하고 있기 때문에 원하는 애니메이션을 쉽게 구현할 수 있을 것이라고 생각하여 최종적으로 사용을 결정하게 되었습니다. 
+저는 이번에 스크롤 애니메이션을 중점으로 다루지만 정말 다양한 기능을 제공하고 있고 공식 문서도 예제와 함께 잘 정리되어 있으니 모션, 애니메이션 구현 시 사용하는 것을 추천드립니다👍 
+<br/>
+## 구현 사항을 위해 사용한 기능
+<br/>
+애니메이션 구현을 위해 사용한 기능들에 대해 소개해보겠습니다. 
+<br/>
+### useScroll
+<br/>
+일단 [공식 문서](https://www.framer.com/motion/introduction/)로 들어가면 왼쪽 메뉴에 scroll이 있는 걸 보실 수 있습니다. 바로 확인해보겠습니다. useScroll 혹이 보입니다. **페이지 스크롤을 추적하여 4가지 motion value를 반환**해주는 훅이라고 하네요. 
+여기서 motion value란 framer motion에서 애니메이션을 적용하는데 사용하는 값입니다. 조금 있다가 설명할 motion component에 motion value 값을 전달하여 애니메이션의 값과 상태를 추적하게 됩니다.
+<br/>
+```tsx
+const {scrollX, scrollY, scrollXProgress, scrollYProgress} = useScroll()
+```
+<br/>
+- **scrollX/Y** : px 단위의 절대 스크롤 위치로 wondow.scrollX/Y와 동일한 값입니다.
+- **scrollXProgress / YProgress** : 정의된 offset 사이의 스크롤 위치로 0~1 사이 값을 가집니다. 이게 정말 꿀입니다🍯😋
+<br/>
+useScroll를 사용할 때 아무런 옵션도 전달하지 않으면 기본적으로 window에서의 스크롤을 추적합니다.
+하지만 저는 특정 섹션에서의 스크롤을 추적하고 싶기 때문에 추가할 옵션에 대해 알아보겠습니다.
+<br/>
+```tsx
+//Section.tsx
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  return (
+    <section ref={sectionRef}>
+       <h1>
+        Welcome!
+        <br />
+        It's Yun's Dev Log!
+      </h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nibh
+        odio, vestibulum non congue quis, porttitor vitae arcu. Nunc imperdiet
+        porttitor odio, vel finibus ex placerat ac. Pellentesque accumsan
+      </p>
+    </section>
+  );
+};
+```
+<br/>
+- **container** : 스크롤 값이 추적되는 요소입니다. 기본 값은 window이며 스크롤이 발생하는 다른 요소를 ref로 전달할 수 있습니다.
+<br/>저는 값을 넣지 않았으니 <HighlightText fontWeight="700">window</HighlightText>의 스크롤을 추척합니다.
+- **target** : container 내에서 진행 상황을 추적할 수 있는 요소입니다. 추적하고 싶은 요소를 ref로 전달할 수 있습니다.
+<br/>저는 section 태그의 진행 상황을 추적하고 싶으니 <HighlightText fontWeight="700">sectionRef</HighlightText>를 전달하겠습니다.
+- **offset** : target과 container가 만나는 교차점을 지정합니다. offset은 두개의 교차점을 배열로 전달합니다. offset은 다양하게 적용 가능하기 때문에 공식문서를 읽어보시고 상황에 맞게 적용하시는 것을 추천드립니다.
+<br/>저는 section의 상단이 window 상단에 도달한 순간부터 section의 하단이 window 상단의 도달한 지점까지의 값을 원하기 때문에 <HighlightText fontWeight="700">["start start","end start"]</HighlightText>를 전달했습니다.
+<br/>
+추가적인 옵션에 더 궁금하시면 [useScroll 문서](https://www.framer.com/motion/use-scroll/)를 읽어보세요. 옵션 적용 방법과 각 옵션에 대한 설명이 잘 설명되어 있습니다.
+<br/>
+```tsx
+//Section.tsx
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    console.log(latest);
+  });
+  
+  return (
+    <section ref={sectionRef}>
+       <h1>
+        Welcome!
+        <br />
+        It's Yun's Dev Log!
+      </h1>
+      <p>
+        {/* 내용 생략 */}
+      </p>
+    </section>
+  );
+};
+```
+<br/>
+자 이제 useMotionValueEvent로 scrollYProgress를 값이 원하는 대로 나오는지 확인해 보면 좋을 것 같습니다. 다만 scrollYPropss는 motion value로 리액트 state 값이 아니기 때문에 값의 변화를 추적할 때 useEffect를 사용할 수가 없습니다. 다행히 framer motion은 motion value의 변화를 감지할 수 있는 <HighlightText fontWeight="700">useMotionValueEvent</HighlightText>를 제공하고 있습니다. 
+useMotionValueEvent를 사용하여 scrollYProgress 값을 출력해 보겠습니다. (가시성을 위해 섹션에 배경색을 줘보았습니다.)
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1kRIBkyEf5Fwl4xvjLBe0dM0hPSWROUyg" alt="홈 화면 1" width="558" height="720"/>
+<br/>
+section에서의 스크롤 진행 값이 잘 출력됩니다. 이제 이 값을 어떻게 적용해야할까요?
+<br/>
+### motion component
+<br/>
+framer motion에서 제공하는 <HighlightText fontWeight="700">motion component</HighlightText>를 사용하면 됩니다. 
+motion component는 <HighlightText fontWeight={700}>< motion.element/></HighlightText> 형태를 가지며 전달 받은 motion value 값을 통해 애니메이션을 적용할 수 있으며 init(초기 값), animate(목표 값), style 등을 정의하여 전달할 수 있습니다. 저는 scrollYProgress값에 따라 애니메이션을 적용할 것이니 style에 값을 전달하겠습니다.
+<br/>
+```javascript
+//Section.tsx
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  return (
+    <section ref={sectionRef}>
+      <motion.h1
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        Welcome!
+        <br />
+        It's Yun's Dev Log!
+      </motion.h1>
+      <motion.p
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        {/* 내용 생략 */}
+      </motion.p>
+    </section>
+  );
+};
+```
+<br/>
+motion component에 scrollYProgress 값을 넘겨주면 스크롤할 때 마다 opacity와 translateY 값이 바뀌는 걸 확인할 수 있습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1691zGb1SzEYO70cwsVmE9RmWejXoe35S" alt="motion component 적용" width="640" height="332"/>
+<br/>
+흠...하지만 이건 제가 원하는 것이 아닙니다😞 
+저는 섹션의 시작 지점와 끝 지점이 아니라 섹션의 특정 구간에서 애니메이션이 동작해야하며 값도 opacity는 1에서 0, translateY는 0에서 180px로 변하게 하고 싶습니다.
+어떻게 해야할까요?
+<br/>
+### useTransform
+<br/>
+그럴때 필요한 게 바로 useTransform 입니다. 
+<br/>
+```javascript
+const x = useMotionValue(1);
+const y = useMotionValue(1);
+
+const z = useTransform(() => x.get() + y.get()); // 2
+
+```
+<br/>
+useTransform은 하나 이상의 **motion value 값을 입력받고 이를 변환하여 새로운 motion value를 생성**하는 훅입니다. 이렇게 x값과 y값을 더해 새로운 값 z를 만들 수 있습니다. 하지만 정말 유용한 기능은 바로 <HighlightText fontWeight="700">mapping</HighlightText>입니다. 입력 범위와 출력 범위를 정의하여 입력 값에 매핑된 출력 값을 받아올 수 있습니다. 무슨 말인지 이해하셨니요?😵‍💫 글만보면 무슨 소리인가 싶지만 아래 코드를 보시면 이해가 쉽습니다.
+<br/>
+```javascript
+const x = useMotionValue(0);
+
+const opacity = useTransform(
+  x, // 입력 값 motion value
+  [0, 100], // 입력 값 x가 0에서 100일 때
+  [1, 0] // 1에서 100의 출력 값을 반환
+)
+```
+<br/>
+이렇게 입력 범위 배열과 출력 범위 배열을 매핑하여 **x가 0일 때는 opacity가 1이고, x가 100일 때는 opacity가 0이어야 한다**라고 설정할 수 있습니다.
+입력 범위와 출력 범위 배열의 원소는 2개 이상이어도 됩니다. 즉 입력값 x가 [0, 20, 50, 100]일때 출력 값이 [1, 0.8, 0.6, 0.5]가 되도록 하는 섬세한 컨트롤도 가능합니다. 
+이 때 조금 주의 하실 점은 매핑을 위해 **입력 범위와 출력 범위의 배열의 개수는 같아야 한다는 점**입니다.
+<br/>
+자 이제 감이 오시지 않나요? scrollYProgress 값의 변화에 따른 value를 받아 motion component에 적용해주면 원하는 애니메이션이 구현될 것 같습니다. 
+<br/>
+
+```javascript
+// 애니메이션의 기본 값, 목표 값, 시작 점, 종료 점 정의
+const translateYEffect = {
+  defaultValue: 0,
+  targetValue: 180,
+  startPoint: 0,
+  endPoint: 0.5,
+};
+
+const opacityEffect = {
+  defaultValue: 1,
+  targetValue: 0,
+  startPoint: 0.3,
+  endPoint: 0.45,
+};
+
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const translateY = useTransform(
+    scrollYProgress,
+    [translateYEffect.startPoint, translateYEffect.endPoint],
+    [translateYEffect.defaultValue, translateYEffect.targetValue]
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [opacityEffect.startPoint, opacityEffect.endPoint],
+    [opacityEffect.defaultValue, opacityEffect.targetValue]
+  );
+
+  return (
+    <section css={S.self} ref={sectionRef}>
+      <motion.h1
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        Welcome!
+        <br />
+        It's Yun's Dev Log!
+      </motion.h1>
+      <motion.p
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        {/* 내용 생략 */}
+      </motion.p>
+    </section>
+  );
+};
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1AURcHE4Hnuvhv6aXzf8a_nbh1hW22-yS" alt="결과물" width="640" height="332"/>
+<br/>
+짜잔 이제 비로소 제가 원하던 애니메이션이 구현되었습니다🎉 
+(~~마지막으로 검토 중에 발견한건데 Wellcom 무엇... 흐린 눈 해주세요...~~)
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1qu8Cz2trc65gsAl8PwDY9nYkWh3lghMw" alt="홈 화면 1" width="640" height="332"/>
+<br/>
+섹션을 기준으로 동작하기 때문에 섹션을 가운데로 이동시켜도 동일한 애니메이션이 적용됩니다👍
+<br/>
+### useMotionValueEvent
+<br/>
+아까 잠깐 사용했던 useMotionValueEvent를 소개하겠습니다. 
+<br/>
+```javascript
+useMotionValueEvent(value, "change", (latest) => {
+  console.log(latest)
+})
+```
+<br/>
+<HighlightText fontWeight="700">useMotionValueEvent</HighlightText>는 컴포넌트 내의 **motion value에서 발생하는 이벤트를 감지**하는 훅입니다.
+인자로 motion value 값, 감지할 이벤트, 이벤트가 발생할 때 실행시킬 콜백함수를 전달해줍니다.
+change 이벤트의 경우 value의 최신 값을 받아올 수 있습니다.
+최종 코드에는 포함되지 않았지만 (사실 제 홈 화면에서는 header의 hide/show 컨트롤을 위해 사용되었습니다.)
+개발하는 과정에서 motion value 값을 확인할 때 유용합니다.
+<br/>
+### useInView 고려해보기
+<br/>
+저는 스크롤 값을 기반으로 css 속성 값을 계산할 것이기 때문에 useScroll을 사용하였지만 특정 element가 viewport에 진입하는 순간 이벤트를 트리거하고 싶으시다면 <HighlightText fontWeight="700">useInVIew </HighlightText>사용을 추천드립니다. interSerctionObserver처럼 element가 화면에 보이고 사라질 때를 감지해서 boolean 값을 리턴해주기 때문에 useScroll보다 성능에 유리합니다.
+[framer motion - useInView 알아보기](https://www.framer.com/motion/use-in-view/)
+<br/>
+## 최종 코드
+<br/>
+최종 코드는 이렇습니다. 스크롤 애니메이션 코드치고 꽤 간결하죠?
+<br/>
+```tsx
+import { useRef } from "react";
+import { css } from "@emotion/react";
+import { motion, useScroll, useTransform } from "framer-motion";
+
+
+const translateYEffect = {
+  defaultValue: 0,
+  targetValue: 180,
+  startPoint: 0,
+  endPoint: 0.5,
+};
+
+const opacityEffect = {
+  defaultValue: 1,
+  targetValue: 0,
+  startPoint: 0.3,
+  endPoint: 0.45,
+};
+
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const translateY = useTransform(
+    scrollYProgress,
+    [translateYEffect.startPoint, translateYEffect.endPoint],
+    [translateYEffect.defaultValue, translateYEffect.targetValue]
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [opacityEffect.startPoint, opacityEffect.endPoint],
+    [opacityEffect.defaultValue, opacityEffect.targetValue]
+  );
+  return (
+    <section css={S.self} ref={sectionRef}>
+      <motion.div
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        <h1 css={S.title}>
+          Welcome!
+          <br />
+          It's Yun's Dev Log!
+        </h1>
+        <p css={S.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nibh
+          odio, vestibulum non congue quis, porttitor vitae arcu. Nunc imperdiet
+          porttitor odio, vel finibus ex placerat ac. Pellentesque accumsan
+        </p>
+      </motion.div>
+    </section>
+  );
+};
+
+const S = {
+  self: css`
+    padding: 48px 32px 100px;
+    width: 500px;
+  `,
+  title: css`
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+  `,
+
+  description: css`
+    margin-top: 24px;
+    font-size: 24px;
+    font-weight: 400;
+  `,
+};
+
+export default Section;
+```
+<br/>
+## 4단 리팩토링 과정
+<br/>
+저렇게 생각한대로 문서에서 내용을 착착 찾아서 적용한다면 세상이 얼마나 아름다울까요?
+이제부터는 제가 해당 코드를 작성하기까지의 과정을 보여드리겠습니다. 
+사실 너무 길어져서 이 부분은 그냥 날릴까 고민도 했는데 제가 어떤 실수를 했고 어떻게 코드를 수정해나갔는지 기록해두는 용도로 남겨두었습니다. (for 미래의 나..)
+<br/>
+### 1️⃣ 냅다 코드 작성하기
+<br/>
+```tsx
+//Section.tsx
+import { gnbHeightPc } from "@/constants/size";
+import { css } from "@emotion/react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollY, scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+  const [sectionTop, setSectionTop] = useState<number>(0);
+  const [sectionBottom, setSectionBottom] = useState<number>(0);
+  const [opacity, setOpacity] = useState(1);
+  const [translateY, setTranslateY] = useState(0);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    //초기 헨더링 시의 section rect 값 저장
+    const sectionRect = sectionRef.current.getBoundingClientRect();
+    setSectionTop(sectionRect.top + window.scrollY);
+    setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
+  }, []);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (!sectionRef.current) return;
+    if (latest > sectionTop && latest < sectionBottom) {
+      const inSectionScrollRatio =
+        (latest - sectionTop) / (sectionBottom - sectionTop);
+      const translateYStartPoint = 0.2;
+      const translateYEndPoint = 0.6;
+      if (inSectionScrollRatio < translateYStartPoint) {
+        setTranslateY(0);
+      }
+      if (inSectionScrollRatio > translateYStartPoint) {
+        setTranslateY(-220);
+      }
+      if (
+        inSectionScrollRatio >= translateYStartPoint &&
+        inSectionScrollRatio <= translateYEndPoint
+      ) {
+        const inSectionScrollPostion =
+          inSectionScrollRatio - translateYStartPoint;
+        const inSectionScrollProgress =
+          inSectionScrollPostion / (translateYEndPoint - translateYStartPoint);
+
+        setTranslateY(inSectionScrollProgress * -220);
+      }
+      const opcityStartPoint = 0.4;
+      const opcityEndPoint = 0.7;
+      if (inSectionScrollRatio < opcityStartPoint) {
+        setOpacity(1);
+      }
+      if (inSectionScrollRatio > opcityEndPoint) {
+        setOpacity(0);
+      }
+      if (
+        inSectionScrollRatio >= opcityStartPoint &&
+        inSectionScrollRatio <= opcityEndPoint
+      ) {
+        const inSectionScrollPostion = inSectionScrollRatio - opcityStartPoint;
+        const inSectionScrollProgress =
+          inSectionScrollPostion / (opcityEndPoint - opcityStartPoint);
+        setOpacity(1 - inSectionScrollProgress);
+      }
+    }
+  });
+
+  return (
+    <section css={S.self} ref={sectionRef}>
+      <motion.div
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        <h1 css={S.title}>
+          Welcome!
+          <br />
+          It's Yun's Dev Log!
+        </h1>
+        <p css={S.description}>
+          {/* 내용 생략 */}
+        </p>
+      </motion.div>
+    </section>
+  );
+};
+
+const S = {
+  self: css`
+    position: sticky;
+    top: ${gnbHeightPc}px;
+    //기타 코드 생략
+  `,
+};
+
+export default Section;
+
+```
+<br/>
+🙊 : 와 더럽...
+😻 : The 💖이요?
+🙈 : 아니요, 코드가 더럽다구요.
+<br/>
+일단 저의 가장 큰 패착은 텍스트가 천천히 올라가는 애니메이션을 위해 section을 sticky로 화면 상단에 고정시키고 translateY로 텍스트를 서서히 올리려고 한 것이었습니다.
+이렇게 되면 section의 위치가 고정되기 때문에 scrollYProgress값이 원하는 대로 나오지 않습니다🤦
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=11sf0lTW9WoQkiJJko0eKgQH98BnIS3Qq" alt="" width="640" height="404" caption="section 위치가 고정되니 계속 0이 나오게 됩니다."/>
+<br/>
+때문에 초기 렌더링 시에 섹션의 rect 값은 미리 저장해두고 스크롤 진행률을 직접 계산하게 됩니다.
+그리고 css 값 계산도 일단은 원하는 애니메이션이 적용되도록 냅다 적어줍니다. 
+(이 때 리액트 state를 사용해서 리렌더링 이슈도 발생할 것 같습니다🥲)
+천천히 코드를 수정해 보겠습니다. 일단 css 값 계산하는 부분이 반복되는게 보이니 그 부분부터 손을 대보겠습니다..
+<br/>
+### 2️⃣ 반복되는 코드를 공통적으로 빼기
+<br/>
+css 값을 계산해주는 코드를 함수나 훅으로 빼보도록 하겠습니다.
+이때 두가지 방식이 떠올랐습니다.
+<br/>
+1. hook으로 계산 값 반환하기
+  장점 : 코드가 깔끔하다.
+  단점 : useMotionValue 이벤트를 사용해야 할 것 같은데 하나의 값마다 하나의 useMotionValueEvent가 돌아가는 게 성능 이슈가 발생할 것 같은 느낌...?
+  (나중에 알게 된 거 지만 이미 useTransform으로 framer motion이 제공하던 기능이었습니다🫠)
+2. useMotionValueEvent 내부에서 style 값만 계산하는 함수 만들기
+  장점 : useMotionValueEvent가 한번만 사용된다.
+  단점 : 코드가 덜 깔끔하다.
+<br/>
+지금의 목적은 css 값을 계산하는 부분을 공통적으로 묶는 것이니 2번 방식으로 리팩토링을 진행했습니다.
+<br/>
+```typescript
+///utils/calculateScrollEffectValue.ts
+type SrcollEffectParams = {
+  currentScrollPoint: number;
+  defaultValue: number;
+  targetValue: number;
+  startPoint: number;
+  endPoint: number;
+};
+
+export const calculateScrollEffectValue = ({
+  currentScrollPoint, // 현재 스크롤 위치
+  defaultValue,       // css 기본 값
+  targetValue,        // css 목표 값
+  startPoint,         // 효과 시작점
+  endPoint,           // 효과 종료점
+}: SrcollEffectParams) => {
+  // 스크롤 위치가 시작점과 종료점 사이에 있을 때
+  if (currentScrollPoint >= startPoint && currentScrollPoint <= endPoint) {
+    // 효과 시작 지점으로부터 스크롤 된 값
+    const scrollProgressedPoint = currentScrollPoint - startPoint;
+    // 스크롤 효과 구간에서 스크롤이 진행된 비율 (0 ~ 1 사이의 값) = 효과 시작 지점으로부터 스크롤 된 값 / 스크롤 효과 구간
+    const scrollProgressedRate = effectStartPoint / (endPoint - startPoint);
+    // 기본 값에 스크롤 진행 비율에 따라 목표 값이 될 수 있도록 계산한 값을 더해 반환
+    return defaultValue + (targetValue - defaultValue) * scrollProgressedRate;
+  
+  } else {
+    // 스크롤 위치가 시작점 이전일 경우 기본 값을 반환
+    if (currentScrollPoint < endPoint) {
+      return defaultValue;
+    }
+    // 스크롤 위치가 종료점 이후일 경우 목표 값을 반환
+    if (currentScrollPoint > startPoint) {
+      return targetValue;
+    }
+  }
+};
+
+```
+<br/>
+현재 스크롤 위치, 기본 값, 목표 값, 시작점, 종료점을 인자로 넘겨서 값을 계산해주는 함수입니다.  
+<br/>
+```tsx
+//Section.tsx
+// 기타 import 생략
+import { calculateScrollEffectValue } from "@/utils/calculateScrollEffectValue";
+
+
+const translateYEffect = {
+  defaultValue: 0,
+  targetValue: -220,
+  startPoint: 0.2,
+  endPoint: 0.6,
+};
+const opacityEffect = {
+  defaultValue: 1,
+  targetValue: 0,
+  startPoint: 0.4,
+  endPoint: 0.7,
+};
+
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollY, scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const [sectionTop, setSectionTop] = useState<number>(0);
+  const [sectionBottom, setSectionBottom] = useState<number>(0);
+  const [opacity, setOpacity] = useState(1);
+  const [translateY, setTranslateY] = useState(0);
+
+  useEffect(() => {
+    const updateSectionRect = () => {
+      if (!sectionRef.current) return;
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      setSectionTop(sectionRect.top + window.scrollY);
+      setSectionBottom(sectionRect.top + window.scrollY + sectionRect.height);
+    };
+
+    updateSectionRect();
+    window.addEventListener("resize", updateSectionRect);
+
+    return () => window.removeEventListener("resize", updateSectionRect);
+  }, []);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (!sectionRef.current) return;
+    if (latest > sectionTop && latest < sectionBottom) {
+      const inSectionScrollRatio =
+        (latest - sectionTop) / (sectionBottom - sectionTop);
+
+      //calculateScrollEffectValue로 값 계산
+      setTranslateY(
+        calculateScrollEffectValue({
+          currentScrollPoint: inSectionScrollRatio,
+          ...translateYEffect,
+        })
+      );
+      setOpacity(
+        calculateScrollEffectValue({
+          currentScrollPoint: inSectionScrollRatio,
+          ...opacityEffect,
+        })
+      );
+    }
+  });
+
+  return (
+    <section css={S.self} ref={sectionRef}>
+      <motion.div
+        className="text-area"
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        <h1 css={S.title}>
+          Welcome!
+          <br />
+          It's Yun's Dev Log!
+        </h1>
+        <p css={S.description}>
+           {/* 내용 생략 */}
+        </p>
+      </motion.div>
+    </section>
+  );
+};
+//스타일 코드 생략
+export default Section;
+
+```
+<br/>
+공통된 코드를 정리하고 resize 대응도 해주었습니다.처음보단 코드가 깨끗해졌지만 여전히 마음에 들지 않습니다...😞
+<br/>
+### 3️⃣ 발상의 전환
+<br/>
+작업을 한 후 이럴꺼면 'framer motion 안써도 되는데' 하는 찝찝함이 계속 남아있었습니다. 'winodw에 스크롤 이벤트 리스너 붙여서 쓰는거랑 뭐가 다르지?' 싶었던 것이죠.
+그러던 중 생각난 것이 section을 고정시키고 텍스트의 위치를 올리는 것이 아니라 section은 올라가고 텍스트가 천천히 내려간다면 텍스트가 천천히 올라가는 것 처럼 보이지 않을까? 하는 생각이 들었습니다. 그리고 실제로 적용 해보니 생각한대로 잘 되었습니다. position:sticky를 제거하여 section의 스크롤 값을 추적할 수 있으니 이제 scrollYProgress를 사용할 수 있습니다!
+<br/>
+```tsx
+//Section.tsx
+// 기타 import 생략
+import { calculateScrollEffectValue } from "@/utils/calculateScrollEffectValue";
+
+
+const translateYEffect = {
+  defaultValue: 0,
+  targetValue: 180,
+  startPoint: 0,
+  endPoint: 0.5,
+};
+
+const opacityEffect = {
+  defaultValue: 1,
+  targetValue: 0,
+  startPoint: 0.3,
+  endPoint: 0.45,
+};
+
+const Section = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const [opacity, setOpacity] = useState(1);
+  const [translateY, setTranslateY] = useState(0);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+      if(scrollYProgress===0){
+        setTranslateY(translateYEffect.defaultValue);
+        setOpacity(opacityEffect.defaultValue);
+      }
+      if(scrollYProgress===1){
+        setTranslateY(translateYEffect.targetValue);
+        setOpacity(opacityEffect.targetValue);
+      }
+      setTranslateY(
+        calculateScrollEffectValue({
+          currentScrollPoint: latest,
+          ...translateYEffect,
+        })
+      );
+      setOpacity(
+        calculateScrollEffectValue({
+          currentScrollPoint: latest,
+          ...opacityEffect,
+        })
+      );
+  });
+
+  return (
+    <section css={S.self} ref={sectionRef}>
+      <motion.div
+        className="text-area"
+        style={{
+          opacity,
+          translateY,
+        }}
+      >
+        <h1 css={S.title}>
+          Welcome!
+          <br />
+          It's Yun's Dev Log!
+        </h1>
+        <p css={S.description}>
+           {/* 내용 생략 */}
+        </p>
+      </motion.div>
+    </section>
+  );
+};
+//스타일 코드 생략
+export default Section;
+
+```
+<br/>
+휴.. 점점 코드가 깔끔해지고 있습니다.
+<br/>
+### 4️⃣ 아 맞다, useTransform
+<br/>
+그러다 문득 useTransform이 떠오르게 되었고 더이상 제가 직접 css 값을 계산할 필요 없게 됩니다.
+(스크롤의 압박이 심하기에 여기에 따로 코드를 옮겨적지는 않겠습니다🤓)
+
+<br/>
+## 포스팅을 마치며
+<br/>
+이런 우여곡절 끝에 최종 코드가 나오게 되었습니다. 간단한 애니메이션 하나 넣는데 이렇게까지 삽질할 일인가 싶습니다. 글로 작성하다 보니 장황해진 부분도 있네요. 그래도 당시에 어떤 문제를 겪었고 그 문제를 해결하기 위해 어떤 아이디어를 떠올렸는지 기록해 두고 싶었기에 최대한 자세히 이야기를 풀어보았습니다. 또 포스트를 작성하며 공식 문서를 천천히 다시 읽어보았는데요. 제가 찾던 정보가 너무나 잘 정리되어 있어 '내가 왜 이걸 못봤지?' 싶었습니다. 일단 구현하고자 하는 마음이 앞서 눈에 잘 보이지 않았던 것 같기도 합니다. 조급한 마음을 누르고 문서를 천천히 읽는 연습도 많이 해야 할 것 같습니니다. 글이 너무 길어졌네요. (여기까지 읽으신 분이 계시다면 감사의 박수를 드립니다 👏👏👏) 혹여나 framer motion으로 스크롤 애니메이션을 구현하는 데 어려움을 겪고 계신 분들께 도움이 되길 바라며 이만 마치도록 하겠습니다👋👋

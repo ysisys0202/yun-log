@@ -11,7 +11,7 @@ type Props = {
 
 const Codeblock = ({ children, language }: Props) => {
   return (
-    <section>
+    <section css={S.self}>
       <header css={S.codeBlockHeader}>
         <Typography variant="body1" element="span">
           {language}
@@ -30,6 +30,9 @@ const Codeblock = ({ children, language }: Props) => {
 };
 
 const S = {
+  self: css`
+    font-size: 14px;
+  `,
   codeBlockHeader: css`
     padding: 8px;
     border-radius: 4px 4px 0 0;

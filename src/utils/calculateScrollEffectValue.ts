@@ -14,9 +14,10 @@ export const calculateScrollEffectValue = ({
   endPoint,
 }: SrcollEffectParams) => {
   if (currentScrollPoint >= startPoint && currentScrollPoint <= endPoint) {
-    const effectStartPoint = currentScrollPoint - startPoint;
-    const effectProgressPoint = effectStartPoint / (endPoint - startPoint);
-    return defaultValue + (targetValue - defaultValue) * effectProgressPoint;
+    const scrollProgressedPoint = currentScrollPoint - startPoint;
+    const scrollProgressedRate =
+      scrollProgressedPoint / (endPoint - startPoint);
+    return defaultValue + (targetValue - defaultValue) * scrollProgressedRate;
   } else {
     if (currentScrollPoint < endPoint) {
       return defaultValue;
@@ -25,5 +26,4 @@ export const calculateScrollEffectValue = ({
       return targetValue;
     }
   }
-  return defaultValue;
 };
