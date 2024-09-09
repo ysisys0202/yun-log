@@ -1,0 +1,142 @@
+---
+title: next-sitemap으로 사이트맵 만들기
+intro: "제가 생각하는 프론트엔드 개발의 재밌는 점은 코드로 화면을 만들 수 있다는 점과 만들어진 화면을 통해 사용자와 소통할 수 있다는 점입니다. 그렇기에 열심히 코드를 작성하여 배포했을때 많은 사용자와 만나게 될 것을 기대하게 됩니다. (아무도 안들어온다면 정말 아주 조금 속상할지도요...🥲) 그럼 어떻게 사용자를 사이트에 유입시킬 수 있을까요? 여러 마케팅 방법이 있겠지만 가장 비용이 들지 않는 방법은 구글, 네이버와 같은 검색 포털 사이트의 검색 결과에 잘 노출되게 하는 것입니다. 오늘은 검색 엔진이 우리 사이트의 정보를 잘 수집하여 검색 결과에 노출할 수 있도록 사이트맵을 만드는 과정을 소개해보겠습니다."
+isFeatured: false
+createdAt: "2024-09-09"
+thumbnail : "https://drive.google.com/uc?export=view&id=12UVym-fm2t8p66hBEdPasA8RgGLkFqRw"
+keywords: "리액트, react, next.js, 넥스트, sitemap, SEO, 검색 엔진 최적화, 구글 서치 콘솔, next-sitemap"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## 사이트맵이란?
+<br/>
+사이트맵은 사이트에 있는 페이지, 동영상 및 기타 파일과 각 관계에 관한 정보를 제공하는 파일입니다. 사이트맵으로 정보를 제공하여 검색 엔진이 효율적으로 사이트를 크롤링할 수 있게 합니다.
+<br/>
+```xml
+< ?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+  xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" 
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" 
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    <url>
+      <loc>http://www.yun-log.com</loc>
+      <lastmod>2024-09-08T19:17:50.815Z</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.7</priority>
+    </url>
+    <url>
+      <loc>http://www.yun-log.com/posts</loc>
+      <lastmod>2024-09-08T19:17:50.815Z</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.7</priority>
+    </url>
+  </urlset>
+```
+<br/>
+블로그의 사이트맵의 일부를 가져와보았습니다.
+사이트맵에서는 검색엔진에 노출되어야 하는 페이지 정보들이 있습니다. 각 파일의 위치(loc), 페이지가 마지막으로 수정된 날짜(lastmod), 페이지의 변경 빈도(changefreq), 페이지 우선순위(priority)등의 정보가 담깁니다. 
+<br/>
+## next-sitemap 사용하기
+<br/>
+사이트맵에 페이지 정보를 손수 입력할 수도 있겠지만(😅) 콘텐츠 상세 페이지의 경우에는 동적 라우팅을 하기 때문에 하나하나 입력해주는 것이 어렵겠죠? 이 때 next-sitemap을 사용해서 쉽게 사이트맵을 생성할 수 있습니다. [next-sitemap 공식문서](https://github.com/iamvishnusankar/next-sitemap#readme)를 보며 세팅해보겠습니다.
+<br/>
+### 설치
+<br/>
+```terminal
+yarn add next-sitemap
+```
+<br/>
+### 설정
+<br/>
+next-sitemap.config.js 파일을 루트 폴더에 만들어줍니다.
+<br/>
+```javascript
+// next-sitemap.config.js
+module.exports = {
+  siteUrl: process.env.SITE_URL, //url
+  generateRobotsTxt: true, 
+}
+```
+<br/>
+package.json scripts에 postbuild 스크립트를 추가해줍니다. 
+<br/>
+```json
+// package.json
+{
+  "build": "next build",
+  "postbuild": "next-sitemap"
+}
+```
+<br/>
+```terminal
+yarn build
+```
+<br/>
+자 이제 빌드해봅시다. 빌드가 성공적으로 끝나면 사이트맵이 생성됩니다.
+파일은 기본적으로 public 폴더에 생성됩니다. <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>로 접근할 수 있어야 하기 때문에 그렇게 설정되어 있는 것 같습니다. (필요에 따라 config 파일에서 outDir를 설정해줘도 됩니다.)
+배포 할 때 마다 프로젝트가 빌드되며 사이트맵이 새로 생성될 것이기 때문에 지금 생성한 사이트맵 파일들은 삭제해줍시다.
+<br/>
+### 확인
+<br/>
+<HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>에 접속해봅시다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1FOvn2rcsIT2wYeBtUf1vaeMp7JSa5jnN" alt="블로그 사이트맵" width="847" height="222" caption="not 어쩌구 하면 일단 심장 뛰는 사람... XML 파일에 스타일 정보가 없어 문서의 내용만 트리 형태로 보여준다고 합니다."/>
+<br/>
+사이트맵이 잘 나온다면 성공적으로 생성이 된 것입니다.🥳
+<br/>
+## 구글 서치 콘솔
+<br/>
+구글 서치 콘솔은 웹 사이트의 검색 결과를 파악하고 모니터링하여 검색 결과를 개선시킬 수 있게 도와주는 도구입니다. (회사에서는 마케팅팀이 주로 사용하시는 것 같습니다.)
+사용하지 않아도 구글 검색 결과에 노출되지만 새로운 페이지가 생성되거나 페이지의 내용이 업데이트 될 때 사이트맵을 새로 제출하면 페이지 색인을 다시 생성하도록 요청할 수 있기 때문에 구글 서치 콘솔에 사이트맵을 제출해보도록 하겠습니다.
+<br/>
+### 도메인 연결
+<br/>
+[구글 서치 콘솔 페이지](https://search.google.com/search-console/about?hl=ko)에 들어가봅시다. 
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1Bx9d7VH5ThjB4FfJqrty9aGDU8KDaq8H" alt="구글 서치 콘솔 시작하기" width="853" height="718"/>
+<br/>
+로그인 후 시작하기 페이지로 넘어가면 이런 화면이 나옵니다.
+사이트 도메인을 입력하고 [계속] 버튼을 클릭합니다. 
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=117Cx4BBViLt2O_NhsjSo1p1a-WyRn5_j" alt="DNS 설정" width="760" height="706"/>
+<br/>
+도메인 소유권 인증을 위해 TXT 레코드를 DNS 설정에 추가해줍시다.
+<br/>
+<Callout icon="❓" title="DNS와 레코드">
+**DNS**는 Domain Name System의 약자로 **도메인을 IP 주소로 변환하는 시스템을 의미**합니다.
+브라우저 주소창에 yun-log.com 도메인을 입력하면 DNS 서버에 해당 도메인의 IP 주소를 요청하게 됩니다. DNS 서버는 해당 도메인의 IP를 반환하고 브라우저는 반환받은 IP 주소(00.000.000.00의 형태)로 웹 서버에 요청을 보내게 됩니다. 웹 서버는 브라우저의 요청을 받아 해당 페이지의 데이터를 브라우저에 전달하게 되고 그 데이터를 통해 브라우저에 화면이 렌더링 되게 됩니다.  
+**레코드**는 데이터를 저장하는 하나의 단위를 의미합니다.
+DNS에서의 레코드는 **도메인 이름과 연결된 정보가 기록된 데이터**입니다.
+[cloud flare 문서](https://www.cloudflare.com/ko-kr/learning/dns/dns-records/)에 DNS 레코드 유형이 잘 정리되어 있어서 일부 내용을 소개합니다.  
+**일반적인 DNS 레코드 유형**  
+**A 레코드** : 도메인의 IP 주소를 갖고 있는 레코드.
+**CNAME 레코드** : 하나의 도메인이나 하위 도메인을 다른 도메인으로 전달하며, IP 주소를 제공하지는 않습니다.
+**TXT 레코드** : 관리자가 레코드에 텍스트 메모를 저장할 수 있습니다. 이 레코드는 종종 이메일 보안에 사용됩니다. 
+ᄂ이번 구글 서치 콘솔을 세팅할 때 사용한 TXT 레코드는 도메인 소유권 인증, 보안과 관련 있다고 합니다.      
+사실 DNS는 이번에 블로그 도메인을 구매하고 설정해보며 알게 되었습니다. 앞으로는 네트워크 공부도 틈틈히 해두어야겠습니다.     
+(공부할 게 너무 많아 즐거운 사람🤥)
+</Callout>
+<br/>
+설정을 완료하면 사이트의 구글 서치 콘솔 대시보드가 나옵니다. 클릭 수 0회... 앞으로 좀 더 힘내보겠습니다(광클 시작🔥)
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1pTYOrXq6Nbydbb3mNDa6mm1-pzHGlTyM" alt="구글 서치 콘솔 대시보드" width="902" height="462"/>
+<br/>
+### 사이트맵 제출
+<br/>
+왼쪽 사이드 메뉴에서 sitemaps 탭에 들어가 사이트맵을 제출해줍시다.  <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>을 입력해주면 됩니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1PYCSL8BlhX4kY5EGrXu-abw-fXFmDOpP" alt="구글 서치 콘솔 대시보드" width="842" height="456"/>
+<br/>
+### 검색 결과 확인
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1fMNAxlMf6jxV_rsFOZ1Aq0QO2b_krtnH" alt="검색 결과" width="842" height="277" />
+<br/>
+사이트맵을 제출하고 하루 뒤 사이트가 구글 검색 결과에 잘 노출되는 것을 확인할 수 있었습니다🎉 
+배포하고 2~3일은 노출되지 않아서 전전긍긍했는데 서치 콘솔에 제출하고 하루 뒤에 바로 노출되었습니다. (단순히 시간이 지나서 노출됐을 가능성이 클 것 같긴 합니다.)
+<br/>
+## 포스팅을 마무리하며
+<br/>
+SEO를 위해 next-sitemap을 사용하여 사이트을 만들고 구글 서치 콘솔에 제출까지 해보았습니다. 사실 규모가 작거나 모든 페이지가 사이트에 링크로 잘 연결되어 있는 경우에는 굳이 사이트맵이 필요하지 않다고 합니다. 그래도 이런 세팅 뭔가 재밌으니까..! 해서 나쁠 건 없으니까..! 하는 마음으로 적용해보았습니다. (구글 검색 상위 노출 가보자고 🏃‍♀️🏃‍♀️🏃‍♀️) 그럼 오늘은 이만 글을 마치도록 하겠습니다. 여기까지 글 읽어 주셔서 감사드리고 다음엔 구글 검색 결과 맨 위에서 뵙겠습니다👋👋
