@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.yun-log.com
+
+# Sitemaps
+Sitemap: https://www.yun-log.com/sitemap.xml

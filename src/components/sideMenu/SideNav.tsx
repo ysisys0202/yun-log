@@ -5,6 +5,8 @@ import Typography from "@/components/common/Typography";
 import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
 import { event } from "@/lib/gTag";
+import Skeleton from "../common/Skeleton";
+
 const SideNav = () => {
   const router = useRouter();
   const { pathname, query } = router;
@@ -18,39 +20,50 @@ const SideNav = () => {
       value,
     });
   };
+
   return (
     <nav css={S.self}>
       <Typography variant="h4" element="h2">
         게시글 목록
       </Typography>
       <ul css={S.navList}>
-        {navCategories.map(({ name, fileLength, link }) => {
-          const isActive = currentCategory === name;
-          return (
-            <li
-              key={name}
-              css={S.navItem}
-              className={`${isActive ? "is-active" : ""}`}
-            >
-              <Link
-                href={link}
-                onClick={() => {
-                  handleSideNavItem(name);
-                }}
+        {navCategories.length === 0 && renderSkeletonItems(3)}
+        {navCategories.length > 0 &&
+          navCategories.map(({ name, fileLength, link }) => {
+            const isActive = currentCategory === name;
+            return (
+              <li
+                key={name}
+                css={S.navItem}
+                className={`${isActive ? "is-active" : ""}`}
               >
-                <Typography variant="subtitle1" element="span">
-                  {name}
-                </Typography>
-                <Typography variant="body2" element="span">
-                  ({fileLength})
-                </Typography>
-              </Link>
-            </li>
-          );
-        })}
+                <Link
+                  href={link}
+                  onClick={() => {
+                    handleSideNavItem(name);
+                  }}
+                >
+                  <Typography variant="subtitle1" element="span">
+                    {name}
+                  </Typography>
+                  <Typography variant="body2" element="span">
+                    ({fileLength})
+                  </Typography>
+                </Link>
+              </li>
+            );
+          })}
       </ul>
     </nav>
   );
+};
+
+const renderSkeletonItems = (length: number) => {
+  const skeletons = [];
+  for (let i = 0; i < length; i++) {
+    skeletons.push(<Skeleton key={i} height="23px" />);
+  }
+  return skeletons;
 };
 
 const S = {

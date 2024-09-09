@@ -8,7 +8,7 @@ const BackGround = () => {
         styles={css`
           :root {
             --background-image: url(/images/common/grid_line_light.svg);
-            .dark {
+            [data-color-theme="dark"] {
               --background-image: url(/images/common/grid_line_dark.svg);
             }
           }

@@ -26,7 +26,10 @@ const UtilButtonBox = () => {
   };
   return (
     <div css={S.self}>
-      <ColorModeButton onClick={handleColorModeButtonClick} />
+      <ColorModeButton
+        onClick={handleColorModeButtonClick}
+        data-test-id="color-theme-button"
+      />
       <ContactButton onClick={handleContactButtonClick} />
     </div>
   );

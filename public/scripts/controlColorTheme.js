@@ -1,15 +1,17 @@
 const getColorTheme = () => {
   return window.localStorage.getItem("colorTheme");
 };
-
+const setColotTheme = (colorTheme) => {
+  document.body.setAttribute("data-color-theme", colorTheme);
+};
 const initColorTheme = () => {
   const savedColorTheme = getColorTheme();
 
   if (savedColorTheme) {
     if (savedColorTheme === "dark") {
-      document.body.classList.add("dark");
+      setColotTheme("dark");
     } else {
-      document.body.classList.remove("dark");
+      setColotTheme("light");
     }
     return;
   }
@@ -18,14 +20,16 @@ const initColorTheme = () => {
   const isDark = colorThemeMatch.matches;
 
   if (isDark) {
-    document.body.classList.add("dark");
+    setColotTheme("dark");
+  } else {
+    setColotTheme("light");
   }
 
   colorThemeMatch.addEventListener("change", (event) => {
     if (event.matches) {
-      document.body.classList.add("dark");
+      setColotTheme("dark");
     } else {
-      document.body.classList.remove("dark");
+      setColotTheme("light");
     }
   });
 };
