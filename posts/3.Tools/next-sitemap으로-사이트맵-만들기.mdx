@@ -79,6 +79,22 @@ yarn build
 파일은 기본적으로 public 폴더에 생성됩니다. <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>로 접근할 수 있어야 하기 때문에 그렇게 설정되어 있는 것 같습니다. (필요에 따라 config 파일에서 outDir를 설정해줘도 됩니다.)
 배포 할 때 마다 프로젝트가 빌드되며 사이트맵이 새로 생성될 것이기 때문에 지금 생성한 사이트맵 파일들은 삭제해줍시다.
 <br/>
+#### 🚨에러 발생 (24.09.10)
+<br/>
+포스트 작성 후 배포한 뒤 사이트맵이 잘 업데이트 되었나 확인했습니다. 그런데 전혀 업데이트 되어있지 않았습니다. 미처 삭제하지 않은 public 폴더 내의 사이트맵 파일 때문인가 싶어 삭제 후 다시 배포했지만 이번엔 아예 사이트맵이 생성되지 않았습니다😨 
+터미널에서 yarn build를 실행해보니 빌드 후 postbuild가 실행되지 않았습니다. 의문인 점은 npm run build 명령어로는 postbuild가 실행되어 사이트맵이 잘 생성된다는 점이었습니다.
+분명 처음 세팅할 때 yarn build로도 잘 되는 것을 확인했던 것 같은데 말이죠...
+<br/>
+```json
+// package.json
+{
+  "build": "next build && next-sitemap",
+}
+```
+<br/>
+바로 원인을 찾아 해결할 수가 없어 일단 급하게 build 스크립트를 수정하는 것으로 사이트맵을 생성할 수 있게 해두었습니다.
+이 부분에 대해서 추가적으로 알게 되는게 있다면 바로 업데이트해두겠습니다.
+<br/>
 ### 확인
 <br/>
 <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>에 접속해봅시다.
