@@ -11,10 +11,10 @@ const Typography = dynamic(() => import("@/components/common/Typography"));
 const HighlightText = dynamic(
   () => import("@/components/common/HighlightText")
 );
+const Divider = dynamic(() => import("@/components/common/Divider"));
 const PostImage = dynamic(() => import("@/components/posts/PostImage"));
 const Codeblock = dynamic(() => import("@/components/posts/Codeblock"));
 const Callout = dynamic(() => import("@/components/posts/Callout"));
-const Image = dynamic(() => import("next/image"));
 const YoutubePlayer = dynamic(
   () => import("@/components/common/YoutubePlayer")
 );
@@ -81,6 +81,7 @@ const PostMarkdown = ({ postData, mdx }: Props) => {
     Spacing,
     HighlightText,
     YoutubePlayer,
+    Divider,
   };
   return (
     <div css={MarkdownStyle}>

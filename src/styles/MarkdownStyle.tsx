@@ -42,6 +42,9 @@ const markdownStyle = css`
     &:not(:first-of-type) {
       margin-top: 8px;
     }
+    ul {
+      list-style: square;
+    }
   }
   blockquote {
     position: relative;
