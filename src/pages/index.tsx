@@ -5,7 +5,7 @@ import useMediaQuery from "@/hooks/useMediaQuery";
 import MyHead from "@/components/common/AppHead";
 import AppContainer from "@/container/layouts/AppContainer";
 import BackGround from "@/container/layouts/BackGround";
-import Profile from "@/container/home/Profile";
+import Hero from "@/container/home/Hero";
 import FeaturePostList from "@/container/home/FeaturePostList";
 import RecentPostList from "@/container/home/RecentPostList";
 import { PostData } from "@/types/post";
@@ -23,7 +23,7 @@ const Homepage = ({ allPostList, featuredPostList }: Props) => {
     <AppContainer headerHide={headerHide}>
       <MyHead title="홈" />
       <BackGround />
-      <Profile setHeaderHide={setHeaderHide} />
+      <Hero setHeaderHide={setHeaderHide} />
       <FeaturePostList postList={featuredPostList} />
       <RecentPostList postList={allPostList} />
     </AppContainer>

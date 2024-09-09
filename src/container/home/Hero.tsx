@@ -30,7 +30,7 @@ const opacityEffect = {
   endPoint: 0.45,
 };
 
-const Profile = ({ setHeaderHide }: Props) => {
+const Hero = ({ setHeaderHide }: Props) => {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -185,4 +185,4 @@ const S = {
   `,
 };
 
-export default Profile;
+export default Hero;
