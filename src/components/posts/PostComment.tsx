@@ -9,7 +9,7 @@ const PostComment = () => {
   const giscusRepoName = process.env.NEXT_PUBLIC_GISCUS_REPO_NAME ?? "";
   const giscusRepoId = process.env.NEXT_PUBLIC_GISCUS_REPO_ID ?? "";
   const giscusCategoryId = process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID ?? "";
-  console.log(giscusRepoName);
+
   return (
     <div css={S.self} id="post-comments-wrapper">
       <Giscus
