@@ -79,7 +79,7 @@ yarn build
 파일은 기본적으로 public 폴더에 생성됩니다. <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>로 접근할 수 있어야 하기 때문에 그렇게 설정되어 있는 것 같습니다. (필요에 따라 config 파일에서 outDir를 설정해줘도 됩니다.)
 배포 할 때 마다 프로젝트가 빌드되며 사이트맵이 새로 생성될 것이기 때문에 지금 생성한 사이트맵 파일들은 삭제해줍시다.
 <br/>
-#### 🚨에러 발생 (24.09.10)
+#### 🚨사이트맵 생성 에러 발생 (24.09.10)
 <br/>
 포스트 작성 후 배포한 뒤 사이트맵이 잘 업데이트되었나 확인했습니다. 그런데 전혀 업데이트되어 있지 않았습니다. 미처 삭제하지 않은 public 폴더 내의 사이트맵 파일 때문인가 싶어 삭제 후 다시 배포했지만, 이번엔 아예 사이트맵이 생성되지 않았습니다😨 
 터미널에서 yarn build를 실행해보니 빌드 후 postbuild가 실행되지 않았습니다. 의문인 점은 npm run build 명령어로는 postbuild가 실행되어 사이트맵이 잘 생성된다는 점이었습니다.
@@ -95,7 +95,8 @@ yarn build
 바로 원인을 찾아 해결할 수가 없어 일단 급하게 build 스크립트를 수정하는 것으로 사이트맵을 생성할 수 있게 해두었습니다.
 이 부분에 대해서 추가적로 알게 되는 게 있다면 바로 업데이트해 두겠습니다.
 <br/>
-➕ **24.09.10**
+**24.09.10 - yarn berry는 lifecycle script를 모두 지원하지 않는다**.
+<br/>
 분명 처음에 사이트맵이 잘 생성되었던 기억이 있었기 때문에 vercel 배포 로그를 살펴봐야겠다는 생각이 들었습니다. (꼭 자려고 누웠을 때 이런 생각이 들더라고요 😫)
 <br/>
 <PostImage src="https://drive.google.com/uc?export=view&id=1fm0ly9EGgEC5my4TyHFpAN6pTaY8yX8S" alt="vercel 배포 로그 - 사이트맵 생성 확인" width="905" height="254"/>
@@ -105,16 +106,16 @@ yarn build
 <PostImage src="https://drive.google.com/uc?export=view&id=1YDeF46BcfJ5mX9aghch5Sl_bRsXJ_kcz" alt="vercel 배포 로그 - yarn 버전 확인" width="674" height="190"/>
 <br/>
 1.22.19버전...?
-그제서야 최근 스토리북을 세팅한 일이 떠올랐습니다. yarn을 사용하면 스토리북이 정상적으로 동작하지 않아 yarn berry (4.4.1버전)로 변경했었던 것이죠.
+그제서야 최근 스토리북을 세팅한 일이 떠올랐습니다. yarn 1버전인 yarn classic을 사용하면 스토리북이 정상적으로 동작하지 않아 yarn berry (4.4.1버전)로 변경했었던 것이죠.
 다시 yarn 버전을 1.22.19 버전으로 바꾸고 build 해보니 사이트맵이 잘 생성되었습니다.
-그럼 왜 yarn berry에서는 postbuild가 안될까 구글링 하던 차에 yarn berry에서 npm에 존재하는 lifedycle script를 모두 지원하지 않는다는 내용을 찾게 되었습니다.
+그럼 왜 yarn berry에서는 postbuild가 안될까 구글링 하던 차에 yarn berry에서 npm에 존재하는 lifecycle script를 모두 지원하지 않는다는 내용을 찾게 되었습니다.
 [yarn 4 버전 life cycle 관련 문서](https://yarnpkg.com/advanced/lifecycle-scripts)
 <PostImage src="https://drive.google.com/uc?export=view&id=1Rr4sHoeDunUuEtdsPdOGMmYEgTzfgngw" alt="vercel 배포 로그 - yarn 버전 확인" width="948" height="418"/>
 <br/>
 위 문서는 yarn 4 버전 이상을 다루고 있다고 하여 yarn 3 버전으로도 시도해 보았지만 마찬가지로 postbuild는 실행되지 않았습니다.
-해결 방법이 있나 구글링해도 저와 같은 문제를 겪고 있는 분들의 글을 찾기가 힘들었습니다. (yarn berry랑 next-sitemap 사용하는 사람이 저만 있는 것도 아닐텐데 어째서..)
-yarn을 사용하자니 스토리북이 울고, yarn berry를 쓰자니 next-sitemap이 울고 아, 어쩌란 말이냐~ 고민하던 차에 yarn berry + build 스크립트에 next-sitemap을 추가한 현재 방식을 유지하는 것으로 결정지었습니다. 원인 찾고 열심히 검색해 본 것 치곤 허무한 결말이네요. 하지만 사이트맵이 잘 생성되니 만족합니다.
-혹시라도 다른 해결 방법을 알고 있으시다면 댓글 부탁드립니다🥹
+해결 방법이 있나 구글링해도 저와 같은 문제를 겪고 있는 분들의 글을 찾기가 힘들었습니다. (yarn berry랑 next-sitemap 사용하는 사람이 저만 있는 것도 아닐텐데 어째서..?)
+yarn classic을 사용하자니 스토리북이 울고, yarn berry를 쓰자니 next-sitemap이 울고 아, 어쩌란 말이냐~ 고민하던 차에 yarn berry + build 스크립트에 next-sitemap을 추가한 현재 방식을 유지하는 것으로 결론 지었습니다.
+뭔가 다른 방법을 알고 계시다면 부디 댓글로 가르침을 하사해주세요🥹
 <br/>
 ### 확인
 <br/>
