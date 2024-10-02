@@ -81,6 +81,11 @@ const S = {
           border-right: 1px solid ${colorVars.tertiary};
         }
       }
+      &:nth-of-type(4n - 3) {
+        article {
+          border-left: none;
+        }
+      }
       &:nth-of-type(4n) {
         article {
           border-right: none;
