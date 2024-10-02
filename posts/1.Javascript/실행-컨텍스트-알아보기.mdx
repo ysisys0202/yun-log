@@ -85,7 +85,7 @@ VariableEnvironment는 컨텍스트 생성 시의 식별자 정보와 외부 환
 <br/>
 ### - LexicalEnvironment (어휘적 환경)
 <br/>
-LexicalEnvironment 역시 식별자 정보와 외부 환경 참조 정보를 가지고 있습니다. 컨텍스트가 생성 될 시점에는 VariableEnvironment를 복사하기 때문에 값이 동일하지만 코드가 실행됨에 따라 식별자 정보를 업데이트 합니다. (const, let으로 선언한 변수의 초기화, 변수 값 할당, 재할당 등)
+LexicalEnvironment 역시 식별자 정보와 외부 환경 참조 정보를 가지고 있습니다. 컨텍스트가 생성 될 시점에는 VariableEnvironment를 복사하기 때문에 값이 동일하지만 코드가 실행됨에 따라 식별자 정보를 업데이트 합니다. (const, let으로 선언한 변수의 초기화, 변수 값 할당, 재할당 등) 실제로 코드가 실행되는 동안에는 LexicalEnvironment를 통해 식별자 정보가 관리됩니다.
 <br/>
 #### - environmentRecord (환경 기록)
 컨텍스트 내에서 수집된 식별자 정보가 있습니다.
