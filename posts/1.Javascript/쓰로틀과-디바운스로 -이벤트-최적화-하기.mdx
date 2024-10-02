@@ -1,0 +1,176 @@
+---
+title: 쓰로틀과 디바운스로 이벤트 최적화하기
+intro: "프론트엔드 개발을 하다보면 DOM 이벤트를 자주 다루게 됩니다. 특히, scroll, resize, form change와 같은 이벤트는 연속적으로 발생해 함수를 매우 빈번하게 호출하게 됩니다. 만약 scroll 이벤트가 발생할 때마다 서버에 요청하는 함수가 있다면, 10초 동안 100번 이상 요청이 발생할 수도 있습니다. 과도한 서버 요청은 곧 비용으로 직결되기 때문에, 함수 호출 빈도를 최적화하는 것이 중요합니다. 오늘은 쓰로틀(throttle)과 디바운스(debounce)를 사용해 이벤트를 최적화하는 방법에 대해 알아보겠습니다."
+createdAt: "2024-09-26"
+thumbnail : "https://drive.google.com/uc?export=view&id=1DAv2NMkK_YebZn5P7PJItM2RqJ3CeKkJ" 
+keywords: "자바스크립트, javascript, 쓰로틀 ,throttle, 디바운스, debounce, 이벤트 최적화"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## 이벤트 최적화 하기
+<br/>
+### 쓰로틀(throttle)
+<br/>
+#### 쓰로틀 정의
+<br/>
+사전에서 쓰로틀을 찾아보면 다음과 같은 의미를 가지고 있습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1EAdQ4Sgn21ZZGOSo_Jw1pnVQilePn3X-" alt="쓰로틀의 의미" width="482" height="223"/>
+<br/>
+엔진의 속도를 조절하는 조절판, 즉 속도를 조절한다는 의미를 가지고 있습니다. 최적화 기법에서의 쓰로틀은 연속적으로 이벤트가 발생할 때 지정한 시간 주기로 함수를 호출을 조절하는 방식을 의미합니다. scroll, mouse move, resize 이벤트 같이 연속적으로 무수히 많이 발생할 때 특정 주기로 함수 호출해도 되는 경우 최적화하기 유리합니다.
+예를 들어 무한 스크롤을 구현한다고 가정해보곘습니다. 리스트의 가장 아래 부분이 화면에 노출될 때 새로운 데이터를 요청하여 화면에 그려주려고 합니다. 이 때 리스트의 가장 아래 도달했는지 확인하기 위해서 스크롤이 발생할 때마다 매번 함수를 호출할 필요는 없을 것입니다. 따라서 쓰로틀을 적용하여 사용성을 해치지 않을 주기마다 함수가 호출되게 최적화하는 것이 좋습니다. 
+(element가 화면에 보여질 때를 감지하는 InterSectionObserver를 사용하는 것도 좋은 선택입니다.)
+<br/>
+#### 쓰로틀 구현
+<br/>
+그럼 이제 쓰로틀 함수를 구현해보도록 하겠습니다.
+<br/>
+```javascript
+//thtottle.js
+const throttle = (callbackFn, delayTime) => {
+  let timer = null;
+  
+  return (...args) => {
+    if (timer) {
+      return;
+    }
+          
+    callbackFn(...args);
+    
+    timer = setTimeout(() => {
+      timer = null;
+    }, delayTime);
+  };
+};
+
+const log = () => {
+  console.log("함수 호출");
+};
+
+window.addEventListener("scroll", throttle(log, 600));
+```
+<br/>
+위 코드와 같이 쓰로틀 함수를 구현해보았습니다.
+<br/>
+>1. throttle 함수는 인자로 특정 주기마다 실행할 callbackFn과 주기를 결정하는 delayTime을 인자로 받습니다.
+>2. throttle 함수는 현재 delayTime에 걸려있는지를 알기 위한 timer 변수가 있으며 초기값은 null입니다.
+>3. throttle 함수는 익명의 화살표 함수를 리턴합니다.(클로저를 사용하기 위함) 편의상 리턴 함수라고 부르겠습니다. 이 때 리턴 함수는 매개변수 값을 전달 받을 수 있습니다.
+>4. 리턴 함수는 throttle 함수의 timer에 접근해 timer 값에 따라 함수 호출 여부를 결정합니다.
+>    1. timer에 값이 있다면 아무일도 하지 않고 함수를 종료합니다.
+>    2. timer에 값이 있다면 callbackFn을 실행시키고 timer에 setTimeout의 리턴 값이 timeoutId를 할당합니다.
+>5. 지정한 delayTime이 지나면 setTimeout의 callback 함수가 실행되며 timer 값이 null이 됩니다.
+<br/>
+이와 같은 과정을 통해 delayTime마다 callbackFn을 실행시키는 throttle 함수가 구현되었습니다.
+이때 클로저를 사용하여 함수가 실행될 때 마다 timer 값이 초기화 되지 않도록 하였습니다. 이에 대해 자세히 알고 싶으시다면 [클로저 포스트](/posts/Javascript/클로저-알아보기)를 참고해주세요.
+<br/>
+#### 쓰로틀 적용 전 vs 적용 후
+<br/>
+자 그럼 이제 쓰로틀을 사용하지 않았을 때와 사용했을 때의 차이를 확인해보겠습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1Rwp0BybjWHPH61sTgDi6VfqAPAtgVWkb" alt="쓰로틀 적용 전" width="802" height="342"/>
+<br/>
+쓰로틀을 사용하지 않으면 함수 호출이 짧은 시간에 120회 가까이 일어납니다😱 
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1PFU-_9yXqIzvGO9tVC_A0dI5tsdXRlI-" alt="쓰로틀 적용 후" width="802" height="342"/>
+<br/>
+그리고 쓰로틀을 적용한 결과 함수 호출이 1/30 수준으로 줄어들었습니다☺️ 
+이렇게 쓰로틀을 통해 연속적으로 일어나는 함수 호출을 최적화 해보았습니다.
+<br/>
+그리고 혹시 아래 두 코드의 차이를 아시나요?
+<br/>
+```javascript
+//code 1
+ window.addEventListener("scroll", throttle(log, 600));
+```
+<br/>
+```javascript
+//code2
+ window.addEventListener("scroll", throttle);
+```
+<br/>
+제가 처음 코드를 배울 때 헷갈렸던 부분이여서 첨언하자면, code1의 경우는 throttle 함수가 실행되어 throttle 함수가 반환하는 리턴함수가 이벤트리스너의 콜백함수로 전달된 것이고
+code2의 경우에는 throttle 함수 자체가 이벤트리스너의 콜백함수로 넘겨진 것입니다.
+따라서 code2의 경우 제대로 실행되지 않습니다.
+<br/>
+```javascript
+//code3
+const handleScroll = throttle(log,600)
+
+ window.addEventListener("scroll", handleScroll );
+```
+<br/>
+위와 같이 handleScroll에 throttle의 리턴함수를 할당하여 사용할 수도 있습니다. throttle 함수는 초기에 실행되어 종료되고 리턴함수가 throttle 함수의 timer 변수에 접근하여 callbackFn 실행 여부를 결정한다고 이해하시면 좋을 것 같습니다👍
+<br/>
+### 디바운스(debounce)
+<br/>
+#### 디바운스 정의
+<br/>
+디바운스의 사전적 의미는 다음과 같습니다. 
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1VuDX22-YYo9LhbliEj73tFjCyVOKZEM7" alt="디바운스의 의미" width="487" height="183" caption="bounce 하지 않는 것, 그것이 debounce니까 끄덕"/>
+<br/>
+연속적을 발생하는 바운스를 보정한다는 의미를 가지고 있습니다. 최적화 기법에서의 디바운스는 연속적인 이벤트가 발생하고 지정한 시간이 지난 후에 함수를 호출하는 방식입니다. input, change와 같이 연속적으로 이벤트가 발생하지만 이벤트가 종료된 후 함수를 호출해도 되는 경우 최적화하기 유리합니다. 검색창의 자동 완성 기능처럼 input에 값이 입력될 때 마다 api를 요청하면 단 시간에 엄청나게 많은 요청이 발생하게 됩니다. 이를 방지하기 위해 사용자가 input 창에 검색어를 입력하고 특정 시간이 지난 후 함수를 호출하게 하여 최적화할 수 있습니다.
+<br/>
+#### 디바운스 구현
+<br/>
+그럼 디바운스도 구현해보겠습니다.
+<br/>
+```javascript
+//html 코드 생략
+const input = document.querySelector("#input");
+
+const debounce = (callbackFn, delayTime) => {
+  let timer = null;
+  return (...args) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      callbackFn(...args);
+    }, delayTime);
+  };
+};
+
+const logMessage = (event) => {
+  console.log(event.target.value);
+};
+  
+input.addEventListener(
+  "input",
+  debounce((event) => logMessage(event),200)
+);
+
+```
+<br/>
+>1. debounce 함수는 인자로 이벤트가 종료되고 특정 시간 뒤에 실행할 callbackFn과 이벤트 종료 후 시간을 결정하는 delayTime을 인자로 받습니다.
+>2. debounce 함수는 현재 delayTime에 걸려있는지를 알기 위한 timer 변수가 있으며 초기값은 null입니다.
+>3. debounce 함수는 익명의 화살표 함수를 리턴합니다.(클로저를 사용하기 위함) 편의상 리턴 함수라고 부르겠습니다. 이 때 리턴 함수는 매개변수 값을 전달 받을 수 있습니다.
+>4. 리턴 함수는 debounce 함수의 timer에 접근해 timer 값에 따라 setTimeout의 타이머를 취소할 지 결정합니다.
+>    1. timer에 값이 있다면 timeoutId 값이 할당된 것이므로 clearTimeout을 통해 해당 timeoutId를 가진 타이머를 취소하여 callbackFn이 실행되지 않도록 합니다.
+>5. timer에 setTimeout 타이머의 timeoutId를 할당합니다. 이때 setTimeout의 콜백함수에서 callbackFn이 호출될 수 있게 합니다.
+>6. 이벤트가 발생하고 delayTime 동안 이벤트가 발생하지 않으면 callbackFn이 실행됩니다.
+<br/>
+
+#### 디바운스 적용 전 vs 적용 후
+그럼 이제 디바운스를 적용하지 않았을 때와 적용했을 때를 비교해보겠습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1yOInFW8xaXE-HUL0_0cIK1Gh-kYjDpzX" alt="쓰로틀 적용 전" width="802" height="342" caption="강조되고 반복되는 이벤트는 개발자를 불안하게 해요!!"/>
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1M1ePp99TMqSKtySE1-zyZE0wDRIjqpNH" alt="쓰로틀 적용 후" width="802" height="342"/>
+<br/>
+만약 디바운스를 적용하지 않아 값이 입력될 때 마다 api를 호출했다면 짧은 시간 안에 수십번이나 호출되었겠죠.
+디바운스를 적용하면 단 두번만 호출됩니다. delayTime은 사용성을 저하하지 않는 수준으로 맞춰보면 좋을 것 같습니다😄
+<br/>
+## 포스팅을 마무리하며
+<br/>
+오늘은 DOM 이벤트를 최적화하는 쓰로틀과 디바운스에 대해 알아보고 구현해보았습니다. 간단하게 구현 가능하지만 효과는 엄청났습니다. 더이상 반복되는 이벤트에 불안해마시고 쓰로틀과 디바운스로 최적화해보시기를 바라며 글을 마치도록 하겠습니다👋👋
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,192 @@
+---
+title: 클로저 알아보기
+intro: "자바스크립트를 공부하다보면 클로저를 접하게 됩니다. 책 혹은 유튜브 영상에서 자주 볼 수 있고 특히 프론트엔드 기술 면접 리스트에 빠지지 않고 등장하는 단골 손님입니다. 오늘은 과연 클로저란 무엇인지, 어떤 상황에서 사용하게 되는지 알아보도록 하겠습니다."
+isFeatured: true
+createdAt: "2024-09-25"
+thumbnail : "https://drive.google.com/uc?export=view&id=1-HDZnarqGvaaqWn84YLxKQvYJ0PzA362" 
+keywords: "자바스크립트, javascript, 클로저, 스코프"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## 들어가기 전에
+<br/>
+- 실행 컨텍스트을 먼저 알아보시는 것을 추천합니다.
+<br/>
+## 클로저란?
+<br/>
+일단 클로저란 단어의 뜻을 알아보겠습니다. 클로저는 폐쇄라는 뜻이라고 합니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1WS11Sx5ebdS5RqddZqEZxHwmVsvj7fox" alt="클로저는 폐쇄라는 뜻" width="647" height="242"/>
+<br/>
+무엇을 폐쇄하는 것일까요? [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)에서는 자바스크립트의 클로저에 대해 아래와 같이 설명하고 있습니다.
+<br/>
+> **A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment).** 
+><br/>In other words, a closure gives a function access to its outer scope. In JavaScript, closures are created every time a function is created, at function creation time.
+
+<br/>
+(Chat GPT가) 번역하자면
+<br/>
+> **클로저(closure)는 함수와 그 함수가 참조하는 주변 상태(렉시컬 환경)가 함께 묶인 조합입니다.** 즉, **클로저는 함수에 외부 스코프에 접근할 수 있는 능력을 제공**합니다. 
+><br/>
+>다시 말해, 클로저는 함수가 정의된 위치의 스코프(외부 환경)를 기억하고, 그 함수가 실행될 때도 그 스코프에 접근할 수 있게 해줍니다. 자바스크립트에서 클로저는 함수가 생성될 때마다 자동으로 만들어집니다.
+
+<br/>
+설명을 읽어도 이해하기 쉽지 않습니다. 천천히 정리해보겠습니다. 클로저(폐쇄)란 함수의 스코프가 형성되어 외부에서 접근할 수 없는 상황(폐쇄된 상황)에서 **스코프 안에 선언된 내부 함수를 통해 폐쇄된 함수의 렉시컬 환경을 기억하고 접근할 수 있도록 하는 것**입니다. 여기서 렉시컬 환경에 대해 잠시 이야기하고 넘어가겠습니다. 렉시컬 환경은 실행 컨텍스트에서 함수에 선언된 식별자 정보와 외부 환경에 참조 정보를 가지고 있으며 이를 통해 식별자에 참조할 수 있는 유효범위인 스코프를 형성하게 됩니다. 또한 렉시컬 환경은 선언될 당시의 위치에 따라 결정됩니다. 즉 클로저를 통해 **외부에서 직접적으로 식별자에 접근하는 것을 막고 함수 안에 선언된 내부 함수를 통해서만 식별자에 접근할 수 있게 됩니다. 말로 풀어 설명하려니 어쩐지 미궁에 빠진 것 같습니다😅 코드를 보면 오히려 쉽게 이해할 수 있습니다.
+<br/>
+```javascript
+const outerFunc = () => {
+  const number = 0;
+  const innerFunc = () => {
+    console.log(number);
+  };
+  return innerFunc;
+}
+
+const logNumber = outerFunc();
+
+logNumber(); // 0
+```
+<br/>
+outerFunc는 변수 number와 함수 innerFunc가 선언되어 있고 innerFunc를 리턴하는 함수입니다. 
+innerFunc는 outerFunc에 선언된 number 변수를 참조하여 출력합니다.
+<br/>
+이제 위 코드의 흐름을 살펴보겠습니다.
+<br/>
+>1. outerFunc가 호출되며 실행 컨텍스트가 콜스택에 추가됩니다. 이때 내부에 선언된 변수 number와 함수 innerFunc는 outerFunc의 렉시컬 환경에 의해 형성된 스코프에 의해 외부에서 직접적으로 참조할 수 없게 폐쇄됩니다. 그리고 현시점에서 innerFunc가 실행되지는 않지만 렉시컬 환경은 선언된 시점에 결정되기 때문에 innerFunc는 자신이 선언된 위치의 렉시컬 환경을 기억하게 됩니다. 
+>2. outerFunc가 종료되며 반환한 innerFunc는 logNumber에 할당되고, outerFunc의 실행 컨텍스트는 콜스택에서 제거됩니다.
+>3. logNumber(innerFunc)가 호출되며 innerFunc의 실행 컨텍스트가 생성됩니다. 앞서 언급했듯 렉시컬 환경은 선언 시점에 결정되기 때문에 innerFunc의 외부 환경 참조는 outerFunc의 렉시컬 환경이 되며 outerFunc의 렉시컬 환경에 참조할 수 있게 됩니다. 
+<br/>
+이처럼 클로저는 스코프에 의해 폐쇄된 환경에서 함수(outerFunc)의 실행이 끝난 후에도 내부함수(innerFunc)가 선언된 당시의 렉시컬 환경을 기억하여 함수(outerFunc)의 식별자를 참조할 수 있는 현상을 의미합니다.
+<br/>
+## 어떤 상황에서 사용할까?
+<br/>
+이제 클로저가 무엇인지 알아보았으니 어떤 상황에서 사용하는지도 알아보겠습니다.
+<br/>
+### 1. 데이터 은닉하여 캡슐화를 해야할 때
+<br/>
+앞서 이야기한대로 외부에서 직접 변수에 접근할 수 없도록 막을 수 있습니다. 이를 데이터를 은닉하여 캡슐화 한다고 하며 이때 캡슐화는 데이터를 외부에서 직접 접근하지 못하도록 보호하는 것을 의미합니다.
+<br/>
+```javascript
+const makeCounter = function () {
+  let privateCounter = 0;
+  function changeBy(val) {
+    privateCounter += val;
+  }
+  return {
+    increment() {
+      changeBy(1);
+    },
+
+    decrement() {
+      changeBy(-1);
+    },
+
+    value() {
+      return privateCounter;
+    },
+  };
+};
+
+const counter = makeCounter();
+
+counter.increment();
+console.log(counter.value()); // 1 
+
+counter.decrement();
+console.log(counter.value()); // 0
+```
+<br/>
+MDN에서 가져온 예시코드입니다.
+makeCounter라는 함수는 내부에 privateCounter라는 변수를 가지고 privateCounter를 증가시키는 increment 함수, 감소시키는 decrement 함수와 privateCounter을 리턴하는 value 함수가 포함된 객체를 리턴합니다. 
+외부에서 직접적으로 privateCounter에 접근할 수 없으며 makeCounter가 리턴하는 함수를 통해서만 privateCounter에 접근할 수 있게 됩니다. 즉 privateCounter 변수를 은닉하여 캡슐화한 것입니다.
+<br/>
+### 2. 변수의 상태를 유지해야 할 때
+<br/>
+클로저를 통해 함수가 호출될 때마다 변수가 초기화되지 않고 상태를 유지할 수 있습니다. 함수가 실행될 때 마다 초기화 되지 않고 상태를 유지해야하는 변수가 있다면 외부함수에 선언하고 내부함수에서 접근하는 방식을 통해 변수의 상태를 유지할 수 있습니다. 
+지금 바로 생각나는 예제는 쓰로틀 함수입니다. 쓰로틀은 자바스크립트 이벤트 최적화 기법 중 하나로 브라우저의 스크롤 이벤트 같이 연속적으로 무수히 많은 이벤트가 발생할 때 특정 주기에만 함수가 실행되도록 합니다.
+쓰로틀에 대해 더 자세히 알아보고 싶으시다면 [쓰로틀 & 디바운스 포스트](/posts/Javascript/쓰로틀과-디바운스로%20-이벤트-최적화-하기)를 참고해주세요.
+<br/>
+```javascript
+  const simpleThrottle = (callbackFn) => {
+        let timer;
+        const innerFunc(){
+               if (timer) {
+            return;
+          }
+          callbackFn();
+          timer = setTimeout(() => {
+            timer = null;
+          }, 1000);
+        }
+        return innerFunc;
+      };
+      const logScroll = () => {
+        console.log("y :", window.scrollY);
+        console.log("time :", new Date().toLocaleTimeString());
+      };
+
+      window.addEventListener("scroll", simpleThrottle(logScroll));
+```
+<br/>
+위 코드는 인자로 받은 콜백함수를 1000ms 주기로 호출하는 간단한 쓰로틀 함수입니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1QePamgiolCJRK8782fya6l-GjIh9HYMZ" alt="1초 간격으로 로그가 찍히는 중" width="698" height="546"/>
+<br/>
+스크롤 이벤트가 발생할 때 1000ms 간격으로 logScroll 함수가 실행되는 걸 확인할 수 있습니다.
+<br/>
+코드를 자세히 살펴보겠습니다.
+<br/>
+>1. simpleThrottle 함수(외부함수)가 호출되며 addEventListener의 콜백함수로 simpleThrottle이 반환하는 innerFunc(내부함수)가 전달 된 후 simpleThrottle는 종료됩니다.
+>2. 스크롤 이벤트가 일어날 때마다 innerFunc가 호출됩니다. innerFunc는 simpleThrottle의 timer 변수에 접근합니다.(클로저) timer 변수에 값이 있으면 innerFunc를 종료시킵니다.
+timer 변수에 값이 없으면 simpleThrottle이 인자로 전달받은 logScroll 함수를 호출하고 timer 변수에 setTimeout 함수의 타이머 식별 값인 timeoutID를 할당합니다.
+>3. 스크롤 이벤트는 연속적으로 일어나고 있지만 timer 변수에 timeoutID가 할당되어 있으므로 logScroll를 호출하지 않습니다.
+>4. 1000ms 후에 setTimeout의 콜백함수가 실행되며 timer의 값이 null로 재할당됩니다. timer의 값이 falshy하니 다시 logScroll를 호출하고 timer에 timeoutID를 할당합니다.
+<br/>
+이렇게 스크롤 이벤트가 일어날 때 마다 1000ms 주기로 함수를 실행시킬 수 있게 되었습니다. 
+<br/>
+만약 클로저를 사용하지 않고 timer 변수를 사용하면 어떻게 될까요?
+<br/>
+```javascript
+const simpleThrottle = (callbackFn) => {
+    let timer;
+    if (timer) {
+        return;
+    }
+    callbackFn();
+    timer = setTimeout(() => {
+       timer = null;
+    }, 1000);
+};
+
+const logScroll = () => {
+    console.log("y :", window.scrollY);
+    console.log("time :", new Date().toLocaleTimeString());
+ }
+
+window.addEventListener("scroll", () => {
+    simpleThrottle(logScroll);
+});
+```
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1I7Eb1wgtCD2xdbqIa7UJifyS4afRj3Bs" alt="로그가 무수히 찍히는 중" width="698" height="546"/>
+<br/>
+scroll 이벤트가 발생할 때 마다 timer 값이 undefined로 초기화되며 연속적으로 logScroll 함수가 실행됩니다😓
+<br/>
+때문에 timer 변수는 인자로 받아오는 콜백함수가 일정한 주기로 호출될 수 있게 timeoutID 값을 유지하고 있어야 합니다. 이와 같이 함수가 호출될 때 마다 변수가 초기화 되지 않고 상태가 유지되어야 할 때 클로저가 아주 유용하게 사용됩니다👍
+<br/>
+덧붙이자면 클로저는 잘 모를때는 timer 변수를 전역에 선언하기도 했습니다. 그렇게 사용해도 코드는 의도대로 동작하지만 실제로 timer 변수가 필요한 곳과 너무 동떨어져 있어 코드 가독성이 안좋아지기 때문에 클로저를 사용하는 것을 적극 권장합니다. 
+<br/>
+## 포스팅을 마무리하며
+<br/>
+오늘은 자바스크립트의 클로저에 대하여 알아보았습니다. 사실 클로저는 자바스크립트에서만 사용되는 것은 아니고 함수를 인자로 전달 받거나 함수를 리턴하는 고차함수를 사용하는 언어에서 통용되는 개념이라고 합니다. 클로저의 설명만 봐서는 무슨 내용인지 이해하기 어려워서 어려운 개념인가? 싶지만 실제로 코드를 작성해보면 재밌고 유용하다는 것을 알 수 있습니다. 게다가 이미 종료된 함수의 식별자를 기억해서 사용한다니...? 낭만적이기까지 합니다.
+<br/>
+그런데 아쉬운 점은 제가 실제로 클로저를 사용해본 것은 예시로 들었던 쓰로틀과 디바운스 함수를 작성할 때 뿐이었다는 것입니다. 혹시 클로저를 사용해보셨다면 어떤 상황에서 사용하셨는지 경험을 공유해주시면 너무 좋을 것 같습니다. 그럼 여기까지 글 읽어주셔서 감사드리고 이만 마무리해보도록 하겠습니다👋👋
+
+
+
+
+
+
+
+
