@@ -96,13 +96,13 @@ const Hero = ({ setHeaderHide }: Props) => {
           translateY,
         }}
       >
-        <Typography variant="subtitle1" element="p" css={S.description}>
+        <Typography variant="subtitle1" as="p" css={S.description}>
           FE 개발자 YUN의 기록을 담고 있습니다.
           <br />
           Javascript / React / Next.js 등 FE 개발 스택 이야기
           <br />
           FE 개발자로서 고민하고 깨달은 것 등
-          <Typography variant="body1" element="span" color={colorVars.tertiary}>
+          <Typography variant="body1" as="span" color={colorVars.tertiary}>
             (이를테면 삽질한 기억이라거나 ⛏️😇)
           </Typography>
           <br />

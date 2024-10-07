@@ -13,7 +13,7 @@ const Codeblock = ({ children, language }: Props) => {
   return (
     <section css={S.self}>
       <header css={S.codeBlockHeader}>
-        <Typography variant="body1" element="span">
+        <Typography variant="body1" as="span">
           {language}
         </Typography>
       </header>

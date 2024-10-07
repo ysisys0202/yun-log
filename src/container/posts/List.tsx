@@ -32,7 +32,7 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
         <SectionTitle>
           {currentCategory}
 
-          <Typography variant="body1" element="span">
+          <Typography variant="body1" as="span">
             {""} ({currentCategoryPostLength})
           </Typography>
         </SectionTitle>

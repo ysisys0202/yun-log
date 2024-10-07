@@ -31,7 +31,7 @@ const PostMarkdown = ({ postData, mdx }: Props) => {
     h2: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <Typography
         variant="h3"
-        element="h2"
+        as="h2"
         color={colorVars.primary}
         id={generateTitleId(children as string)}
         {...rest}
@@ -42,7 +42,7 @@ const PostMarkdown = ({ postData, mdx }: Props) => {
     h3: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <Typography
         variant="h4"
-        element="h3"
+        as="h3"
         color={colorVars.primary}
         id={generateTitleId(children as string)}
         {...rest}
@@ -53,7 +53,7 @@ const PostMarkdown = ({ postData, mdx }: Props) => {
     h4: ({ children, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <Typography
         variant="subtitle1"
-        element="h4"
+        as="h4"
         color={colorVars.primary}
         id={generateTitleId(children as string)}
         {...rest}

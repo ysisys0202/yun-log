@@ -23,7 +23,7 @@ const SideNav = () => {
 
   return (
     <nav css={S.self}>
-      <Typography variant="h4" element="h2">
+      <Typography variant="h4" as="h2">
         게시글 목록
       </Typography>
       <ul css={S.navList}>
@@ -43,10 +43,10 @@ const SideNav = () => {
                     handleSideNavItem(name);
                   }}
                 >
-                  <Typography variant="subtitle1" element="span">
+                  <Typography variant="subtitle1" as="span">
                     {name}
                   </Typography>
-                  <Typography variant="body2" element="span">
+                  <Typography variant="body2" as="span">
                     ({fileLength})
                   </Typography>
                 </Link>

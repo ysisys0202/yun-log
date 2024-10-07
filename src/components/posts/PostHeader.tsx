@@ -46,7 +46,7 @@ const PostHeader = ({
         </Link>
         <Typography
           variant="h1"
-          element="h1"
+          as="h1"
           color={colorVars.primary}
           css={S.title}
         >
@@ -55,7 +55,7 @@ const PostHeader = ({
         {subTitle && (
           <Typography
             variant="subtitle1"
-            element="p"
+            as="p"
             color={colorVars.primary}
             css={S.subTitle}
           >

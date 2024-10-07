@@ -37,7 +37,7 @@ const PostCardContent = ({
       </Tag>
       <Typography
         variant="subtitle1"
-        element="h3"
+        as="h3"
         color={colorVars.primary}
         className="post-card-title"
         css={S.title}
@@ -47,7 +47,7 @@ const PostCardContent = ({
       {description && (
         <Typography
           variant="body1"
-          element="p"
+          as="p"
           color={colorVars.secondary}
           css={[
             S.description,
@@ -61,7 +61,7 @@ const PostCardContent = ({
       )}
       <Typography
         variant="body2"
-        element="p"
+        as="p"
         color={colorVars.tertiary}
         css={S.createdAt}
       >
