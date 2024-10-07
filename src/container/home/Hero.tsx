@@ -65,7 +65,7 @@ const Hero = ({ setHeaderHide }: Props) => {
   });
 
   return (
-    <section css={S.self} ref={sectionRef}>
+    <section css={heroPageStyle.self} ref={sectionRef}>
       <Global
         styles={css`
           :root {
@@ -77,14 +77,13 @@ const Hero = ({ setHeaderHide }: Props) => {
         `}
       />
       <motion.div
-        css={S.titleArea}
         style={{
           opacity,
           translateY,
         }}
       >
-        <strong css={S.titleText}>Welcome!</strong>
-        <h1 css={[S.titleText, S.title]}>
+        <strong css={heroPageStyle.titleText}>Welcome!</strong>
+        <h1 css={[heroPageStyle.titleText, heroPageStyle.title]}>
           <span>It&apos;s</span> <span className="visually-hidden">YUN</span>
           <NameSvg viewBox="0 0 59 22" fill={colorVars.primary} />
           <span> &apos;s Dev Log</span>
@@ -96,7 +95,7 @@ const Hero = ({ setHeaderHide }: Props) => {
           translateY,
         }}
       >
-        <Typography variant="subtitle1" as="p" css={S.description}>
+        <Typography variant="subtitle1" as="p" css={heroPageStyle.description}>
           FE 개발자 YUN의 기록을 담고 있습니다.
           <br />
           Javascript / React / Next.js 등 FE 개발 스택 이야기
@@ -114,7 +113,8 @@ const Hero = ({ setHeaderHide }: Props) => {
     </section>
   );
 };
-const S = {
+
+const heroPageStyle = {
   self: css`
     padding: 48px 32px 100px;
     @media ${media.md} {
@@ -122,7 +122,6 @@ const S = {
       margin-bottom: 40px;
     }
   `,
-  titleArea: css``,
   titleText: css`
     line-height: 1.2;
     font-size: 28px;
