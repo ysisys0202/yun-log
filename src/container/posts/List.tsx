@@ -50,7 +50,6 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
 const S = {
   self: css`
     padding: 32px ${contentSideSpacingMb}px 0;
-    min-height: calc(100vh - 180px);
     @media ${media.md} {
       padding: 40px ${contentSideSpacingPc}px 0;
     }

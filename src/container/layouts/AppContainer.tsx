@@ -13,7 +13,7 @@ type Props = {
 
 const AppContainer = ({ headerHide, children }: Props) => {
   return (
-    <div css={S.self}>
+    <div css={appContainerStyle.self}>
       <GlobalHeader isHide={headerHide} />
       <UtilButtonBox />
       <Content>{children}</Content>
@@ -21,7 +21,7 @@ const AppContainer = ({ headerHide, children }: Props) => {
     </div>
   );
 };
-const S = {
+const appContainerStyle = {
   self: css`
     width: 100%;
     @media ${media.md} {
