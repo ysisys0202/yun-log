@@ -13,21 +13,21 @@ const Callout = ({ icon = "💡", title, children }: CalloutProps) => {
   return (
     <article css={S.self}>
       {icon !== "none" && (
-        <Typography variant="body1" element="span" css={S.icon}>
+        <Typography variant="body1" as="span" css={S.icon}>
           {icon}
         </Typography>
       )}
       {title && (
         <Typography
           variant="body1"
-          element="h5"
+          as="h5"
           color={colorVars.primary}
           css={S.title}
         >
           {title}
         </Typography>
       )}
-      <Typography variant="body2" element="p" color={colorVars.tertiary}>
+      <Typography variant="body2" as="p" color={colorVars.tertiary}>
         {children}
       </Typography>
     </article>

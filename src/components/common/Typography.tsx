@@ -6,62 +6,70 @@ import {
 } from "@/types/typography";
 import { media } from "@/constants/breakPoints";
 import { typography } from "@/constants/typography";
+import { forwardRef } from "react";
 
-type Props = {
+type TypographyProps = {
   variant: TypographyVariant;
-  element: TypographyElement;
+  as: TypographyElement;
   color?: string;
   fontWeight?: TypographyWeight;
   className?: string;
   children: React.ReactNode;
   css?: SerializedStyles | SerializedStyles[];
-} & React.HTMLAttributes<HTMLElement>;
+} & React.HTMLAttributes<HTMLHeadingElement>;
 
-const Typography = ({
-  variant = "body1",
-  element = "p",
-  color,
-  fontWeight,
-  className,
-  children,
-  css: propsCss,
-  ...rest
-}: Props) => {
-  const Component = element;
+const Typography = forwardRef<HTMLHeadingElement, TypographyProps>(
+  (
+    {
+      variant = "body1",
+      as = "p",
+      color,
+      fontWeight,
+      className,
+      children,
+      css: propsCss,
+      ...rest
+    },
+    ref
+  ) => {
+    const Component = as;
 
-  const styles = [
-    typographyStyle.default,
-    typographyStyle[variant],
-    css`
-      color: ${color};
-      font-weight: ${fontWeight} !important;
-    `,
-    propsCss,
-  ];
+    const styles = [
+      typographyStyle.base,
+      typographyStyle[variant],
+      css`
+        color: ${color};
+        font-weight: ${fontWeight} !important;
+      `,
+      propsCss,
+    ];
 
-  return (
-    <Component
-      css={styles}
-      className={`typography-${variant} ${className ?? ""}`}
-      {...rest}
-    >
-      {children}
-    </Component>
-  );
-};
+    return (
+      <Component
+        ref={ref}
+        css={styles}
+        className={`typography-${variant} ${className ?? ""}`}
+        {...rest}
+      >
+        {children}
+      </Component>
+    );
+  }
+);
 
 export const typographyStyle = {
-  default: css`
+  base: css`
     line-height: ${typography.lineheight.default};
     letter-spacing: ${typography.letterspacing.default};
     &[class^="typography-h"],
     &[class^="typography-subtitle"] {
-      font-weight: 600;
+      font-weight: ${typography.weight["600"]};
     }
     &[class^="typography-body"] {
-      font-weight: 400;
+      font-weight: ${typography.weight["400"]};
     }
   `,
+  // NOTE: variant styles
   h1: css`
     font-size: ${typography.size["5xl"]};
     @media ${media.md} {
@@ -100,11 +108,12 @@ export const typographyStyle = {
   `,
   subtitle1: css`
     font-size: ${typography.size["lg"]};
-    font-size: ${typography.weight["700"]};
+    font-weight: ${typography.weight["600"]};
     @media ${media.md} {
       font-size: ${typography.size["xl"]};
     }
   `,
 };
 
+Typography.displayName = "Typography";
 export default Typography;

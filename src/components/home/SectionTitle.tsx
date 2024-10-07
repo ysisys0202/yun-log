@@ -7,7 +7,7 @@ const SectionTitle = ({ children, className }: Props) => {
   return (
     <Typography
       variant="h3"
-      element="h2"
+      as="h2"
       color={colorVars.primary}
       {...(className && { className: className })}
     >

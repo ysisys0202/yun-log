@@ -10,7 +10,7 @@ const CaptionText = ({ children, className }: Props) => {
   return (
     <Typography
       variant="body2"
-      element="p"
+      as="p"
       color={colorVars.tertiary}
       {...(className && { className: className })}
     >

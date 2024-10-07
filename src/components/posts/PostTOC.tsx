@@ -38,7 +38,7 @@ const PostTOC = ({ TOC }: Props) => {
   return (
     <nav css={S.self}>
       <div css={S.toc}>
-        <Typography variant={"subtitle1"} element={"strong"}>
+        <Typography variant={"subtitle1"} as={"strong"}>
           목차
         </Typography>
         <ol>

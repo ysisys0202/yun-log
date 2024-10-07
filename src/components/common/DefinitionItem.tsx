@@ -19,15 +19,10 @@ const DefinitionItem = ({
 }: Props) => {
   return (
     <div {...(className && { className: className })} css={css}>
-      <Typography variant="body2" element="span" color={color} css={S.label}>
+      <Typography variant="body2" as="span" color={color} css={S.label}>
         {label}
       </Typography>
-      <Typography
-        variant="body2"
-        element="span"
-        color={color}
-        className="value"
-      >
+      <Typography variant="body2" as="span" color={color} className="value">
         {value}
       </Typography>
     </div>

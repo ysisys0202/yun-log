@@ -48,7 +48,7 @@ const GlobalHeader = ({ isHide }: Props) => {
                 >
                   <Typography
                     variant="subtitle1"
-                    element="span"
+                    as="span"
                     color={colorVars.primary}
                   >
                     {menu.name}

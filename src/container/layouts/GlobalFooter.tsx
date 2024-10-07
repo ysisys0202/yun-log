@@ -8,13 +8,13 @@ const GlobalFooter = () => {
     <footer css={S.self}>
       <ul>
         <li css={S.footerItem}>
-          <Typography variant="body2" element="p" color={colorVars.tertiary}>
+          <Typography variant="body2" as="p" color={colorVars.tertiary}>
             연락처 :
             <a href="mailto:ysisys0202@gmail.com">{""} ysisys0202@gmail.com</a>
           </Typography>
         </li>
         <li css={S.footerItem}>
-          <Typography variant="body2" element="p" color={colorVars.tertiary}>
+          <Typography variant="body2" as="p" color={colorVars.tertiary}>
             아이콘 출처 :
             <a
               href="https://www.flaticon.com/free-icons/manual-book"
