@@ -1,20 +1,20 @@
 import Link from "next/link";
 import { colorVars } from "@/constants/cssVariables";
-import { NavCategory } from "@/hooks/useNavCategories";
+import { PostNav } from "@/types/post";
 import TagList from "@/components/common/TagList";
 import Tag from "@/components/common/Tag";
 import TagSkeleton from "@/components/common/TagSkeleton";
 
 type Props = {
-  categories: NavCategory[];
+  categories?: PostNav[];
   currentCategory: string;
 };
 
 const CategoryTagList = ({ categories, currentCategory }: Props) => {
   return (
     <TagList>
-      {categories.length === 0 && renderTagSkeletons(3)}
-      {categories.length > 0 &&
+      {!categories && renderTagSkeletons(4)}
+      {categories &&
         categories.map((category) => {
           const isActive = currentCategory === category.name;
           return (

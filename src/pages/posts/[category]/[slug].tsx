@@ -3,11 +3,7 @@ import { css } from "@emotion/react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
-import {
-  getCategories,
-  getPostData,
-  getPosts,
-} from "../../../../libs/posts-util";
+import { getCategories, getPostData, getPosts } from "libs/post";
 import { PostData } from "@/types/post";
 import MyHead from "@/components/common/AppHead";
 import AppContainer from "@/container/layouts/AppContainer";

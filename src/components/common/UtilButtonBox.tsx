@@ -6,7 +6,7 @@ import {
   gnbHeightPc,
 } from "@/constants/size";
 import { css } from "@emotion/react";
-import { event } from "@/lib/gTag";
+import { event } from "@/libs/gTag";
 import ColorModeButton from "@/components/common/ColorModeButton";
 import ContactButton from "@/components/common/ContactButton";
 const UtilButtonBox = () => {

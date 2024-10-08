@@ -5,7 +5,7 @@ import { colorVars } from "@/constants/cssVariables";
 import { media } from "@/constants/breakPoints";
 import { gnbHeightMb, gnbHeightPc, gnbSideSpacing } from "@/constants/size";
 import Typography from "@/components/common/Typography";
-import { event } from "@/lib/gTag";
+import { event } from "@/libs/gTag";
 
 type Props = {
   isHide?: boolean;

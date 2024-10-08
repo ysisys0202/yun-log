@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { event } from "@/lib/gTag";
+import { event } from "@/libs/gTag";
 type Props = {
   videoId: string;
   elementId: string;
