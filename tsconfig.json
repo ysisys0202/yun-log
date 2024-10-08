@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "libs/*": ["./libs/*"]
     },
     "types": ["@types/gtag.js"]
   },
@@ -30,7 +31,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "public/scripts/controlColorTheme.js",
-    "src/lib/ga.js"
+    "src/libs/ga.js"
   ],
   "exclude": ["node_modules"]
 }
