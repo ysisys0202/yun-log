@@ -1,6 +1,8 @@
 import { Category } from "@/types/post";
 
-export const fetchCategories = async (): Promise<Category[] | undefined> => {
+export const getPostCategoryList = async (): Promise<
+  Category[] | undefined
+> => {
   try {
     const response = await fetch("/api/getFileInfo");
     if (!response.ok) {

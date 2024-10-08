@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getPosts } from "../../libs/posts-util";
+import { getPosts } from "libs/post";
 import { media } from "@/constants/breakPoints";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import MyHead from "@/components/common/AppHead";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchCategories } from "@/services/categories";
+import { getPostCategoryList } from "@/services/post";
 import { Category } from "@/types/post";
 
 export type NavCategory = {
@@ -12,7 +12,7 @@ const useNavCategories = () => {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const fetchedCategories = await fetchCategories();
+        const fetchedCategories = await getPostCategoryList();
         if (fetchedCategories) {
           const allCategoryLength = fetchedCategories.reduce(
             (acc, current) => acc + current.fileLength,

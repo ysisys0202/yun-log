@@ -1,5 +1,5 @@
 import { GetStaticPropsContext } from "next";
-import { getCategories, getPosts } from "../../../../libs/posts-util";
+import { getCategories, getPosts } from "libs/post";
 import { PostData } from "@/types/post";
 import AppContainer from "@/container/layouts/AppContainer";
 import PostListContainer from "@/container/posts/List";
