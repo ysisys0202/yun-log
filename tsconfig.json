@@ -31,7 +31,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "public/scripts/controlColorTheme.js",
-    "src/libs/ga.js"
+    "src/libs/ga.js",
+    "cypress.config.js"
   ],
   "exclude": ["node_modules"]
 }
