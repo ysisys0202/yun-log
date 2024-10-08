@@ -4,7 +4,7 @@ import useCategoriesInfo from "@/hooks/useNavCategories";
 import Typography from "@/components/common/Typography";
 import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
-import { event } from "@/lib/gTag";
+import { event } from "@/libs/gTag";
 import Skeleton from "../common/Skeleton";
 
 const SideNav = () => {

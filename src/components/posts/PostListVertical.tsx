@@ -1,7 +1,7 @@
 import { SerializedStyles, css } from "@emotion/react";
 import { PostData } from "@/types/post";
 import PostListItem from "@/components/posts/postCard/PostListItem";
-import { event } from "@/lib/gTag";
+import { event } from "@/libs/gTag";
 type Props = {
   section?: string;
   postList: PostData[];

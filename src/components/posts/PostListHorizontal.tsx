@@ -3,7 +3,7 @@ import { PostData } from "@/types/post";
 import { media } from "@/constants/breakPoints";
 import PostCard from "@/components/posts/postCard/PostCard";
 import { colorVars } from "@/constants/cssVariables";
-import { event } from "@/lib/gTag";
+import { event } from "@/libs/gTag";
 type Props = {
   section?: string;
   postList: PostData[];

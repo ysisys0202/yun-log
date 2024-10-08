@@ -7,9 +7,9 @@ import Layout from "@/container/layouts/Layout";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { media } from "@/constants/breakPoints";
 import { useEffect } from "react";
-import { pageview } from "@/lib/gTag";
+import { pageview } from "@/libs/gTag";
 import { useRouter } from "next/router";
-import GAScripts from "@/lib/GAScripts";
+import GAScripts from "@/libs/GAScripts";
 const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
   ssr: true,
 });
