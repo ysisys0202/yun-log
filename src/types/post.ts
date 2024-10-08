@@ -32,3 +32,7 @@ export type Category = {
   name: string;
   fileLength: number;
 };
+
+export type PostNav = {
+  link: string;
+} & Category;

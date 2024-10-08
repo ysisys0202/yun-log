@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { media } from "@/constants/breakPoints";
 import { contentSideSpacingMb, contentSideSpacingPc } from "@/constants/size";
 import { PostData, Category } from "@/types/post";
-import useNavCategories from "@/hooks/useNavCategories";
+import usePostNavList from "@/hooks/usePostNavList";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
@@ -15,8 +15,8 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
   const router = useRouter();
   const query = router.query;
   const currentCategory = (query.category ?? "전체") as string;
-  const { navCategories } = useNavCategories();
-  const currentCategoryPostLength = navCategories.filter(
+  const { postNavList } = usePostNavList();
+  const currentCategoryPostLength = postNavList?.filter(
     (category: Category) => category.name === currentCategory
   )[0]?.fileLength;
   const isMobile = !useMediaQuery(media.md);
@@ -25,7 +25,7 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
       <BackGround />
       {isMobile ? (
         <CategoryTagList
-          categories={navCategories}
+          categories={postNavList}
           currentCategory={currentCategory}
         />
       ) : (

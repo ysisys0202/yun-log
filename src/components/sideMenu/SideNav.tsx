@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { css } from "@emotion/react";
-import useCategoriesInfo from "@/hooks/useNavCategories";
+import usePostNavList from "@/hooks/usePostNavList";
 import Typography from "@/components/common/Typography";
 import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
@@ -11,8 +11,9 @@ const SideNav = () => {
   const router = useRouter();
   const { pathname, query } = router;
   const currentCategory = pathname === "/posts" ? "전체" : query.category;
-  const { navCategories } = useCategoriesInfo();
-  const handleSideNavItem = (value: string) => {
+  const { postNavList } = usePostNavList();
+
+  const handleSideNavItemClick = (value: string) => {
     event({
       action: "click",
       category: "side-nav",
@@ -22,25 +23,25 @@ const SideNav = () => {
   };
 
   return (
-    <nav css={S.self}>
+    <nav css={sideNavStyle.self}>
       <Typography variant="h4" as="h2">
         게시글 목록
       </Typography>
-      <ul css={S.navList}>
-        {navCategories.length === 0 && renderSkeletonItems(3)}
-        {navCategories.length > 0 &&
-          navCategories.map(({ name, fileLength, link }) => {
+      <ul css={sideNavStyle.navList}>
+        {!postNavList && renderSkeletonItems(4)}
+        {postNavList &&
+          postNavList.map(({ name, fileLength, link }) => {
             const isActive = currentCategory === name;
             return (
               <li
                 key={name}
-                css={S.navItem}
+                css={sideNavStyle.navItem}
                 className={`${isActive ? "is-active" : ""}`}
               >
                 <Link
                   href={link}
                   onClick={() => {
-                    handleSideNavItem(name);
+                    handleSideNavItemClick(name);
                   }}
                 >
                   <Typography variant="subtitle1" as="span">
@@ -66,7 +67,7 @@ const renderSkeletonItems = (length: number) => {
   return skeletons;
 };
 
-const S = {
+const sideNavStyle = {
   self: css`
     position: absolute;
     top: 50%;
@@ -79,7 +80,6 @@ const S = {
     gap: 4px;
     margin-top: 12px;
   `,
-
   navItem: css`
     a {
       position: relative;
