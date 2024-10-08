@@ -2,6 +2,7 @@
 
 import nextMDX from "@next/mdx";
 import remarkGfm from "remark-gfm";
+import bundleAnalyzer from "webpack-bundle-analyzer";
 
 const withMDX = nextMDX({
   extensions: /\.mdx?$/,
@@ -22,6 +23,10 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
+    if (process.env.ANALYZE === "true") {
+      const { BundleAnalyzerPlugin } = bundleAnalyzer;
+      config.plugins.push(new BundleAnalyzerPlugin());
+    }
     return config;
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
