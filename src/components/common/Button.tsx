@@ -1,6 +1,11 @@
 import { colorVars } from "@/constants/cssVariables";
 import { SerializedStyles, css } from "@emotion/react";
-import React, { ElementType, HTMLAttributes, forwardRef } from "react";
+import React, {
+  ButtonHTMLAttributes,
+  ElementType,
+  HTMLAttributes,
+  forwardRef,
+} from "react";
 import { typographyStyle } from "./Typography";
 import { TypographyWeight } from "@/types/typography";
 
@@ -16,7 +21,7 @@ export type ButtonProps = {
   beforeIcon?: React.ElementType;
   afterIcon?: React.ElementType;
   propsCss?: SerializedStyles;
-} & HTMLAttributes<HTMLButtonElement>;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -85,6 +90,9 @@ const buttonStyle = {
     justify-content: center;
     align-items: center;
     transition: opacity 200ms ease-in-out;
+    &:disabled {
+      cursor: not-allowed;
+    }
     &:hover {
       opacity: 0.8;
     }
