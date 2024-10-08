@@ -4,7 +4,7 @@ export const getPostCategoryList = async (): Promise<
   Category[] | undefined
 > => {
   try {
-    const response = await fetch("/api/getFileInfo");
+    const response = await fetch("/api/post/category");
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
