@@ -11,3 +11,5 @@ const convertSeconds = ({
 }: ConvertSecondsParams): number => {
   return hours * 3600 + minutes * 60 + seconds;
 };
+
+export default convertSeconds;

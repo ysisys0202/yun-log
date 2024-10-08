@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getCategories } from "libs/post";
+import convertSeconds from "@/utils/convertSeconds";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
