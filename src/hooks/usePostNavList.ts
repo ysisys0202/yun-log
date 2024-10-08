@@ -1,12 +1,11 @@
-import { useEffect, useCallback } from "react";
-import { useRecoilState } from "recoil";
-import { postNavListState } from "@/store/postState";
+import { useCallback, useEffect, useState } from "react";
 import { getPostCategoryList } from "@/services/post";
+import { PostNav } from "@/types/post";
 
 const usePostNavList = () => {
-  const [postNavList, setPostNavList] = useRecoilState(postNavListState);
+  const [postNavList, setPostNavList] = useState<PostNav[] | undefined>();
 
-  const initPostCategoryList = async () => {
+  const initPostCategoryList = useCallback(async () => {
     try {
       const postCategoryList = await getPostCategoryList();
       if (!postCategoryList) {
@@ -33,12 +32,9 @@ const usePostNavList = () => {
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    if (postNavList) {
-      return;
-    }
     initPostCategoryList();
   }, []);
 
