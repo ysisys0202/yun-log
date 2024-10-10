@@ -1,0 +1,30 @@
+name: Setup, Build, and Start App
+description: Setup Node.js, install dependencies, build, and start the application.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "21.4.0"
+
+    - name: Install dependencies
+      run: yarn install
+      shell: bash
+
+    - name: Build the application
+      run: yarn build
+      shell: bash
+
+    - name: Start the application
+      run: yarn start &
+      shell: bash
+      env:
+        NODE_ENV: production
+
+    - name: Wait for the app to be ready
+      run: npx wait-on http://localhost:3000
+      shell: bash
+      env:
+        NODE_ENV: production
