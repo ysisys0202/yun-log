@@ -16,6 +16,9 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: Install dependencies
+      run: yarn install
+      shell: bash
     - name: Run Cypress tests
       uses: cypress-io/github-action@v6
       with:
