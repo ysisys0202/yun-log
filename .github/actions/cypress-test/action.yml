@@ -19,9 +19,6 @@ runs:
     - name: Install dependencies
       run: yarn install
       shell: bash
-    - name: Install Cypress
-      run: yarn add cypress --dev
-      shell: bash
     - name: Clear Cypress cache
       run: yarn cypress cache clear
       shell: bash

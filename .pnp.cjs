@@ -62,6 +62,7 @@ const RAW_RUNTIME_STATE =
           ["next", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:13.4.19"],\
           ["next-mdx-remote", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.4.1"],\
           ["next-sitemap", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.2.3"],\
+          ["pnp-webpack-plugin", "npm:1.7.0"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:18.2.0"],\
           ["react-syntax-highlighter", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:15.5.0"],\
@@ -20531,6 +20532,7 @@ const RAW_RUNTIME_STATE =
           ["next", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:13.4.19"],\
           ["next-mdx-remote", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.4.1"],\
           ["next-sitemap", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.2.3"],\
+          ["pnp-webpack-plugin", "npm:1.7.0"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:18.2.0"],\
           ["react-syntax-highlighter", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:15.5.0"],\
