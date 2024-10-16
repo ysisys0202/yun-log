@@ -19,9 +19,6 @@ runs:
     - name: Install dependencies
       run: yarn install
       shell: bash
-    - name: Clear Cypress cache
-      run: yarn cypress cache clear
-      shell: bash
     - name: Run Cypress tests
       uses: cypress-io/github-action@v6
       with:
