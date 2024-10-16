@@ -19,7 +19,7 @@ runs:
     - name: Run Cypress tests
       uses: cypress-io/github-action@v6
       with:
-        working-directory: cypress
+        working-directory: cypress/e2e
         install-command: yarn install
         command: yarn run --binaries-only cypress run
         build: yarn build
