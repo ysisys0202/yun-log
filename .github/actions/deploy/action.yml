@@ -1,4 +1,4 @@
-name: Vercel Deployment
+name: Deploy
 description: Action For Vercel Deployment
 inputs:
   vercel-token:

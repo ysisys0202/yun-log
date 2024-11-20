@@ -1,5 +1,5 @@
-name: Cypress Test
-description: Action For Cypress Test
+name: E2E Test
+description: Action For E2E Test
 inputs:
   cypress-project-id:
     description: "Cypress Project ID"
