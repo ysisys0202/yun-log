@@ -10,6 +10,9 @@ inputs:
   vercel-project-id:
     description: "Vercel Project ID"
     required: true
+  vercel-args:
+    description: "Vercel Arguments"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -21,4 +24,4 @@ runs:
         vercel-token: ${{ inputs.vercel-token }}
         vercel-org-id: ${{ inputs.vercel-org-id }}
         vercel-project-id: ${{ inputs.vercel-project-id }}
-        vercel-args: "--prod"
+        vercel-args: ${{ inputs.vercel-args }}
