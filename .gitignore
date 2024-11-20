@@ -54,3 +54,6 @@ next-env.d.ts
 !.yarn/sdks
 !.yarn/versions
 
+# post 임시저장
+/posts/0.임시저장
+
