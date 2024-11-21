@@ -1,0 +1,100 @@
+name: CI/CD
+on:
+  push:
+    branches: [develop, main, feature/*]
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Use Cypress Test Action
+        uses: ./.github/actions/e2e-test
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_CYPRESS_ID }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  set-deploy-environment:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-environment: ${{ steps.set-deploy-environment.outputs.deploy-environment }}
+    steps:
+      - name: set deploy environment
+        id: set-deploy-environment
+        run: |
+          echo ${{github.ref}}
+          echo deploy-environment=preview >> $GITHUB_OUTPUT
+
+          if [[ ${{github.ref}} == "refs/heads/main" ]]; then
+           echo deploy-environment=prod >> $GITHUB_OUTPUT
+          fi
+      - name: check deploy environment
+        run: echo ${{steps.set-deploy-environment.outputs.deploy-environment}}
+  deploy:
+    needs: [e2e-test, set-deploy-environment]
+    if: needs.e2e-test.result == 'success'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers:
+          ["${{ needs.set-deploy-environment.outputs.deploy-environment }}"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Use Vercel Deploy Action
+        uses: ./.github/actions/deploy
+        with:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ARGS: ${{  needs.set-deploy-environment.outputs.deploy-environment == 'prod' && ' --prod' || '' }}
+  notify:
+    needs: [set-deploy-environment, deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check Deploy Status
+        run: echo ${{needs.set-deploy-environment.outputs.deploy-environment}}
+      - name: Send Slack Notification
+        uses: ./.github/actions/notify-slack
+        with:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOYMENT_LOG }}
+          PAYLOAD: >
+            {
+              "text": "배포 알림",
+              "attachments": [
+                {
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "배포 환경 : ${{ needs.set-deploy-environment.outputs.deploy-environment}}" 
+                      }
+                    }
+                  ]
+                },
+                {
+                  "color": "${{ needs.deploy.result == 'success' && 'good' || 'danger' }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "결과 : ${{ needs.deploy.result == 'success' && '성공 🎉' || '실패 ❌' }}"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }

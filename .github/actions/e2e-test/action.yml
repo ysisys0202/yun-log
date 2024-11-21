@@ -1,16 +1,15 @@
-name: Cypress Test
-description: Action For Cypress Test
+name: E2E Test
+description: Action For E2E Test
 inputs:
-  cypress-project-id:
+  CYPRESS_PROJECT_ID:
     description: "Cypress Project ID"
     required: true
-  cypress-record-key:
+  CYPRESS_RECORD_KEY:
     description: "Cypress Record Key"
     required: true
-  github-token:
+  GITHUB_TOKEN:
     description: "GitHub Token"
     required: true
-
 runs:
   using: "composite"
   steps:
@@ -29,6 +28,6 @@ runs:
         record: true
         parallel: true
       env:
-        CYPRESS_PROJECT_ID: ${{ inputs.cypress-project-id }}
-        CYPRESS_RECORD_KEY: ${{ inputs.cypress-record-key }}
-        GITHUB_TOKEN: ${{ inputs.github-token }}
+        CYPRESS_PROJECT_ID: ${{ inputs.CYPRESS_PROJECT_ID }}
+        CYPRESS_RECORD_KEY: ${{ inputs.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

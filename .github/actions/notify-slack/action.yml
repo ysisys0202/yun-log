@@ -1,0 +1,19 @@
+name: Notify Slack
+description: Action For Notify Slack
+inputs:
+  WEBHOOK_URL:
+    description: "Slack Webhook URL"
+    required: true
+  PAYLOAD:
+    description: "Slack Payload"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Send GitHub Action data to a Slack workflow
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ inputs.WEBHOOK_URL }}
+        webhook-type: webhook-trigger
+        payload: ${{inputs.PAYLOAD}}
