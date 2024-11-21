@@ -1,16 +1,16 @@
 name: Deploy
 description: Action For Vercel Deployment
 inputs:
-  vercel-token:
+  VERCEL_TOKEN:
     description: "Vercel Token"
     required: true
-  vercel-org-id:
+  VERCEL_ORG_ID:
     description: "Vercel Organization ID"
     required: true
-  vercel-project-id:
+  VERCEL_PROJECT_ID:
     description: "Vercel Project ID"
     required: true
-  vercel-args:
+  VERCEL_ARGS:
     description: "Vercel Arguments"
     required: true
 runs:
@@ -18,10 +18,13 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: Debug Vercel Args
+      shell: bash
+      run: echo Vercel args - ${{ inputs.vercel-args  }}
     - name: Deploy to Vercel
       uses: amondnet/vercel-action@v20
       with:
-        vercel-token: ${{ inputs.vercel-token }}
-        vercel-org-id: ${{ inputs.vercel-org-id }}
-        vercel-project-id: ${{ inputs.vercel-project-id }}
-        vercel-args: ${{ inputs.vercel-args }}
+        vercel-token: ${{ inputs.VERCEL_TOKEN }}
+        vercel-org-id: ${{ inputs.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ inputs.VERCEL_PROJECT_ID }}
+        vercel-args: ${{ inputs.VERCEL_ARGS }}
