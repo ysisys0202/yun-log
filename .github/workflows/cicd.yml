@@ -1,7 +1,7 @@
 name: CI/CD
 on:
   push:
-    branches: [develop, main, feature/*]
+    branches: [main, production]
   pull_request:
     types: [opened, synchronize]
 jobs:
@@ -32,7 +32,7 @@ jobs:
           echo ${{github.ref}}
           echo deploy-environment=preview >> $GITHUB_OUTPUT
 
-          if [[ ${{github.ref}} == "refs/heads/main" ]]; then
+          if [[ ${{github.ref}} == "refs/heads/production" ]]; then
            echo deploy-environment=prod >> $GITHUB_OUTPUT
           fi
       - name: check deploy environment
