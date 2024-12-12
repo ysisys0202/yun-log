@@ -26,7 +26,7 @@ const nextConfig = {
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   images: {
-    domains: ["drive.google.com"],
+    domains: ["drive.google.com", "image.aladin.co.kr"],
   },
   redirects: async () => {
     return [
