@@ -102,7 +102,6 @@ const sideNavStyle = {
         &::after {
           content: "";
           position: absolute;
-          top: 2px;
           right: 0;
         }
       }
@@ -113,7 +112,8 @@ const sideNavStyle = {
         font-weight: 600 !important;
         &:last-of-type {
           &::after {
-            content: "👀";
+            content: "🎄";
+            transform: translateY(4px);
           }
         }
       }
