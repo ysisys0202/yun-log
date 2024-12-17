@@ -22,6 +22,7 @@ const config: Config = {
   moduleFileExtensions: ["ts", "tsx", "js", "json"],
   moduleDirectories: ["node_modules", "<rootDir>/src"],
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
 export default config;
