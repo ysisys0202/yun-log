@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
     "plugins": [
@@ -32,7 +32,8 @@
     ".next/types/**/*.ts",
     "public/scripts/controlColorTheme.js",
     "src/libs/ga.js",
-    "cypress.config.js"
+    "cypress.config.js",
+    "__mocks__/svg.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -7,6 +7,7 @@ type Props = {
   color?: string;
   propsCss?: SerializedStyles;
   className?: string;
+  testId?: string;
 };
 
 const Divider = ({
@@ -14,6 +15,7 @@ const Divider = ({
   height = "1px",
   color = colorVars.border,
   propsCss,
+  testId = "divider",
   ...props
 }: Props) => {
   const styles = [
@@ -24,7 +26,9 @@ const Divider = ({
     `,
   ];
   propsCss && styles.push(propsCss);
-  return <div css={styles} aria-hidden="true" {...props}></div>;
+  return (
+    <div css={styles} aria-hidden="true" data-testid={testId} {...props}></div>
+  );
 };
 
 export default Divider;
