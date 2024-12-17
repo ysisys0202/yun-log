@@ -7,9 +7,10 @@ import {
 import { media } from "@/constants/breakPoints";
 import { typography } from "@/constants/typography";
 import { forwardRef } from "react";
+import { colorVars } from "@/constants/cssVariables";
 
 type TypographyProps = {
-  variant: TypographyVariant;
+  variant?: TypographyVariant;
   as: TypographyElement;
   color?: string;
   fontWeight?: TypographyWeight;
@@ -22,9 +23,9 @@ const Typography = forwardRef<HTMLHeadingElement, TypographyProps>(
   (
     {
       variant = "body1",
-      as = "p",
-      color,
-      fontWeight,
+      as,
+      color = colorVars.primary,
+      fontWeight = 500,
       className,
       children,
       css: propsCss,
