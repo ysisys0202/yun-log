@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
     "plugins": [
@@ -35,5 +35,5 @@
     "cypress.config.js",
     "__mocks__/svg.js"
   ],
-  "exclude": ["cypress.config.js", "cypress", "node_modules"]
+  "exclude": ["node_modules"]
 }
