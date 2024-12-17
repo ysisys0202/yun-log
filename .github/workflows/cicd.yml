@@ -5,6 +5,13 @@ on:
   pull_request:
     types: [opened, synchronize]
 jobs:
+  jest-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Use Jest Test Action
+        uses: ./.github/actions/jest-test
   e2e-test:
     runs-on: ubuntu-latest
     strategy:
@@ -38,8 +45,8 @@ jobs:
       - name: check deploy environment
         run: echo ${{steps.set-deploy-environment.outputs.deploy-environment}}
   deploy:
-    needs: [e2e-test, set-deploy-environment]
-    if: needs.e2e-test.result == 'success'
+    needs: [jest-test, e2e-test, set-deploy-environment]
+    if: needs.jest-test.result == 'success' && needs.e2e-test.result == 'success'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
