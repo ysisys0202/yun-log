@@ -57,8 +57,8 @@ const S = {
       color: ${colorVars.primary};
       font-weight: 600;
       &::after {
-        content: "👀";
-        transform: translateY(4px);
+        content: "🎄";
+        transform: translateY(2px);
       }
     }
     &.is-active {
