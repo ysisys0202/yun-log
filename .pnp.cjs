@@ -75,6 +75,7 @@ const RAW_RUNTIME_STATE =
           ["jest-environment-jsdom", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:29.7.0"],\
           ["next", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:13.4.19"],\
           ["next-mdx-remote", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.4.1"],\
+          ["next-router-mock", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:0.9.13"],\
           ["next-sitemap", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.2.3"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:18.2.0"],\
@@ -20652,6 +20653,7 @@ const RAW_RUNTIME_STATE =
           ["jest-environment-jsdom", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:29.7.0"],\
           ["next", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:13.4.19"],\
           ["next-mdx-remote", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.4.1"],\
+          ["next-router-mock", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:0.9.13"],\
           ["next-sitemap", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:4.2.3"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:18.2.0"],\
@@ -20797,6 +20799,32 @@ const RAW_RUNTIME_STATE =
           "@types/react-dom",\
           "@types/react",\
           "react-dom",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["next-router-mock", [\
+      ["npm:0.9.13", {\
+        "packageLocation": "../../../.yarn/berry/cache/next-router-mock-npm-0.9.13-5117e1bff0-10c0.zip/node_modules/next-router-mock/",\
+        "packageDependencies": [\
+          ["next-router-mock", "npm:0.9.13"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:0.9.13", {\
+        "packageLocation": "./.yarn/__virtual__/next-router-mock-virtual-d1212cebeb/4/.yarn/berry/cache/next-router-mock-npm-0.9.13-5117e1bff0-10c0.zip/node_modules/next-router-mock/",\
+        "packageDependencies": [\
+          ["next-router-mock", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:0.9.13"],\
+          ["@types/next", null],\
+          ["@types/react", "npm:18.2.21"],\
+          ["next", "virtual:dec896f6f7648432eb26b7f65f18aeb4d023c6cad5f8307079c2d599e2362bbe2e02f965f494d160c74cd36ac1ee7856d16231e49098250474559cd12dab408a#npm:13.4.19"],\
+          ["react", "npm:18.2.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/next",\
+          "@types/react",\
+          "next",\
           "react"\
         ],\
         "linkType": "HARD"\
