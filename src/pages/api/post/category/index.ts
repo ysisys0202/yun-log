@@ -5,7 +5,7 @@ import convertSeconds from "@/utils/convertSeconds";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === "GET") {
-      const categories = getCategories();
+      const categories = await getCategories();
       res.setHeader(
         "Cache-Control",
         `public, max-age=${convertSeconds({ minutes: 30 })}`

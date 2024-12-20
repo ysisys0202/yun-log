@@ -1,4 +1,5 @@
 import { Category } from "@/types/post";
+import { handleError } from "@/utils/error";
 
 export const getPostCategoryList = async (): Promise<
   Category[] | undefined
@@ -11,7 +12,7 @@ export const getPostCategoryList = async (): Promise<
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    handleError("카테고리 정보를 불러오는 데 실패했습니다.");
     return undefined;
   }
 };

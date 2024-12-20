@@ -17,8 +17,8 @@ const AllPosts = ({ allPostList }: { allPostList: PostData[] }) => {
   );
 };
 
-export const getStaticProps = () => {
-  const allPostList = getPosts({});
+export const getStaticProps = async () => {
+  const allPostList = await getPosts({});
   return {
     props: {
       allPostList,
