@@ -1,0 +1,27 @@
+@storybook/cli v7.6.20
+
+info => Cleaning outputDir: /var/folders/t5/w83z_jqs2278szh1s9hqvcjr0000gn/T/chromatic--47984-GRDrg2Hq02Po
+info => Loading presets
+info => Building manager..
+info => Manager built (199 ms)
+info => Building preview..
+info => Copying static files: /Users/yunseul/.yarn/berry/cache/@storybook-manager-npm-7.6.20-c27c893506-10c0.zip/node_modules/@storybook/manager/static at /var/folders/t5/w83z_jqs2278szh1s9hqvcjr0000gn/T/chromatic--47984-GRDrg2Hq02Po/sb-common-assets
+info Using Babel compiler
+info Addon-docs: using MDX2
+info => Using implicit CSS loaders
+info => Using default Webpack5 setup
+WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+WARN This can impact web performance.
+WARN Assets: 
+WARN   648.75460bbc.iframe.bundle.js (583 KiB)
+WARN   545.16d5b705.iframe.bundle.js (737 KiB)
+WARN   323.8bba3921.iframe.bundle.js (984 KiB)
+WARN entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+WARN Entrypoints:
+WARN   main (1010 KiB)
+WARN       runtime~main.08c5009d.iframe.bundle.js
+WARN       323.8bba3921.iframe.bundle.js
+WARN       main.87f7a425.iframe.bundle.js
+WARN 
+info => Preview built (5.14 s)
+info => Output directory: /var/folders/t5/w83z_jqs2278szh1s9hqvcjr0000gn/T/chromatic--47984-GRDrg2Hq02Po
