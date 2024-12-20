@@ -14,6 +14,7 @@ import { colorVars } from "@/constants/cssVariables";
 import usePostTOC from "@/hooks/usePostTOC";
 import PostTOC from "@/components/posts/PostTOC";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import { handleError } from "@/utils/error";
 
 type Props = {
   postData: PostData;
@@ -75,7 +76,7 @@ const S = {
 };
 
 export const getStaticPaths = async () => {
-  const postFiles = getPosts({});
+  const postFiles = await getPosts({});
 
   return {
     paths: postFiles.map((post) => `/posts/${post.categoryName}/${post.slug}`),
@@ -84,16 +85,21 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
-  const categories = getCategories();
+  const categories = await getCategories();
   const currentCategoryName = context.params?.category as string;
   const currentCategroryId = categories.filter(
-    (category) => category.name === currentCategoryName
+    (category) => category && category.name === currentCategoryName
   )[0]?.id;
   if (!currentCategroryId) {
-    throw new Error("카테고리를 찾을 수 없습니다.");
+    handleError("카테고리를 찾을 수 없습니다.");
+    return { props: {} };
   }
   const slug = context.params?.slug as string;
-  const postData = getPostData(currentCategroryId, currentCategoryName, slug);
+  const postData = await getPostData(
+    currentCategroryId,
+    currentCategoryName,
+    slug
+  );
   const { content } = postData;
   const mdx = await serialize(content, {
     mdxOptions: {
