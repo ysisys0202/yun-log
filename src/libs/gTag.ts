@@ -1,10 +1,9 @@
 import { isClient } from "@/services/common";
-
-const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
+import { envConfig } from "../../env.config";
 
 export const pageview = (url: URL) => {
   isClient &&
-    window.gtag("config", GA_TRACKING_ID, {
+    window.gtag("config", envConfig.ga.id as string, {
       page_path: url,
     });
 };
