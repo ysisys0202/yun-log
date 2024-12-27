@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
 import { event } from "@/libs/gTag";
 import Skeleton from "../common/Skeleton";
+import withErrorBoundary from "../hoc/withErrorBoundary";
 
 const SideNav = () => {
   const router = useRouter();
@@ -21,7 +22,6 @@ const SideNav = () => {
       value,
     });
   };
-
   return (
     <nav css={sideNavStyle.self}>
       <Typography variant="h4" as="h2">
@@ -127,4 +127,5 @@ const sideNavStyle = {
     }
   `,
 };
-export default SideNav;
+
+export default withErrorBoundary(SideNav);
