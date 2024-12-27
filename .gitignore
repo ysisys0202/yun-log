@@ -53,6 +53,7 @@ next-env.d.ts
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.yarn/install-state.gz
 
 # post 임시저장
 /posts/0.임시저장
@@ -60,3 +61,4 @@ next-env.d.ts
 
 # Sentry Config File
 .env.sentry-build-plugin
+
