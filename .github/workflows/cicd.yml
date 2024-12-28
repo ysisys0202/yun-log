@@ -46,7 +46,7 @@ jobs:
         run: echo ${{steps.set-deploy-environment.outputs.deploy-environment}}
   deploy:
     needs: [jest-test, e2e-test, set-deploy-environment]
-    if: needs.jest-test.result == 'success' && needs.e2e-test.result == 'success' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    if: needs.jest-test.result == 'success' && needs.e2e-test.result == 'success' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
