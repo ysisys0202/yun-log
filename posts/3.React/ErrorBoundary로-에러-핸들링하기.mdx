@@ -1,0 +1,111 @@
+---
+title: ErrorBoundary로 에러 핸들링하기
+intro: "혹시 웹 페이지의 특정 부분에서 발생한 에러로 인해 페이지 전체가 죽는 경험을 해보셨나요? 이런 상황을 방지하기 위해 리액트에서는 에러의 경계를 구분 지어 에러가 페이지 전체에 영향을 미치지 않도록 할 수 있습니다. 이번 포스트에서는 리액트에서 소개하는 ErrorBoundary 컴포넌트를 사용하여 에러 관리하는 방법에 대해 알아보겠습니다."
+createdAt: "2024-12-28"
+thumbnail : "https://drive.google.com/uc?export=view&id=1A5-s3Lb_Jhv4pM4rn2qmqQdMGC0OqHIb"
+keywords: "React, ErrorBoundary, Error Handling, 에러 처리, 에러, 리액트"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+## ErrorBoundary란?
+<br/>
+ErrorBoundary란 UI 일부분에 존재하는 자바스크립트 에러가 전체 애플리케이션을 중단하는 문제를 해결하기 위해 도입된 컴포넌트입니다.
+이때 ErrorBoundary의 역할은 아래와 같습니다.
+<br/>
+1. 컴포넌트에서 발생한 에러를 기록
+2. 에러가 발생하여 깨진 UI를 대신할 Fallback UI를 렌더링
+<br/>
+## ErrorBoundary 컴포넌트 만들기
+<br/>
+리액트 공식 문서에서 제공하는 ErrorBoundary 컴포넌트 코드를 살펴보겠습니다.
+<br/>
+```tsx
+import React, { ReactNode } from "react";
+
+type ErrorBoundaryProps = {
+  children: ReactNode;
+  fallbackComponent?: ReactNode;
+};
+type ErrorBoundaryState = {
+  hasError: boolean;
+};
+
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    // Sentry와 같은 에러 리포팅 서비스를 사용하여 에러 로그를 남길 수도 있음
+    console.error("ErrorBoundary에서 에러가 감지되었습니다.", {
+      error,
+      errorInfo,
+    });
+  }
+
+  render() {
+    if (!this.state.hasError) {
+      return this.props.children;
+    }
+    if (this.props.fallbackComponent) {
+      return this.props.fallbackComponent;
+    }
+    return (
+         <div>
+          <h2>Oops, there is an error!</h2>
+          <button
+            type="button"
+            onClick={() => this.setState({ hasError: false })}
+          >
+            Try again?
+          </button>
+        </div>
+    );
+  }
+}
+export default ErrorBoundary;
+
+```
+<br/>
+잊고 지내던 클래스형 컴포넌트가 나와 당황스럽습니다 😓
+에러 처리와 관련된 라이프 사이클 메서드를 대신할 hook이 없기 때문에 ErrorBoundary는 클래스형 컴포넌트로 만들어야 한다고 합니다.
+<br/>
+클래스형 컴포넌트에는 익숙하지 않아서 <HighlightText type="background" backgroundColor="#e5e5e5">getDerivedStateFromError</HighlightText >와 <HighlightText type="background" backgroundColor="#e5e5e5">componentDidCatch</HighlightText>에 대해서 먼저 알아보겠습니다.
+<br/>
+- **getDerivedStateFromError** : 정적 메서드로 리액트가 렌더링하는 중 자식 컴포넌트에서 오류가 발생할 때 호출됩니다. **에러 발생 시 상태를 업데이트하여 UI를 렌더링**합니다. 또한 순수 함수이기 때문에 사이트 이펙트 작업(ex:에러 리포팅)은 componentDidCatch를 사용해야 한다고 합니다.
+- **componentDidCatch** : 리액트가 렌더링할 때 자식 컴포넌트에서 오류가 발생하면 호출됩니다. 에러 리포팅 등 **사이드 이펙트 작업을 처리**합니다.
+<br/>
+에러와 관련된 라이프 사이클 메서드도 알아보았으니 이제 ErrorBoundary 컴포넌트 코드를 천천히 살펴보겠습니다.
+<br/>
+1. ErrorBoundary는 에러를 핸들링할 컴포넌트와 에러 발생 시 보여줄 fallbackComponent를 props로 받습니다.
+2. ErrorBoundary 내에서는 hasError state를 사용해 에러 발생 여부를 판단합니다.
+3. getDerivedStateFromError 메서드를 사용하여 에러 발생 시 hasError 상태를 true로 변경합니다.
+4. componentDidCatch 메서드를 사용하여 에러 발생 시 처리 로직을 구현합니다. 이때 Sentry와 같은 에러 리포팅 시스템을 사용할 수도 있습니다.
+5. render 함수에서는 hasError 상태에 따라 UI를 렌더링합니다. 에러가 발생하지 않았다면 child 컴포넌트를 그대로 그려주며, 에러가 발생하였다면 fallback UI를 그려줍니다. 이때 저는 props로 전달받은 fallbackComponent가 있다면 fallbackComponent를, 전달받은 fallbackComponent가 없다면 기본 fallback UI가 그려지도록 해주었습니다.
+<br/>
+## ErrorBoundary 사용하기
+<br/>
+이렇게 완성된 ErrorBoundary 컴포넌트를 사용해 보겠습니다.
+<br/>
+```tsx
+<ErrorBoundary fallbackComponent={<p>Something went wrong</p>}>
+  <Profile />
+</ErrorBoundary>
+
+```
+이렇게 Profile 컴포넌트를 ErrorBoundary로 감싸면 Profile 컴포넌트에서 에러가 발생했을 때 fallback UI가 노출되며 해당 에러를 캐치하여 애플리케이션 전체에 영향을 주지 않도록 경계를 만들 수 있습니다.
+그렇다면 모든 컴포넌트를 ErrorBoundary로 감싸야 할까요? 리액트 공식 문서는 오류 메시지를 표시하는 것이 합리적인 곳을 고려하라고 합니다. props를 전달받아 화면을 그리는 역할만 한다면 굳이 ErrorBoundary로 감싸지 않아도 됩니다.
+<br/>
+## 포스팅을 마무리하며
+<br/>
+이번 포스트에서는 라이프 사이클 메서드를 사용하여 에러를 관리하는 ErrorBoundary 컴포넌트에 대해 알아보았습니다. ErrorBoundary를 통해 일부 컴포넌트에서 발생한 에러가 애플리케이션 전체에 영향을 미치지 않도록 처리할 수 있었습니다. 조금 더 우아한 에러 처리와 fallback UI 제공 등 애플리케이션의 안정성과 사용성을 높이기 위한 방안으로 ErrorBoundary를 사용해 보시는 것을 추천해 드리며 포스트를 마무리하겠습니다 👋👋 
+
+
+
