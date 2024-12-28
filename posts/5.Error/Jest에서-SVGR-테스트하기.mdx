@@ -1,0 +1,68 @@
+---
+title: Jest에서 SVGR 테스트하기
+intro: "이번 포스트에서는 Jest에서 SVGR을 사용할 시 발생하는 에러 해결 방안을 공유합니다."
+createdAt: "2024-12-27"
+thumbnail : "https://drive.google.com/uc?export=view&id=1nDm_YHCq5UPXcKshT9PIXulwZqjV0_Nc"
+keywords: "Jest, SVGR, svg, 목업, mocking, test"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+## 🚨 에러 메시지
+<br/>
+아래 에러를 해결한 포스트입니다.
+<br/>
+- (로컬에서 Jest 실행 시) Cannot find module 'public/icons/icon.svg' from ...
+- (CI 환경에서 Jest 실행 시) Cannot find module 'public/icons/icon.svg' or its corresponding type declarations.
+<br/>
+## SVGR 모킹하기
+<br/>
+로컬 환경에서 Jest를 실행하면 Cannot find module 에러가 발생했습니다. [SVGR 공식 사이트](https://react-svgr.com/docs/jest/)을 보며 svg 모킹 작업을 해 줍니다.
+<br/>
+### 1. 목업 파일 생성하기
+<br/>
+루트 폴더에 모킹을 위한 __ mocks __/svg.js 파일을 생성해 줍니다. 
+(mocks 앞, 뒤  언더스코어는 붙여서 써주세요)
+<br/>
+```javascript
+export default 'SvgrURL'
+export const ReactComponent = 'div'
+```
+<br/>
+### 2. Jest 설정하기
+<br/>
+```javascript
+// jest.config.ts
+module.exports = {
+  moduleNameMapper: {
+    '\\.svg$': '<rootDir>/__mocks__/svg.js',
+  },
+}
+```
+<br/>
+jest.config.ts에서 .svg 파일이 1번에서 생성한 svg 모킹 파일로 매핑될 수 있도록 설정해 줍니다. 
+그럼 로컬에서는 테스트가 잘 통과하는 모습을 볼 수 있습니다 👏👏👏
+<br/>
+## SVG 타입 지정하기
+<br/>
+Cannot find module 'public/icons/icon.svg' or its corresponding type declarations.
+<br/>
+기쁜 마음으로 코드를 push 했지만, 테스트를 통과하지 못합니다 🥲 
+아무래도 타입 문제인 것 같습니다.
+<br/>
+### global.d.ts 파일에 svg 타입 선언하기
+<br/>
+```typescript
+declare module "*.svg" {
+  export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}
+```
+<br/>
+루트 폴더에 global.d.ts를 만들고
+.svg 파일을 React 컴포넌트처럼 사용할 수 있도록 타입을 선언해 줍니다.
+그럼, CI 환경에서도 테스트가 잘 돌아가게 됩니다 🎉
+<br/>
+## 포스팅을 마무리하며
+<br/>
+오늘은 Jest 환경에서 SVGR를 사용할 시 발생하는 에러 해결 방법을 간단히 살펴보았습니다. 
+혹시 Jest 세팅에 고생하는 분들이 계신다면 도움이 되면 좋겠습니다 👍
