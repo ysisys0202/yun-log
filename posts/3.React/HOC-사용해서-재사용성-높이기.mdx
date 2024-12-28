@@ -1,0 +1,70 @@
+---
+title:  HOC 사용해서 재사용성 높이기
+intro: "만약 컴포넌트에 로딩, 인증, 에러 등 공통된 작업을 처리해주어야 할 때 컴포넌트 각각에 해당 처리를 하게되면 어떨까요? 반복되는 코드를 작성하게 되고 나중에 인증 로직이 바뀌었을 때 하나 하나 수정해 주는 것도 상당히 번거로울 것 같습니다. 이와 같이 컴포넌트에 공통된 로직 처리를 해줄 때 유용한 것이 바로 HOC입니다. 일명 고차 컴포넌트인데요. 이번 포스트에서는 HOC에 대해 알아보도록 하겠습니다."
+createdAt: "2024-12-28"
+thumbnail : "https://drive.google.com/uc?export=view&id=15wcbWLIKHYXcMhebl95_2gsi5M66F39-"
+keywords: "React, HOC, high order component, componnet"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+## HOC란?
+<br/>
+HOC(Higher Order Component, 고차 컴포넌트)란 컴포넌트를 인자로 받아 새로운 컴포넌트를 반환하는 함수를 의미합니다. 공통으로 적용돼야 하는 로직이 있을 때 컴포넌트 각각에 로직을 추가하는 것이 아니라 공통된 로직을 처리하는 HOC를 통해 코드 재사용성을 높일 수 있습니다. HOC는 함수명이 with로 시작하는 것이 관례입니다.
+<br/>
+## HOC 만들기
+<br/>
+로딩 상태에 따라 컴포넌트를 렌더링하는 withLoading HOC를 만들어보겠습니다.
+<br/>
+```tsx
+import { ComponentType, ReactNode } from "react";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
+
+const withErrorBoundary = <Props extends object>(
+  WrappedComponent: ComponentType<Props>
+) => {
+  const ContainerComponent: React.FC<Props & { isLoading: boolean }> = ({isLoading,...props}) => (
+    if (isLoading) {
+      return <LoadingComponent/>
+    }
+    return  <WrappedComponent {...props as Props} />
+  );
+
+  ContainerComponent.displayName = `withLoading(${
+    WrappedComponent.displayName || WrappedComponent.name || "Component"
+  })`;
+
+  return ContainerComponent;
+};
+
+export default withLoading;
+```
+<br/>
+1. HOC에 감싸질 WrappedComponent를 인자로 받습니다.
+2. ContainerComponent는 props를 WrappedComponent에 전달하고 isLoading 값에 따라 컴포넌트를 리턴하는 렌더링 함수입니다.
+3. 컴포넌트 식별을 위한 displayName을 설정해 줍니다.
+4. ContainerComponent를 반환합니다.
+<br/>
+이렇게 로딩 상태에 따라 컴포넌트를 렌더링하는 withLaoding HOC를 만들어보았습니다. 앞으로 로딩 관련 처리가 달라지더라도 withLoading 함수만 수정하면 되니 코드 유지보수성도 좋아집니다.
+## HOC 사용하기
+<br/>
+withErrorBoundary를 만들었으니 적용해 볼까요?
+<br/>
+
+```tsx
+//Profile.tsx
+
+const Profile = () => {
+  return <p>profile</p>
+}
+
+export default withLoading(Profile);
+```
+<br/>
+로딩 처리를 해주고자 하는 컴포넌트를 withLoading의 인자로 넘겨준 후 내보내기 해주면 됩니다 🎉
+<br/>
+## 포스팅을 마무리하며
+오늘은 공통된 로직을 재사용할 수 있게 도와주는 HOC에 대해서 알아보았습니다. 공통 로직을 컴포넌트마다 가지고 있을 필요 없이 HOC를 통해 관리하면 코드의 재사용성과 유지보수성 모두 높아지는 것을 알 수 있었습니다. 
+
+
+
+
