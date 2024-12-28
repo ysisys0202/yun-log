@@ -57,7 +57,7 @@ const S = {
       color: ${colorVars.primary};
       font-weight: 600;
       &::after {
-        content: "🎄";
+        content: "🌞";
         transform: translateY(2px);
       }
     }
