@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import matter from "gray-matter";
 import { PostData, PostFrontMatter } from "@/types/post";
+import { handleError } from "@/utils/error";
 
 export type PostFile = {
   fileName: string;
@@ -15,57 +16,91 @@ type PostSort = "latest" | "order";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
-export const getCategories = () => {
-  const categories = fs.readdirSync(postsDirectory);
-  return categories.map((category) => {
-    const categoryPath = path.join(postsDirectory, category);
-    const files = fs.readdirSync(categoryPath);
-    const [id, name] = category.split(".");
-    return {
-      id,
-      name,
-      fileLength: files.length,
-    };
-  });
+export const getCategories = async () => {
+  try {
+    const categories = await fs.promises.readdir(postsDirectory);
+    return await Promise.all(
+      categories.map(async (category) => {
+        try {
+          const categoryPath = path.join(postsDirectory, category);
+          const files = await fs.promises.readdir(categoryPath);
+          const [id, name] = category.split(".");
+          return {
+            id,
+            name,
+            fileLength: files.length,
+          };
+        } catch (error) {
+          console.error(`${category} 카테고리를 불러오는 데 실패했습니다.`);
+        }
+      })
+    );
+  } catch (error) {
+    console.error("카테고리 목록을 불러오는 데 실패했습니다.", error);
+    throw new Error("카테고리 목록을 불러오는 데 실패했습니다.");
+  }
 };
 
-export const getPostFiles = (categoryId: string, categoryName: string) => {
-  const files = fs.readdirSync(
+export const getPostFiles = async (
+  categoryId: string,
+  categoryName: string
+) => {
+  const files = await fs.promises.readdir(
     `${postsDirectory}/${`${categoryId}.${categoryName}`}`
   );
   return files.map((file) => ({ fileName: file, categoryId, categoryName }));
 };
 
-export const getPostAllFiles = (): PostFile[] => {
-  const categories = getCategories();
-  const allPosts = categories.map((category) =>
-    getPostFiles(category.id, category.name)
+export const getPostAllFiles = async (): Promise<PostFile[]> => {
+  const categories = await getCategories();
+
+  const allPosts = await Promise.all(
+    categories.map(async (category) => {
+      try {
+        if (!category) {
+          return [];
+        }
+        return await getPostFiles(category.id, category.name);
+      } catch (error) {
+        console.error(
+          `${category?.name} 카테고리의 포스트를 불러오는 데 실패했습니다.`,
+          error
+        );
+        return [];
+      }
+    })
   );
+
   return allPosts.flat();
 };
 
-export const getPostData = (
+export const getPostData = async (
   categoryId: string,
   categoryName: string,
   postIdentifier: string
-): PostData => {
+): Promise<PostData> => {
   const postSlug = postIdentifier.replace(/\.mdx$/, "");
   const filePath = path.join(
     postsDirectory,
     `${categoryId}.${categoryName}`,
     `${postSlug}.mdx`
   );
-  const fileContent = fs.readFileSync(filePath, "utf-8");
-  const { data, content } = matter(fileContent);
-  const postData = {
-    categoryId,
-    categoryName,
-    slug: postSlug,
-    content,
-    ...(data as PostFrontMatter),
-  };
+  try {
+    const fileContent = await fs.promises.readFile(filePath, "utf-8");
+    const { data, content } = matter(fileContent);
+    const postData = {
+      categoryId,
+      categoryName,
+      slug: postSlug,
+      content,
+      ...(data as PostFrontMatter),
+    };
 
-  return postData;
+    return postData;
+  } catch (error) {
+    console.error(`${filePath} 포스트 데이터를 가져오는 데 실패했습니다.`);
+    throw new Error(`${filePath}포스트 데이터를 가져오는 데 실패했습니다.`);
+  }
 };
 
 export const sortPosts = ({
@@ -109,7 +144,7 @@ export const filterPosts = ({
   return filterdPosts;
 };
 
-export const getPosts = ({
+export const getPosts = async ({
   categoryId,
   categoryName,
   sort = "latest",
@@ -120,12 +155,27 @@ export const getPosts = ({
   sort?: PostSort;
   filter?: PostFilter;
 }) => {
-  const postFiles = categoryName
-    ? getPostFiles(categoryId as string, categoryName)
-    : getPostAllFiles();
-  const posts = postFiles.map((post) =>
-    getPostData(post.categoryId, post.categoryName, post.fileName)
-  );
+  let postFiles = [];
+  try {
+    postFiles = await (categoryName
+      ? getPostFiles(categoryId as string, categoryName)
+      : getPostAllFiles());
+  } catch (error) {
+    console.error(error);
+    throw new Error("포스트 목록을 불러오는 데 실패했습니다.");
+  }
+  let posts = [];
+  try {
+    posts = await Promise.all(
+      postFiles.map(
+        async (post) =>
+          await getPostData(post.categoryId, post.categoryName, post.fileName)
+      )
+    );
+  } catch (error) {
+    console.error(error);
+    throw new Error("포스트 목록 데이터를 불러오는 데 실패했습니다.");
+  }
   let filteredPosts;
   if (sort) {
     sortPosts({ posts, sort });

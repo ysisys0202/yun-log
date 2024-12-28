@@ -30,9 +30,9 @@ const Homepage = ({ allPostList, featuredPostList }: Props) => {
   );
 };
 
-export const getStaticProps = () => {
-  const featuredPostList = getPosts({ filter: "feature" });
-  const allPostList = getPosts({});
+export const getStaticProps = async () => {
+  const featuredPostList = await getPosts({ filter: "feature" });
+  const allPostList = await getPosts({});
   return {
     props: {
       allPostList,
