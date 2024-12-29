@@ -112,7 +112,7 @@ const sideNavStyle = {
         font-weight: 600 !important;
         &:last-of-type {
           &::after {
-            content: "🌞";
+            content: "👀";
             transform: translateY(4px);
           }
         }
