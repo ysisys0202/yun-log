@@ -17,9 +17,8 @@ HOC(Higher Order Component, 고차 컴포넌트)란 컴포넌트를 인자로 �
 <br/>
 ```tsx
 import { ComponentType, ReactNode } from "react";
-import ErrorBoundary from "@/components/common/ErrorBoundary";
 
-const withErrorBoundary = <Props extends object>(
+const withLoading = <Props extends object>(
   WrappedComponent: ComponentType<Props>
 ) => {
   const ContainerComponent: React.FC<Props & { isLoading: boolean }> = ({isLoading,...props}) => (
@@ -47,7 +46,7 @@ export default withLoading;
 이렇게 로딩 상태에 따라 컴포넌트를 렌더링하는 withLaoding HOC를 만들어보았습니다. 앞으로 로딩 관련 처리가 달라지더라도 withLoading 함수만 수정하면 되니 코드 유지보수성도 좋아집니다.
 ## HOC 사용하기
 <br/>
-withErrorBoundary를 만들었으니 적용해 볼까요?
+withLoading을 만들었으니 적용해 볼까요?
 <br/>
 
 ```tsx
@@ -63,6 +62,7 @@ export default withLoading(Profile);
 로딩 처리를 해주고자 하는 컴포넌트를 withLoading의 인자로 넘겨준 후 내보내기 해주면 됩니다 🎉
 <br/>
 ## 포스팅을 마무리하며
+<br/>
 오늘은 공통된 로직을 재사용할 수 있게 도와주는 HOC에 대해서 알아보았습니다. 공통 로직을 컴포넌트마다 가지고 있을 필요 없이 HOC를 통해 관리하면 코드의 재사용성과 유지보수성 모두 높아지는 것을 알 수 있었습니다. 
 
 
