@@ -12,7 +12,7 @@ const SideMenu = () => {
         <Logo />
         <strong className="visually-hidden">YUN 개발 블로그</strong>
       </Link>
-      <SideNav />
+      <SideNav propCss={S.nav} />
     </aside>
   );
 };
@@ -36,6 +36,11 @@ const S = {
   `,
   logo: css`
     margin-left: -4px;
+  `,
+  nav: css`
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   `,
 };
 export default SideMenu;

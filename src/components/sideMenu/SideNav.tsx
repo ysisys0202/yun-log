@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { css } from "@emotion/react";
+import { SerializedStyles, css } from "@emotion/react";
 import usePostNavList from "@/hooks/usePostNavList";
 import Typography from "@/components/common/Typography";
 import { useRouter } from "next/router";
@@ -8,7 +8,11 @@ import { event } from "@/libs/gTag";
 import Skeleton from "../common/Skeleton";
 import withErrorBoundary from "../hoc/withErrorBoundary";
 
-const SideNav = () => {
+type Props = {
+  propCss?: SerializedStyles;
+};
+
+const SideNav = ({ propCss }: Props) => {
   const router = useRouter();
   const { pathname, query } = router;
   const currentCategory = pathname === "/posts" ? "전체" : query.category;
@@ -23,7 +27,7 @@ const SideNav = () => {
     });
   };
   return (
-    <nav css={sideNavStyle.self}>
+    <nav css={propCss}>
       <Typography variant="h4" as="h2">
         게시글 목록
       </Typography>
@@ -68,12 +72,6 @@ const renderSkeletonItems = (length: number) => {
 };
 
 const sideNavStyle = {
-  self: css`
-    position: absolute;
-    top: 50%;
-    left: 32px;
-    transform: translateY(-70%);
-  `,
   navList: css`
     display: flex;
     flex-direction: column;
