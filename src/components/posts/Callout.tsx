@@ -43,7 +43,7 @@ const S = {
   icon: css`
     position: absolute;
     top: 12px;
-    left: 8px;
+    left: 4px;
   `,
   title: css`
     margin-bottom: 8px;
