@@ -17,7 +17,14 @@ ErrorBoundary란 UI 일부분에 존재하는 자바스크립트 에러가 전�
 <br/>
 ## ErrorBoundary 컴포넌트 만들기
 <br/>
-리액트 공식 문서에서 제공하는 ErrorBoundary 컴포넌트 코드를 살펴보겠습니다.
+ErrorBoundary 컴포넌트를 만들 때는 에러 처리와 관련된 라이프 사이클 메서드를 대신할 hook이 없기 때문에 클래스형 컴포넌트로 만들어야 한다고 합니다. (~~잊고 지내던 클래스형 컴포넌트가 나와 당황스러운 사람~~)
+<br/>
+클래스형 컴포넌트에는 익숙하지 않아서 <HighlightText type="background" backgroundColor="#e5e5e5">getDerivedStateFromError</HighlightText >와 <HighlightText type="background" backgroundColor="#e5e5e5">componentDidCatch</HighlightText>에 대해서 먼저 알아보겠습니다.
+<br/>
+- **getDerivedStateFromError** : 정적 메서드로 리액트가 렌더링하는 중 자식 컴포넌트에서 오류가 발생할 때 호출됩니다. **에러 발생 시 상태를 업데이트하여 UI를 렌더링**합니다. 또한 순수 함수이기 때문에 사이트 이펙트 작업(ex:에러 리포팅)은 componentDidCatch를 사용해야 한다고 합니다.
+- **componentDidCatch** : 리액트가 렌더링할 때 자식 컴포넌트에서 오류가 발생하면 호출됩니다. 에러 리포팅 등 **사이드 이펙트 작업을 처리**합니다.
+<br/>
+에러와 관련된 라이프 사이클 메서드도 알아보았으니 이제 ErrorBoundary 컴포넌트 코드를 만들어보겠습니다. 리액트 공식 문서에서 제공하는 코드에 타입을 추가해보았습니다.
 <br/>
 ```tsx
 import React, { ReactNode } from "react";
@@ -73,16 +80,6 @@ class ErrorBoundary extends React.Component<
 export default ErrorBoundary;
 
 ```
-<br/>
-잊고 지내던 클래스형 컴포넌트가 나와 당황스럽습니다 😓
-에러 처리와 관련된 라이프 사이클 메서드를 대신할 hook이 없기 때문에 ErrorBoundary는 클래스형 컴포넌트로 만들어야 한다고 합니다.
-<br/>
-클래스형 컴포넌트에는 익숙하지 않아서 <HighlightText type="background" backgroundColor="#e5e5e5">getDerivedStateFromError</HighlightText >와 <HighlightText type="background" backgroundColor="#e5e5e5">componentDidCatch</HighlightText>에 대해서 먼저 알아보겠습니다.
-<br/>
-- **getDerivedStateFromError** : 정적 메서드로 리액트가 렌더링하는 중 자식 컴포넌트에서 오류가 발생할 때 호출됩니다. **에러 발생 시 상태를 업데이트하여 UI를 렌더링**합니다. 또한 순수 함수이기 때문에 사이트 이펙트 작업(ex:에러 리포팅)은 componentDidCatch를 사용해야 한다고 합니다.
-- **componentDidCatch** : 리액트가 렌더링할 때 자식 컴포넌트에서 오류가 발생하면 호출됩니다. 에러 리포팅 등 **사이드 이펙트 작업을 처리**합니다.
-<br/>
-에러와 관련된 라이프 사이클 메서드도 알아보았으니 이제 ErrorBoundary 컴포넌트 코드를 천천히 살펴보겠습니다.
 <br/>
 1. ErrorBoundary는 에러를 핸들링할 컴포넌트와 에러 발생 시 보여줄 fallbackComponent를 props로 받습니다.
 2. ErrorBoundary 내에서는 hasError state를 사용해 에러 발생 여부를 판단합니다.
