@@ -1,0 +1,103 @@
+---
+title: 중요 렌더링 경로 알아보기
+intro: "CSS로 인터랙션을 구현할 때 width, position 속성값 대신 transform 속성값을 사용하라는 이야기 들어보셨나요? 저는 웹 퍼블리싱에 입문한지 얼마 안 되어 해당 이야기를 들었지만, 그 당시에는 이유를 자세히 알지 못했습니다. 그냥 transform이 성능상 더 좋다고만 알고 넘어갔는데요. 그러다 브라우저 렌더링 과정, 특히 중요 렌더링 경로 (CRP, Critical Rendering Path)를 알게 되면서 CSS 속성별로 성능 차이가 나는 이유를 알게 되었습니다. 오늘은 중요 렌더링 경로에 대해 알아보며 브라우저 렌더링 성능을 향상하는 방법에 대해서도 알아보겠습니다."   
+createdAt: "2024-12-30"
+thumbnail : "https://drive.google.com/uc?export=view&id=1CqohgXNMYLLa--RB_CKm-0pc87BIWR9S"
+keywords: "브라우저, Browser, DOM, CSSOM, render tree, 성능 최적화"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+
+## 중요 렌더링 경로란?
+<br/>
+중요 렌더링 경로(CRP, Critical Rendering Path)는 브라우저가 HTML, CSS, Javascript를 픽셀 데이터로 변경하여 화면을 그려내는 일련의 단계, 즉 **브라우저가 서버로부터 전달받은 데이터를 화면에 그려내는 과정**을 의미합니다.
+<br/>
+## 중요 렌더링 경로 알아보기
+<br/>
+그럼 자세한 중요 렌더링 경로 단계를 살펴보겠습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1uBp_K-BPc4qrA45hfw8NzuNLRmp0pSVM" alt="중요 렌더링 경로 Tree" caption="중요 렌더링 경로 단계" width="1097" height="80"/>
+<br/>
+브라우저가 화면을 렌더링 할 때는 요청/응답, 로딩, 스크립팅, 렌더링, 레이아웃, 페인팅 단계를 거칩니다.
+<br/>
+### 1. 요청 / 응답
+<br/>
+브라우저가 서버에 HTML 문서를 요청하면, 서버는 HTML 데이터를 반환합니다.
+<br/>
+### 2. 로딩
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=17BREfJ05c4_5bDSIliOjtGl4Oea3yUXP" alt="DOM Tree" caption="HTML을 파싱하여 생성된 DOM Tree \n 이미지 출처 : https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work" width="754" height="689"/>
+<br/>
+- 브라우저가 HTML을 파싱하여 DOM Tree를 생성합니다. 이때 파싱은 HTML과 같은 데이터를 브라우저가 이해할 수 있는 객체(DOM)로 변환하는 작업을 의미합니다.
+- HTML 파싱 중에 발견된 CSS, JavaScript, 이미지 등 외부 자원을 요청합니다.
+- CSS, JavaScript가 로드되기 전까지 HTML 파싱이 중단될 수 있습니다.
+<br/>
+### 3. 스크립팅
+<br/>
+HTML 파싱 중 포함된 JavaScript가 실행됩니다. 이때 DOM 및 CSSOM 생성 과정에 영향을 미칠 수 있습니다.
+<br/>
+### 4. 렌더링
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1hrNScSTux8kj2vkmzkTCqlwh9bHpglYV" alt="Render Tree" caption="DOM과 CSSOM이 결합하여 생성된 Render Tree \n 이미지 출처 : https://web.dev/articles/critical-rendering-path/render-tree-construction?hl=ko" width="1150" height="537"/>
+<br/>
+- CSS 파일을 파싱하여 DOM과 CSS를 결합한 CSSOM(CSS Object Model)을 생성합니다.
+- DOM과 CSSOM을 결합하여 화면에 렌더링 될 Render Tree를 생성합니다. 이때 Render Tree는 **최종적으로 화면에 보이는 요소만을 포함**합니다. HTML의 HEAD 태그, CSS에서 display:nond;이 적용된 요소와 같이 보이지 않는 요소는 Render Tree에 포함되지 않습니다.
+<br/>
+### 5. 레이아웃
+<br/>
+Render Tree의 요소들이 페이지에서 배치되는 위치와 크기, 그리고 서로 관련된 위치를 결정합니다. 이때 레이아웃 성능은 DOM의 영향을 받습니다. DOM 요소의 수가 많아질수록 레이아웃 단계에서 소요되는 시간이 길어지게 됩니다.
+<br/>
+### 6. 페인팅
+<br/>
+- Paint 단계 : Render Tree를 분석한 후 **요소들을 그룹 지어 레이어로 나눕니다.** 그 후 각각의 레이어는 픽셀 데이터로 변환됩니다. 이때 각 레이어는 독립적으로 렌더링 되며 이는 브라우저의 렌더링 성능을 향상 하는데 도움을 줍니다. 레이어는 CSS 속성 (z-index, position, transform, will-change 등)과 canvas, video 태그 등을 기준으로 분리됩니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1S43zUu6I9RCefjijuyGNlhsaQ7_eJiyr" alt="개발자 도구에서 Layer 확인하기" caption="개발자 도구의 오른쪽 점 세 개 버튼 -> 도구 더 보기 -> 레이어 클릭 시 열리는 레이어 탭에서 레이어를 직접 확인해 볼 수 있습니다." width="778" height="448"/>
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1oiuMWCftObjIHjRQrXYwPlXWCSJwAnQz" alt="개발자 도구에서 블로그 메인 Layer 확인" caption="블로그 메인 화면 레이어" width="812" height="419"/>
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1_UllJ2lWLjj7LnaXAL9NK4b_JgQdM2-N" alt="개발자 도구에서 블로그 PostCard의 image에 will-change 속성을 주었을 때" caption="PostCard의 Image에 will-change 속성을 적용하면 이미지마다 레이어가 생성됨" width="812" height="419"/>
+<br/>
+시각적으로 레이어를 확인할 수 있으니 더 이해하기 쉽습니다 👍
+<br/>
+<Callout icon="🤔" title="will-change는 항상 성능에 유리할까요?" >
+CSS 속성 중 브라우저에 미리 변경될 CSS를 알려주는 will-change가 있습니다. HTML 요소에 will-change가 적용돼 있다면 브라우저는 해당 요소를 독립적인 레이어로 분리하여 렌더링 최적화를 준비합니다. 하지만 will-change를 남발하여 너무 많은 레이어가 생성된다면 오히려 성능 저하의 원인이 됩니다. 따라서 정말 필요한 경우에만 사용하는 것을 권장합니다. 
+</Callout>
+<br/>
+- Composite : Paint 단계에서 생성된 레이어를 결합하여 최종적으로 화면에 표시합니다.
+<br/>
+## 브라우저 렌더링 최적화
+<br/>
+브라우저는 위와 같은 과정을 통해 HTML 파일을 화면에 렌더링합니다.
+그럼, 브라우저에서 렌더링을 최적화하기 위한 방법은 무엇이 있을까요?
+<br/>
+### 1. 과도한 DOM 요소 사용을 지양할 것
+<br/>
+지나치게 깊은 DOM Tree나 복잡한 DOM 요소 구조는 렌더링 성능을 저하시킬 수 있으므로 불필요한 div 태그를 사용하는 등 과도한 DOM 요소 사용은 지양하는 것이 좋습니다.
+<br/>
+### 2. 리플로우와 리페인팅 최소화
+<br/>
+포스트 초반에 인터랙션을 구현할 때 transform이 width, position 보다 성능상 유리하다는 이야기를 했습니다. 바로 DOM 요소 혹은 CSS 속성이 변경될 때마다 리플로우와 리페인팅이 발생하기 때문입니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1xoblvY9Eoe-_J18_sCXWJvib5Ag0YVy7" alt="Reflow" caption="DOM, CSS 변경 등으로 레이아웃 과정이 다시 발생" width="1097" height="80"/>
+<br/>
+**리플로우(Reflow)**는 렌더링 과정에서 레이아웃 과정이 다시 일어나는 것을 의미합니다. HTML 요소들이 재배치되어야 할 때, 브라우저는 각 요소의 위치와 크기를 새로 계산하는 리플로우 과정을 거치게 됩니다. 화면 배치를 다시 계산하기 때문에 렌더링 성능 저하를 유발합니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=14ROLfH0-ESzDxtIHyfXfifcWrlAOcnQP" alt="Repainting" caption="레이아웃 변경 없이 CSS가 변경될 때 발생" width="1097" height="80"/>
+<br/>
+**리페인팅(Repainting)**은 렌더링 과정에서 페인팅 과정이 다시 일어나는 것을 의미합니다. 레이아웃 변화 없이 CSS가 변경될 때 리페인팅 과정을 거치게 됩니다. 리페인팅의 경우 리플로우보다는 덜 하지만 여전히 성능을 저하시키는 요인 중 하나입니다. 따라서 인터랙션을 구현할 때 리플로우보다는 리페인팅, 특히 Composite 단계만 다시 거치는 속성을 사용하는 것이 중요합니다.
+<br/>
+[CSS Triggers](https://www.lmame-geek.com/css-triggers/)에 들어가 보면 스타일 변경 시 Layout, Paint, Composite를 트리거하는 CSS 속성이 잘 정리되어 있습니다.
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1I6IJWINm4nEa13651Y4XJPAqoyySIaFO" alt="css triggers transform" width="808" height="57"/>
+transform은 Composite만 트리거합니다 👍
+<br/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1vsd5zGvduzJeeRjMpWqCzvkHH8d8vLaj" alt="css triggers width" width="1097" height="80"/>
+<PostImage src="https://drive.google.com/uc?export=view&id=1qt97fdden-SPsiqJYnErt5e0e0SoP3E4" alt="css triggers position" width="1097" height="80"/>
+<br/>
+하지만 width와 position은 Layout, 즉 리플로우를 트리거 하는 것을 확인할 수 있습니다. 즉 width, position을 빈번하게 변경시키는 인터랙션이 있다면 그만큼 화면을 계산하는 일이 많아져 브라우저 렌더링 성능이 떨어지며 브라우저 화면 프레임이 뚝뚝 끊길 수도 있습니다. 그렇기에 인터랙션을 구현할 때 리플로우보다는 리페인팅을, 그중에서도 Composite만 발생하는 CSS 속성을 사용하는 것이 좋습니다.
+<br/>
+이미지가 로딩되면서 다른 요소를 아래로 밀어내는 현상을 레이아웃 쉬프트도 리플로우의 일종이기 때문에 브라우저 렌더링 성능 저하를 유발합니다. 게다가 사용자가 의도하지 않은 클릭 실수를 유발시키기 때문에 스켈레톤 UI를 사용하여 레이아웃 쉬프트를 방지하는 것이 중요합니다. (레이아웃 쉬프트 때문에 의도하지 않은 버튼을 눌러 불쾌했던 경험 있으신가요? 👺)
+<br/>
+## 포스팅을 마치며
+<br/>
+오늘은 브라우저의 렌더링 과정 중에서도 HTML 파일이 화면에 그려지게 되는 과정인 중요 렌더링 경로에 대하여 알아보았습니다. 예전에 공부했었지만 시간이 오래되어 자세한 내용은 기억이 살짝 흐릿한 상태였는데 이번에 포스트를 작성하며 해당 내용을 다시 정리할 수 있어 좋았습니다. 처음 중요 렌더링 경로를 알게 되었을 때 '이런 과정을 거쳐 화면이 렌더링 되는 거구나.', '이래서 인터랙션 구현할 때 transform을 써야 하는구나.' 하고 시야가 넓어진 기분이 들었던 기억이 납니다. 이 맛에 공부합니다 😋 그럼 이번 포스트는 여기서 마무리해 보겠습니다 👋👋
