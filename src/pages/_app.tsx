@@ -1,15 +1,19 @@
-import GlobalStyles from "@/styles/GlobalStyles";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import dynamic from "next/dynamic";
 import Script from "next/dist/client/script";
 import { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
+import GAScripts from "@/libs/GAScripts";
+import { pageview } from "@/libs/gTag";
+import queryClient from "@/react-query/queryClient";
+import GlobalStyles from "@/styles/GlobalStyles";
 import Layout from "@/container/layouts/Layout";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { media } from "@/constants/breakPoints";
-import { useEffect } from "react";
-import { pageview } from "@/libs/gTag";
-import { useRouter } from "next/router";
-import GAScripts from "@/libs/GAScripts";
+
 const SideMenu = dynamic(() => import("@/container/layouts/SideMenu"), {
   ssr: true,
 });
@@ -37,12 +41,15 @@ const App = ({ Component, pageProps }: AppProps) => {
       />
       <GAScripts />
       <GlobalStyles />
-      <RecoilRoot>
-        <Layout>
-          {!isMobile && <SideMenu />}
-          <Component {...pageProps} />
-        </Layout>
-      </RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <Layout>
+            {!isMobile && <SideMenu />}
+            <Component {...pageProps} />
+          </Layout>
+        </RecoilRoot>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </>
   );
 };
