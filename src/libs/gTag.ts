@@ -1,4 +1,4 @@
-import { isClient } from "@/services/common";
+import { isClient } from "@/utils/common";
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
