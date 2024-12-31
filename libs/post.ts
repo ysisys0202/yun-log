@@ -93,7 +93,6 @@ export const getPostData = async ({
   categoryName,
   postId,
 }: getPostDataParams): Promise<PostData> => {
-  console.log("data", categoryId, categoryName, postId);
   const postSlug = postId.replace(/\.mdx$/, "");
   const filePath = path.join(
     postsDirectory,

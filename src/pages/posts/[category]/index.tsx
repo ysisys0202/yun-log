@@ -35,7 +35,6 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const categories = await getCategories();
-  console.log(categories);
   const currentCategoryName = context.params?.category as string;
   const currentCategroryId = categories.filter(
     (category) => category && category.name === currentCategoryName
