@@ -1,5 +1,53 @@
-import { Category } from "@/types/post";
+import { Category, PostData } from "@/types/post";
+import createQueryString from "@/utils/createQueryString";
 import { handleError } from "@/utils/error";
+import { GetPostsParams, getPostDataParams } from "libs/post";
+
+export const fetchPosts = async ({
+  categoryName,
+  categoryId,
+  sort,
+  filter,
+}: GetPostsParams): Promise<PostData[] | undefined> => {
+  try {
+    const queryString = createQueryString({
+      categoryId,
+      categoryName,
+      sort,
+      filter,
+    });
+    const response = await fetch(`/api/posts${queryString}`);
+    if (!response.ok) {
+      handleError("포스트 목록을 불러오는 데 실패했습니다.");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleError("포스트 목록을 불러오는 데 실패했습니다.");
+  }
+};
+
+export const fetchPost = async ({
+  categoryName,
+  categoryId,
+  postId,
+}: getPostDataParams): Promise<PostData | undefined> => {
+  try {
+    const queryString = createQueryString({
+      categoryId,
+      categoryName,
+      postId,
+    });
+    const response = await fetch(`/api/posts/detail${queryString}`);
+    if (!response.ok) {
+      handleError("포스트를 불러오는 데 실패했습니다.");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleError("포스트를 불러오는 데 실패했습니다.");
+  }
+};
 
 export const fetchPostCategories = async (): Promise<
   Category[] | undefined
