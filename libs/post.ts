@@ -19,6 +19,7 @@ export type GetPostsParams = {
   categoryName?: string;
   sort?: PostSort;
   filter?: PostFilter;
+  size?: number;
 };
 
 export type getPostDataParams = {
@@ -92,6 +93,7 @@ export const getPostData = async ({
   categoryName,
   postId,
 }: getPostDataParams): Promise<PostData> => {
+  console.log("data", categoryId, categoryName, postId);
   const postSlug = postId.replace(/\.mdx$/, "");
   const filePath = path.join(
     postsDirectory,
@@ -162,6 +164,7 @@ export const getPosts = async ({
   categoryName,
   sort = "latest",
   filter,
+  size,
 }: GetPostsParams) => {
   let postFiles = [];
   try {
@@ -184,13 +187,16 @@ export const getPosts = async ({
     console.error(error);
     throw new Error("포스트 목록 데이터를 불러오는 데 실패했습니다.");
   }
-  let filteredPosts;
+  let result = posts;
   if (sort) {
     sortPosts({ posts, sort });
   }
   if (filter) {
-    filteredPosts = filterPosts({ posts, filter });
+    result = filterPosts({ posts, filter });
+  }
+  if (size) {
+    result = result.slice(0, size);
   }
 
-  return filteredPosts ?? posts;
+  return result;
 };
