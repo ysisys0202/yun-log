@@ -1,6 +1,5 @@
 import { API_BASE_URL } from "@/constants/path";
 import { Category, PostData } from "@/types/post";
-import { isClient } from "@/utils/common";
 import createQueryString from "@/utils/createQueryString";
 import { handleError } from "@/utils/error";
 import { GetPostsParams, getPostDataParams } from "libs/post";

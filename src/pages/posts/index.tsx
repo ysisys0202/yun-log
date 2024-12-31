@@ -4,8 +4,17 @@ import PostListContainer from "@/container/posts/List";
 import MyHead from "@/components/common/AppHead";
 import { PostData } from "@/types/post";
 import AppContainer from "@/container/layouts/AppContainer";
+import { DehydratedState, QueryClient, dehydrate } from "@tanstack/react-query";
+import createQueryKey from "@/utils/createQueryKey";
+import QUERY_KEYS from "@/react-query/queryKey";
+import { usePostsQuery } from "@/react-query/queries/post";
 
-const AllPosts = ({ allPostList }: { allPostList: PostData[] }) => {
+type Props = {
+  dehydratedState: DehydratedState;
+};
+const AllPosts = ({}: Props) => {
+  const { data: allPostList } = usePostsQuery({});
+
   return (
     <AppContainer>
       <MyHead
@@ -18,11 +27,17 @@ const AllPosts = ({ allPostList }: { allPostList: PostData[] }) => {
 };
 
 export const getStaticProps = async () => {
-  const allPostList = await getPosts({});
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: createQueryKey(QUERY_KEYS.POSTS, [null, null, null, null, null]),
+    queryFn: () => getPosts({}),
+  });
+
   return {
     props: {
-      allPostList,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };
+
 export default AllPosts;
