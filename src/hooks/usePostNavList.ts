@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getPostCategoryList } from "@/services/post";
+import { fetchPostCategories } from "@/services/post";
 import { PostNav } from "@/types/post";
 import { handleError } from "@/utils/error";
 
@@ -8,7 +8,7 @@ const usePostNavList = () => {
 
   const initPostCategoryList = useCallback(async () => {
     try {
-      const postCategoryList = await getPostCategoryList();
+      const postCategoryList = await fetchPostCategories();
       if (!postCategoryList) {
         return;
       }

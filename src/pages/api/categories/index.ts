@@ -16,8 +16,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(405).end();
     }
   } catch (error) {
-    console.error("Error in categoriesInfo API:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("카테고리 목록을 불러오는 데 실패했습니다.", error);
+    res
+      .status(500)
+      .json({ error: "카테고리 목록을 불러오는 데 실패했습니다." });
   }
 };
 
