@@ -7,7 +7,7 @@ import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
 
 type Props = {
-  postList: PostData[];
+  postList?: PostData[];
 };
 
 const RecentPosts = ({ postList }: Props) => {

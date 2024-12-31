@@ -4,7 +4,7 @@ import PostListItem from "@/components/posts/postCard/PostListItem";
 import { event } from "@/libs/gTag";
 type Props = {
   section?: string;
-  postList: PostData[];
+  postList?: PostData[];
   propsCss?: SerializedStyles;
 };
 
@@ -21,7 +21,7 @@ const PostListVertical = ({ section, postList, propsCss }: Props) => {
   };
   return (
     <ul css={styles}>
-      {postList.map((post) => (
+      {postList?.map((post) => (
         <li key={post.slug}>
           <PostListItem
             title={post.title}
