@@ -10,9 +10,22 @@ export type PostFile = {
   categoryName: string;
 };
 
-type PostFilter = "feature";
+export type PostFilter = "feature";
 
-type PostSort = "latest" | "order";
+export type PostSort = "latest" | "order";
+
+export type GetPostsParams = {
+  categoryId?: string;
+  categoryName?: string;
+  sort?: PostSort;
+  filter?: PostFilter;
+};
+
+export type getPostDataParams = {
+  categoryId: string;
+  categoryName: string;
+  postId: string;
+};
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -74,12 +87,12 @@ export const getPostAllFiles = async (): Promise<PostFile[]> => {
   return allPosts.flat();
 };
 
-export const getPostData = async (
-  categoryId: string,
-  categoryName: string,
-  postIdentifier: string
-): Promise<PostData> => {
-  const postSlug = postIdentifier.replace(/\.mdx$/, "");
+export const getPostData = async ({
+  categoryId,
+  categoryName,
+  postId,
+}: getPostDataParams): Promise<PostData> => {
+  const postSlug = postId.replace(/\.mdx$/, "");
   const filePath = path.join(
     postsDirectory,
     `${categoryId}.${categoryName}`,
@@ -149,12 +162,7 @@ export const getPosts = async ({
   categoryName,
   sort = "latest",
   filter,
-}: {
-  categoryId?: string;
-  categoryName?: string;
-  sort?: PostSort;
-  filter?: PostFilter;
-}) => {
+}: GetPostsParams) => {
   let postFiles = [];
   try {
     postFiles = await (categoryName
@@ -168,8 +176,8 @@ export const getPosts = async ({
   try {
     posts = await Promise.all(
       postFiles.map(
-        async (post) =>
-          await getPostData(post.categoryId, post.categoryName, post.fileName)
+        async ({ categoryId, categoryName, fileName: postId }) =>
+          await getPostData({ categoryId, categoryName, postId })
       )
     );
   } catch (error) {
