@@ -55,7 +55,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
       null,
       null,
     ]),
-    queryFn: () => getPosts({}),
+    queryFn: () => getPosts({ categoryName, categoryId }),
   });
 
   return {
