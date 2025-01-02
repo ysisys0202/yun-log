@@ -1,17 +1,22 @@
 import { GetStaticPropsContext } from "next";
 import { getCategories, getPosts } from "libs/post";
-import { PostData } from "@/types/post";
 import AppContainer from "@/container/layouts/AppContainer";
 import PostListContainer from "@/container/posts/List";
 import MyHead from "@/components/common/AppHead";
-import { handleError } from "@/utils/error";
+import { DehydratedState, QueryClient, dehydrate } from "@tanstack/react-query";
+import createQueryKey from "@/utils/createQueryKey";
+import QUERY_KEYS from "@/react-query/queryKey";
+import { usePostsQuery } from "@/react-query/queries/post";
 
 type Props = {
-  postList: PostData[];
+  dehydratedState: DehydratedState;
   categoryName: string;
+  categoryId: string;
 };
 
-const FilteredPostList = ({ postList, categoryName }: Props) => {
+const FilteredPostList = ({ categoryName, categoryId }: Props) => {
+  const { data: postList } = usePostsQuery({ categoryName, categoryId });
+
   return (
     <AppContainer>
       <MyHead
@@ -35,22 +40,29 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const categories = await getCategories();
-  console.log(categories);
-  const currentCategoryName = context.params?.category as string;
-  const currentCategroryId = categories.filter(
-    (category) => category && category.name === currentCategoryName
+  const categoryName = context.params?.category as string;
+  const categoryId = categories.filter(
+    (compareCategory) =>
+      compareCategory && compareCategory.name === categoryName
   )[0]?.id;
-  if (!currentCategroryId) {
-    handleError("카테고리를 찾을 수 없습니다.");
-  }
-  const postList = await getPosts({
-    categoryId: currentCategroryId,
-    categoryName: currentCategoryName,
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: createQueryKey(QUERY_KEYS.POSTS, [
+      categoryName,
+      categoryId,
+      null,
+      null,
+      null,
+    ]),
+    queryFn: () => getPosts({ categoryName, categoryId }),
   });
+
   return {
     props: {
-      postList,
-      categoryName: currentCategoryName,
+      dehydratedState: dehydrate(queryClient),
+      categoryName,
+      categoryId,
     },
   };
 };

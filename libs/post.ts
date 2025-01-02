@@ -10,9 +10,23 @@ export type PostFile = {
   categoryName: string;
 };
 
-type PostFilter = "feature";
+export type PostFilter = "feature";
 
-type PostSort = "latest" | "order";
+export type PostSort = "latest" | "order";
+
+export type GetPostsParams = {
+  categoryId?: string;
+  categoryName?: string;
+  sort?: PostSort;
+  filter?: PostFilter;
+  size?: number;
+};
+
+export type getPostDataParams = {
+  categoryId: string;
+  categoryName: string;
+  postId: string;
+};
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -74,12 +88,12 @@ export const getPostAllFiles = async (): Promise<PostFile[]> => {
   return allPosts.flat();
 };
 
-export const getPostData = async (
-  categoryId: string,
-  categoryName: string,
-  postIdentifier: string
-): Promise<PostData> => {
-  const postSlug = postIdentifier.replace(/\.mdx$/, "");
+export const getPostData = async ({
+  categoryId,
+  categoryName,
+  postId,
+}: getPostDataParams): Promise<PostData> => {
+  const postSlug = postId.replace(/\.mdx$/, "");
   const filePath = path.join(
     postsDirectory,
     `${categoryId}.${categoryName}`,
@@ -149,12 +163,8 @@ export const getPosts = async ({
   categoryName,
   sort = "latest",
   filter,
-}: {
-  categoryId?: string;
-  categoryName?: string;
-  sort?: PostSort;
-  filter?: PostFilter;
-}) => {
+  size,
+}: GetPostsParams) => {
   let postFiles = [];
   try {
     postFiles = await (categoryName
@@ -168,21 +178,24 @@ export const getPosts = async ({
   try {
     posts = await Promise.all(
       postFiles.map(
-        async (post) =>
-          await getPostData(post.categoryId, post.categoryName, post.fileName)
+        async ({ categoryId, categoryName, fileName: postId }) =>
+          await getPostData({ categoryId, categoryName, postId })
       )
     );
   } catch (error) {
     console.error(error);
     throw new Error("포스트 목록 데이터를 불러오는 데 실패했습니다.");
   }
-  let filteredPosts;
+  let result = posts;
   if (sort) {
     sortPosts({ posts, sort });
   }
   if (filter) {
-    filteredPosts = filterPosts({ posts, filter });
+    result = filterPosts({ posts, filter });
+  }
+  if (size) {
+    result = result.slice(0, size);
   }
 
-  return filteredPosts ?? posts;
+  return result;
 };

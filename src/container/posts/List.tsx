@@ -11,7 +11,7 @@ import CategoryTagList from "@/components/posts/CategoryTagList";
 import Typography from "@/components/common/Typography";
 import BackGround from "../layouts/BackGround";
 
-const PostListContainer = ({ postList }: { postList: PostData[] }) => {
+const PostListContainer = ({ postList }: { postList?: PostData[] }) => {
   const router = useRouter();
   const query = router.query;
   const currentCategory = (query.category ?? "전체") as string;

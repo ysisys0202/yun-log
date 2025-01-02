@@ -95,11 +95,11 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     return { props: {} };
   }
   const slug = context.params?.slug as string;
-  const postData = await getPostData(
-    currentCategroryId,
-    currentCategoryName,
-    slug
-  );
+  const postData = await getPostData({
+    categoryId: currentCategroryId,
+    categoryName: currentCategoryName,
+    postId: slug,
+  });
   const { content } = postData;
   const mdx = await serialize(content, {
     mdxOptions: {
