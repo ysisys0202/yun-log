@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
 import { event } from "@/libs/gTag";
 import Skeleton from "../common/Skeleton";
-import withErrorBoundary from "../hoc/withErrorBoundary";
+import withErrorBoundary from "@/components/hoc/withErrorBoundary";
+import withSuspense from "@/components/hoc/withSuspense";
 
 type Props = {
   propCss?: SerializedStyles;
@@ -32,7 +33,6 @@ const SideNav = ({ propCss }: Props) => {
         게시글 목록
       </Typography>
       <ul css={sideNavStyle.navList}>
-        {!postNavList && renderSkeletonItems(4)}
         {postNavList &&
           postNavList.map(({ name, fileLength, link }) => {
             const isActive = currentCategory === name;
@@ -63,12 +63,10 @@ const SideNav = ({ propCss }: Props) => {
   );
 };
 
-const renderSkeletonItems = (length: number) => {
-  const skeletons = [];
-  for (let i = 0; i < length; i++) {
-    skeletons.push(<Skeleton key={i} height="23px" />);
-  }
-  return skeletons;
+const LoadingComponent = ({ size }: { size: number }) => {
+  return Array.from({ length: size }, (_, index) => (
+    <Skeleton key={index} height="23px" />
+  ));
 };
 
 const sideNavStyle = {
@@ -126,4 +124,6 @@ const sideNavStyle = {
   `,
 };
 
-export default withErrorBoundary(SideNav);
+export default withErrorBoundary(
+  withSuspense(SideNav, <LoadingComponent size={9} />)
+);

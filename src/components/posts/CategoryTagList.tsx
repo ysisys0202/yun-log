@@ -13,7 +13,7 @@ type Props = {
 const CategoryTagList = ({ categories, currentCategory }: Props) => {
   return (
     <TagList>
-      {!categories && renderTagSkeletons(4)}
+      {!categories && <LoadingComponent size={10} />}
       {categories &&
         categories.map((category) => {
           const isActive = currentCategory === category.name;
@@ -39,12 +39,10 @@ const CategoryTagList = ({ categories, currentCategory }: Props) => {
   );
 };
 
-const renderTagSkeletons = (length: number) => {
-  const skeletons = [];
-  for (let i = 0; i < length; i++) {
-    skeletons.push(<TagSkeleton key={i} height="23px" />);
-  }
-  return skeletons;
+const LoadingComponent = ({ size }: { size: number }) => {
+  return Array.from({ length: size }, (_, index) => (
+    <TagSkeleton key={index} height="23px" />
+  ));
 };
 
 export default CategoryTagList;
