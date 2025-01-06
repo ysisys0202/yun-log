@@ -1,34 +1,24 @@
 import { useState } from "react";
+import { getPosts } from "libs/post";
 import { media } from "@/constants/breakPoints";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import MyHead from "@/components/common/AppHead";
 import AppContainer from "@/container/layouts/AppContainer";
 import BackGround from "@/container/layouts/BackGround";
 import Hero from "@/container/home/Hero";
-import { DehydratedState, QueryClient, dehydrate } from "@tanstack/react-query";
-import QUERY_KEYS from "@/react-query/queryKey";
-import { fetchPosts } from "@/services/post";
-import { usePostsQuery } from "@/react-query/queries/post";
 import FeaturePostList from "@/container/home/FeaturePostList";
 import RecentPostList from "@/container/home/RecentPostList";
-import createQueryKey from "@/utils/createQueryKey";
+import { PostData } from "@/types/post";
 type Props = {
-  dehydratedState: DehydratedState;
+  allPostList: PostData[];
+  featuredPostList: PostData[];
 };
 
-const Homepage = ({}: Props) => {
+const Homepage = ({ allPostList, featuredPostList }: Props) => {
   const isMobile = !useMediaQuery(media.md);
   const [headerHide, setHeaderHide] = useState<boolean>(
     isMobile ? false : true
   );
-  const { data: featuredPostList } = usePostsQuery({
-    filter: "feature",
-    size: 8,
-  });
-  const { data: allPostList } = usePostsQuery({
-    size: 10,
-  });
-
   return (
     <AppContainer headerHide={headerHide}>
       <MyHead title="홈" />
@@ -41,26 +31,12 @@ const Homepage = ({}: Props) => {
 };
 
 export const getStaticProps = async () => {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: createQueryKey(QUERY_KEYS.POSTS, [
-      null,
-      null,
-      null,
-      "feature",
-      8,
-    ]),
-    queryFn: () => fetchPosts({ filter: "feature", size: 8 }),
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: createQueryKey(QUERY_KEYS.POSTS, [null, null, null, null, 8]),
-    queryFn: () => fetchPosts({ size: 10 }),
-  });
-
+  const featuredPostList = await getPosts({ filter: "feature", size: 8 });
+  const allPostList = await getPosts({ size: 10 });
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      allPostList,
+      featuredPostList,
     },
   };
 };

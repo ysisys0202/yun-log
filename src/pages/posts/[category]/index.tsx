@@ -1,22 +1,17 @@
 import { GetStaticPropsContext } from "next";
 import { getCategories, getPosts } from "libs/post";
+import { PostData } from "@/types/post";
 import AppContainer from "@/container/layouts/AppContainer";
 import PostListContainer from "@/container/posts/List";
 import MyHead from "@/components/common/AppHead";
-import { DehydratedState, QueryClient, dehydrate } from "@tanstack/react-query";
-import createQueryKey from "@/utils/createQueryKey";
-import QUERY_KEYS from "@/react-query/queryKey";
-import { usePostsQuery } from "@/react-query/queries/post";
+import { handleError } from "@/utils/error";
 
 type Props = {
-  dehydratedState: DehydratedState;
+  postList: PostData[];
   categoryName: string;
-  categoryId: string;
 };
 
-const FilteredPostList = ({ categoryName, categoryId }: Props) => {
-  const { data: postList } = usePostsQuery({ categoryName, categoryId });
-
+const FilteredPostList = ({ postList, categoryName }: Props) => {
   return (
     <AppContainer>
       <MyHead
@@ -42,27 +37,19 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const categories = await getCategories();
   const categoryName = context.params?.category as string;
   const categoryId = categories.filter(
-    (compareCategory) =>
-      compareCategory && compareCategory.name === categoryName
+    (compareCategory) => compareCategory?.name === categoryName
   )[0]?.id;
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: createQueryKey(QUERY_KEYS.POSTS, [
-      categoryName,
-      categoryId,
-      null,
-      null,
-      null,
-    ]),
-    queryFn: () => getPosts({ categoryName, categoryId }),
+  if (!categoryId) {
+    handleError("카테고리를 찾을 수 없습니다.");
+  }
+  const postList = await getPosts({
+    categoryId,
+    categoryName,
   });
-
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      postList,
       categoryName,
-      categoryId,
     },
   };
 };
