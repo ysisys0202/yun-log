@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { QueryClientProvider, HydrationBoundary } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import dynamic from "next/dynamic";
 import Script from "next/dist/client/script";
 import { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import GAScripts from "@/libs/GAScripts";
 import { pageview } from "@/libs/gTag";
-import queryClient from "@/react-query/queryClient";
 import GlobalStyles from "@/styles/GlobalStyles";
 import Layout from "@/container/layouts/Layout";
 import useMediaQuery from "@/hooks/useMediaQuery";
@@ -44,17 +41,13 @@ const App = ({
       />
       <GAScripts />
       <GlobalStyles />
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={dehydratedState}>
-          <RecoilRoot>
-            <Layout>
-              {!isMobile && <SideMenu />}
-              <Component {...pageProps} />
-            </Layout>
-          </RecoilRoot>
-          <ReactQueryDevtools />
-        </HydrationBoundary>
-      </QueryClientProvider>
+
+      <RecoilRoot>
+        <Layout>
+          {!isMobile && <SideMenu />}
+          <Component {...pageProps} />
+        </Layout>
+      </RecoilRoot>
     </>
   );
 };

@@ -7,7 +7,6 @@ import { colorVars } from "@/constants/cssVariables";
 import { event } from "@/libs/gTag";
 import Skeleton from "../common/Skeleton";
 import withErrorBoundary from "@/components/hoc/withErrorBoundary";
-import withSuspense from "@/components/hoc/withSuspense";
 
 type Props = {
   propCss?: SerializedStyles;
@@ -17,7 +16,7 @@ const SideNav = ({ propCss }: Props) => {
   const router = useRouter();
   const { pathname, query } = router;
   const currentCategory = pathname === "/posts" ? "전체" : query.category;
-  const { postNavList } = usePostNavList();
+  const { postNavList, fetchStatus } = usePostNavList();
 
   const handleSideNavItemClick = (value: string) => {
     event({
@@ -33,31 +32,31 @@ const SideNav = ({ propCss }: Props) => {
         게시글 목록
       </Typography>
       <ul css={sideNavStyle.navList}>
-        {postNavList &&
-          postNavList.map(({ name, fileLength, link }) => {
-            const isActive = currentCategory === name;
-            return (
-              <li
-                key={name}
-                css={sideNavStyle.navItem}
-                className={`${isActive ? "is-active" : ""}`}
+        {postNavList?.map(({ name, fileLength, link }) => {
+          const isActive = currentCategory === name;
+          return (
+            <li
+              key={name}
+              css={sideNavStyle.navItem}
+              className={`${isActive ? "is-active" : ""}`}
+            >
+              <Link
+                href={link}
+                onClick={() => {
+                  handleSideNavItemClick(name);
+                }}
               >
-                <Link
-                  href={link}
-                  onClick={() => {
-                    handleSideNavItemClick(name);
-                  }}
-                >
-                  <Typography variant="subtitle1" as="span">
-                    {name}
-                  </Typography>
-                  <Typography variant="body2" as="span">
-                    ({fileLength})
-                  </Typography>
-                </Link>
-              </li>
-            );
-          })}
+                <Typography variant="subtitle1" as="span">
+                  {name}
+                </Typography>
+                <Typography variant="body2" as="span">
+                  ({fileLength})
+                </Typography>
+              </Link>
+            </li>
+          );
+        })}
+        {fetchStatus === "isLoading" && <LoadingComponent size={9} />}
       </ul>
     </nav>
   );
@@ -124,6 +123,4 @@ const sideNavStyle = {
   `,
 };
 
-export default withErrorBoundary(
-  withSuspense(SideNav, <LoadingComponent size={9} />)
-);
+export default withErrorBoundary(SideNav);

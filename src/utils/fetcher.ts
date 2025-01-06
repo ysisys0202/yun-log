@@ -1,4 +1,3 @@
-import getApiBaseUrl from "@/utils/path";
 import { handleError } from "@/utils/error";
 
 const fetcher = async (
@@ -8,7 +7,7 @@ const fetcher = async (
   onError?: (error: any) => void
 ) => {
   try {
-    const response = await fetch(`${getApiBaseUrl}/api${apiUrl}`, options);
+    const response = await fetch(`/api${apiUrl}`, options);
     if (!response.ok) {
       handleError(
         `fetch 에러가 발생했습니다. url : ${apiUrl} status : ${response.status}`
