@@ -33,7 +33,8 @@
     "public/scripts/controlColorTheme.js",
     "src/libs/ga.js",
     "cypress.config.js",
-    "__mocks__/svg.js"
+    "__mocks__/svg.js",
+    "cypress/support/commands.ts"
   ],
   "exclude": ["node_modules"]
 }
