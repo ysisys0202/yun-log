@@ -7,7 +7,6 @@ import { RecoilRoot } from "recoil";
 import GAScripts from "@/libs/GAScripts";
 import { pageview } from "@/libs/gTag";
 import GlobalStyles from "@/styles/GlobalStyles";
-import Layout from "@/container/layouts/Layout";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { media } from "@/constants/breakPoints";
 
@@ -43,10 +42,8 @@ const App = ({
       <GlobalStyles />
 
       <RecoilRoot>
-        <Layout>
-          {!isMobile && <SideMenu />}
-          <Component {...pageProps} />
-        </Layout>
+        {!isMobile && <SideMenu />}
+        <Component {...pageProps} />
       </RecoilRoot>
     </>
   );
