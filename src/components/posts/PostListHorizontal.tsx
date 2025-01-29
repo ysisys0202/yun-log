@@ -6,7 +6,7 @@ import { colorVars } from "@/constants/cssVariables";
 import { event } from "@/libs/gTag";
 type Props = {
   section?: string;
-  postList: PostData[];
+  postList?: PostData[];
   propsCss?: SerializedStyles;
 };
 
@@ -23,7 +23,7 @@ const PostListHorizontal = ({ section, postList, propsCss }: Props) => {
   };
   return (
     <ul css={styles}>
-      {postList.map((post) => (
+      {postList?.map((post) => (
         <li key={post.slug} css={S.postItem}>
           <PostCard
             title={post.title}

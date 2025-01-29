@@ -31,8 +31,8 @@ const Homepage = ({ allPostList, featuredPostList }: Props) => {
 };
 
 export const getStaticProps = async () => {
-  const featuredPostList = await getPosts({ filter: "feature" });
-  const allPostList = await getPosts({});
+  const featuredPostList = await getPosts({ filter: "feature", size: 8 });
+  const allPostList = await getPosts({ size: 10 });
   return {
     props: {
       allPostList,

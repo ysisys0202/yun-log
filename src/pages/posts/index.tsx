@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { getPosts } from "libs/post";
 import PostListContainer from "@/container/posts/List";
 import MyHead from "@/components/common/AppHead";

@@ -68,9 +68,8 @@ const S = {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, calc(-70% - ${gnbHeightPc}px));
+    transform: translate(-50%, -50%);
     width: calc(100% - 48px);
-    margin-top: 1em;
   `,
 };
 export default PostTOC;

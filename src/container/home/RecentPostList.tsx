@@ -7,12 +7,12 @@ import SectionTitle from "@/components/home/SectionTitle";
 import PostListVertical from "@/components/posts/PostListVertical";
 
 type Props = {
-  postList: PostData[];
+  postList?: PostData[];
 };
 
 const RecentPosts = ({ postList }: Props) => {
   return (
-    <HomeSection css={S.self} data-test-id="recent-post-list">
+    <HomeSection css={S.self} data-testId="recent-post-list">
       <SectionTitle>최근 게시글</SectionTitle>
       <PostListVertical
         postList={postList}

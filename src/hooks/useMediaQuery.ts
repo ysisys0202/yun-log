@@ -1,4 +1,4 @@
-import { isClient } from "@/services/common";
+import { isClient } from "@/utils/common";
 import { useEffect, useState } from "react";
 
 function useMediaQuery(query: string) {

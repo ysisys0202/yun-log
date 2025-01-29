@@ -1,18 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
-import { getPostCategoryList } from "@/services/post";
 import { PostNav } from "@/types/post";
-import { handleError } from "@/utils/error";
+import { useCallback, useEffect, useState } from "react";
+import { fetchPostCategories } from "@/services/post";
 
 const usePostNavList = () => {
   const [postNavList, setPostNavList] = useState<PostNav[] | undefined>();
+  const [fetchStatus, setFetchStatus] = useState<
+    "isLoading" | "isSuccess" | "isFail"
+  >("isLoading");
 
-  const initPostCategoryList = useCallback(async () => {
+  const initPostNavList = useCallback(async () => {
     try {
-      const postCategoryList = await getPostCategoryList();
-      if (!postCategoryList) {
+      const data = await fetchPostCategories();
+      if (!data) {
+        setPostNavList([]);
+        setFetchStatus("isFail");
         return;
       }
-      const allCategoryLength = postCategoryList.reduce(
+      setFetchStatus("isSuccess");
+      const allPostLength = data.reduce(
         (acc, current) => acc + current.fileLength,
         0
       );
@@ -20,10 +25,10 @@ const usePostNavList = () => {
         {
           id: "all",
           name: "전체",
-          fileLength: allCategoryLength,
+          fileLength: allPostLength,
           link: "/posts",
         },
-        ...postCategoryList.map(({ id, name, fileLength }) => ({
+        ...data.map(({ id, name, fileLength }) => ({
           id,
           name,
           fileLength,
@@ -31,15 +36,15 @@ const usePostNavList = () => {
         })),
       ]);
     } catch (error) {
-      handleError("네이게이션 정보를 불러오는 데 실패했습니다.");
+      setFetchStatus("isFail");
     }
   }, []);
 
   useEffect(() => {
-    initPostCategoryList();
+    initPostNavList();
   }, []);
 
-  return { postNavList };
+  return { postNavList, fetchStatus };
 };
 
 export default usePostNavList;

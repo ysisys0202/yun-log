@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { colorVars } from "@/constants/cssVariables";
 import { event } from "@/libs/gTag";
 import Skeleton from "../common/Skeleton";
-import withErrorBoundary from "../hoc/withErrorBoundary";
+import withErrorBoundary from "@/components/hoc/withErrorBoundary";
 
 type Props = {
   propCss?: SerializedStyles;
@@ -16,7 +16,7 @@ const SideNav = ({ propCss }: Props) => {
   const router = useRouter();
   const { pathname, query } = router;
   const currentCategory = pathname === "/posts" ? "전체" : query.category;
-  const { postNavList } = usePostNavList();
+  const { postNavList, fetchStatus } = usePostNavList();
 
   const handleSideNavItemClick = (value: string) => {
     event({
@@ -32,43 +32,40 @@ const SideNav = ({ propCss }: Props) => {
         게시글 목록
       </Typography>
       <ul css={sideNavStyle.navList}>
-        {!postNavList && renderSkeletonItems(4)}
-        {postNavList &&
-          postNavList.map(({ name, fileLength, link }) => {
-            const isActive = currentCategory === name;
-            return (
-              <li
-                key={name}
-                css={sideNavStyle.navItem}
-                className={`${isActive ? "is-active" : ""}`}
+        {postNavList?.map(({ name, fileLength, link }) => {
+          const isActive = currentCategory === name;
+          return (
+            <li
+              key={name}
+              css={sideNavStyle.navItem}
+              className={`${isActive ? "is-active" : ""}`}
+            >
+              <Link
+                href={link}
+                onClick={() => {
+                  handleSideNavItemClick(name);
+                }}
               >
-                <Link
-                  href={link}
-                  onClick={() => {
-                    handleSideNavItemClick(name);
-                  }}
-                >
-                  <Typography variant="subtitle1" as="span">
-                    {name}
-                  </Typography>
-                  <Typography variant="body2" as="span">
-                    ({fileLength})
-                  </Typography>
-                </Link>
-              </li>
-            );
-          })}
+                <Typography variant="subtitle1" as="span">
+                  {name}
+                </Typography>
+                <Typography variant="body2" as="span">
+                  ({fileLength})
+                </Typography>
+              </Link>
+            </li>
+          );
+        })}
+        {fetchStatus === "isLoading" && <LoadingComponent size={9} />}
       </ul>
     </nav>
   );
 };
 
-const renderSkeletonItems = (length: number) => {
-  const skeletons = [];
-  for (let i = 0; i < length; i++) {
-    skeletons.push(<Skeleton key={i} height="23px" />);
-  }
-  return skeletons;
+const LoadingComponent = ({ size }: { size: number }) => {
+  return Array.from({ length: size }, (_, index) => (
+    <Skeleton key={index} height="23px" />
+  ));
 };
 
 const sideNavStyle = {

@@ -86,20 +86,20 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const categories = await getCategories();
-  const currentCategoryName = context.params?.category as string;
-  const currentCategroryId = categories.filter(
-    (category) => category && category.name === currentCategoryName
+  const categoryName = context.params?.category as string;
+  const categoryId = categories.filter(
+    (compareCategory) => compareCategory?.name === categoryName
   )[0]?.id;
-  if (!currentCategroryId) {
+  if (!categoryId) {
     handleError("카테고리를 찾을 수 없습니다.");
     return { props: {} };
   }
   const slug = context.params?.slug as string;
-  const postData = await getPostData(
-    currentCategroryId,
-    currentCategoryName,
-    slug
-  );
+  const postData = await getPostData({
+    categoryId,
+    categoryName,
+    postId: slug,
+  });
   const { content } = postData;
   const mdx = await serialize(content, {
     mdxOptions: {

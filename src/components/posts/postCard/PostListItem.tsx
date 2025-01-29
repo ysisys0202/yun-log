@@ -29,7 +29,7 @@ const PostListItem = ({
   propsCss && styles.push(propsCss);
   const isMobile = !useMediaQuery(media.sm);
   return (
-    <PostCardBox css={styles} {...rest}>
+    <PostCardBox css={styles} data-testId="post-list-item" {...rest}>
       <Link href={`/posts/${categoryName}/${slug}`} css={S.cardInner}>
         <PostCardContent
           title={title}
