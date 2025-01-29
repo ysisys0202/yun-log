@@ -26,7 +26,7 @@ const PostCard = ({
   const styles = [S.self];
   propsCss && styles.push(propsCss);
   return (
-    <PostCardBox css={styles} {...rest}>
+    <PostCardBox css={styles} data-testId="post-card" {...rest}>
       <Link href={`/posts/${categoryName}/${slug}`}>
         <PostCardThumbnail
           thumbnail={thumbnail}
