@@ -6,7 +6,7 @@ import { media } from "@/constants/breakPoints";
 import PostListHorizontal from "@/components/posts/PostListHorizontal";
 import { PostData } from "@/types/post";
 
-const FeaturePosts = ({ postList }: { postList: PostData[] }) => {
+const FeaturePosts = ({ postList }: { postList?: PostData[] }) => {
   return (
     <HomeSection data-test-id="feature-post-list">
       <SectionTitle>주요 게시글</SectionTitle>

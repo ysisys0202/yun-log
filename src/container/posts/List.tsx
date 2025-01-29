@@ -11,11 +11,11 @@ import CategoryTagList from "@/components/posts/CategoryTagList";
 import Typography from "@/components/common/Typography";
 import BackGround from "../layouts/BackGround";
 
-const PostListContainer = ({ postList }: { postList: PostData[] }) => {
+const PostListContainer = ({ postList }: { postList?: PostData[] }) => {
   const router = useRouter();
   const query = router.query;
   const currentCategory = (query.category ?? "전체") as string;
-  const { postNavList } = usePostNavList();
+  const { postNavList, fetchStatus } = usePostNavList();
   const currentCategoryPostLength = postNavList?.filter(
     (category: Category) => category.name === currentCategory
   )[0]?.fileLength;
@@ -33,7 +33,8 @@ const PostListContainer = ({ postList }: { postList: PostData[] }) => {
           {currentCategory}
 
           <Typography variant="body1" as="span">
-            {""} ({currentCategoryPostLength})
+            {fetchStatus === "isLoading" && "로딩 중"}
+            {fetchStatus !== "isLoading" && `(${currentCategoryPostLength})`}
           </Typography>
         </SectionTitle>
       )}

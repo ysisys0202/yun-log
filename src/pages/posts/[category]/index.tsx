@@ -35,22 +35,21 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const categories = await getCategories();
-  console.log(categories);
-  const currentCategoryName = context.params?.category as string;
-  const currentCategroryId = categories.filter(
-    (category) => category && category.name === currentCategoryName
+  const categoryName = context.params?.category as string;
+  const categoryId = categories.filter(
+    (compareCategory) => compareCategory?.name === categoryName
   )[0]?.id;
-  if (!currentCategroryId) {
+  if (!categoryId) {
     handleError("카테고리를 찾을 수 없습니다.");
   }
   const postList = await getPosts({
-    categoryId: currentCategroryId,
-    categoryName: currentCategoryName,
+    categoryId,
+    categoryName,
   });
   return {
     props: {
       postList,
-      categoryName: currentCategoryName,
+      categoryName,
     },
   };
 };
