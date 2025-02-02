@@ -2,7 +2,7 @@
 title: 브랜치 전략 바꾸기
 intro: "프로젝트를 진행하며 Git 브랜치 전략을 사용하고 계신가요? 저는 Git flow 방식을 사용하고 있었습니다. 그러나 프로젝트를 진행하다보니 해당 방식이 프로젝트에 적합하지 않다는 생각이 들었습니다. 프로젝트에 적합한 브랜치 전략을 찾기 위해 조사해 본 결과 다양한 브랜치 전략이 있다는 것을 알게 되었습니다. 오늘의 브랜치 전략은 무엇인지, 브랜치 전략에는 어떤 것이 있으며 최종적으로 제가 선택한 브랜치 전략은 무엇인지 이야기해보도록 하겠습니다."
 createdAt: "2024-12-13"
-thumbnail : "https://drive.google.com/uc?export=view&id=17aCwUEr8aglsdvdwSdgMnxusL-m5NRG0"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486577/14.branch_%20strategy/rvm66uqbwvcungv9xsey.jpg"
 keywords: "깃 브랜치 전략, Git Branch Strategy, Git flow, GitLab flow, Github flow, Branch, 브랜치"
 ---
 <p>{intro}</p>
@@ -22,14 +22,14 @@ keywords: "깃 브랜치 전략, Git Branch Strategy, Git flow, GitLab flow, Git
 결론부터 말하자면 저는 GitLab flow를 선택했습니다. 
 이유는 Git flow보다는 단순하고 Github flow보다는 브랜치의 역할 분담이 잘 되어 있기 때문입니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1G-r8Hs7QcS6rTYj1zrZW5YlyJ78-9nWA" alt="질문 : 왜 6점이에요? 대답 : 7점은 너무 많은 것 같고 5점은 좀 적은 것 같아서요." width="800" height="491" caption="🤔 : 왜 GitLab flow 쓰세요? 🤓 :Git flow는 너무 복잡하고 Github flow는 좀 단순한 것 같아서요..."/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486578/14.branch_%20strategy/s6q4caubadozjsbay0ki.jpg" alt="질문 : 왜 6점이에요? 대답 : 7점은 너무 많은 것 같고 5점은 좀 적은 것 같아서요." width="800" height="491" caption="🤔 : 왜 GitLab flow 쓰세요? 🤓 :Git flow는 너무 복잡하고 Github flow는 좀 단순한 것 같아서요..."/>
 <br/>
 사실 처음에는 원래 알고 있던 Git flow 방식을 관성적으로 사용했습니다. 그러나 작업을 하다 보니 개인 프로젝트에서는 Git flow 전략이 다소 복잡하다는 생각이 들었고 대안을 찾기 위해 다른 브랜치 전략을 조사하게 되었습니다. 그럼 많이 사용되는 3가지 브랜치 전략을 살펴보겠습니다.
 <br/>
 ### Git flow
 Git flow는 main, develop, feature, release, hotfix와 같은 5가지 브랜치를 사용합니다. 소개하는 3가지 전략 중 가장 복잡하지만 브랜치의 역할을 명확히 나누어서 안정적으로 코드 관리를 해나갈 수 있습니다. 다수의 인원이 모인 팀에서 사용하기 적절합니다. 저도 회사에 다니며 사용하였던 브랜치 전략이지만 개인 프로젝트에 적용하기에는 다소 번거롭다는 단점이 있습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1_kZ7zkC3_JWAeD_LVp7G4yAB6PIlguJ3" alt="git flow" width="720" height="462" caption="이미지 출처 : https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486573/14.branch_%20strategy/lco2hyknfmathmtxt8uo.webp" alt="git flow" width="720" height="462" caption="이미지 출처 : https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423"/>
 <br/>
 브랜치 역할
 <br/>
@@ -44,7 +44,7 @@ Git flow는 main, develop, feature, release, hotfix와 같은 5가지 브랜치�
 GitLab flow는 GitLab에서 제안하는 브랜치 전략입니다. 항상 유지되는 main 브랜치가 있으며 필요에 따라 환경 브랜치(production, pre-production 등)를 추가할 수 있습니다. 배포할 준비가 코드가 포함된 main 브랜치가 있으나 해당 브랜치에서 배포를 진행하지 않습니다. 배포를 위해 production 브랜치를 생성하며 배포 전 QA 과정이 필요하다면 pre-production 브랜치를 생성할 수도 있습니다.
 [GitLab에서 제안하는 GitLab flow의 모범 사례](https://about.gitlab.com/topics/version-control/what-are-gitlab-flow-best-practices/)를 보면 기능 개발 시에 main 브랜치를 기준으로 feature 브랜치를 생성할 것을 권장하고 있습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1slnud3rMJmuUEC71M6YpoF_Tbbr216vV" alt="gitlab flow" width="720" height="410" caption="이미지 출처 : https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486575/14.branch_%20strategy/mgfxxhdstdnbwgvyc5yc.webp" alt="gitlab flow" width="720" height="410" caption="이미지 출처 : https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423"/>
 <br/>
 브랜치 역할
 <br/>
@@ -57,7 +57,7 @@ GitLab flow는 GitLab에서 제안하는 브랜치 전략입니다. 항상 유�
 <br/>
 main 브랜치와 feature 브랜치를 사용하는 브랜치 전략입니다. 소개하는 3가지 전략 중 가장 단순한 구조입니다. feature 브랜치에서 작업을 완료하고 바로 main 브랜치에 병합하는 방식으로 빠르게 기능을 개발하고 배포할 수 있다는 장점이 있습니다. 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1NSigwt741nKEsFXxq8VVx0rFj4FiQzI3" alt="github flow" width="720" height="357" caption="이미지 출처 : https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486571/14.branch_%20strategy/hvnrod4txop6v8i0nhmj.webp" alt="github flow" width="720" height="357" caption="이미지 출처 : https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423"/>
 <br/>
 브랜치 역할
 <br/>

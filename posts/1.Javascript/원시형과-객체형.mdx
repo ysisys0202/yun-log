@@ -3,7 +3,7 @@ title: 원시형과 객체형
 intro: "자바스크립트에서 데이터는 크게 원시 타입, 객체 타입으로 구분됩니다. 데이터 타입에 대해 처음 배울 때는 원시형, 객체형의 특징 보다는 그 안에 포함된 각각의 타입에 더 집중해서 공부하였지만 실제로 프로젝트를 진행하면서 객체 타입 데이터의 특성 이해하는 것이 중요하다는 사실을 알게 되었습니다. 그렇기에 오늘은 원시 타입과 객체 타입의 특징과 함께 객체 타입 데이터를 다룰 때 조심해야 할 부분에 대해서 알아보도록 하겠습니다."
 isFeatured: false
 createdAt: "2024-07-28"
-thumbnail : "https://drive.google.com/uc?export=view&id=12UVym-fm2t8p66hBEdPasA8RgGLkFqRw"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738487609/02.data_type/aeabfxfwsoiw52f0a2f1.jpg"
 keywords: "자바스크립트, javascript, data type, 원시형, 객체형, 불변성"
 ---
 <p>{intro}</p>
@@ -25,7 +25,7 @@ keywords: "자바스크립트, javascript, data type, 원시형, 객체형, 불�
 | null 타입 | null (’값이 없음’을 명시할 때 사용) |  typeof 사용 시 object가 나옴  |
 | symbol 타입 | 변경 불가능한 원시타입 값 | |
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1SeVPcTnmDHVUgCGwWAcncEzvDP-kJsBt" alt="원시형 데이터" width="660" height="795"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738487613/02.data_type/dghdxetosq1vrtwxvmpn.jpg" alt="원시형 데이터" width="660" height="795"/>
 > 1. 실제 값 123456가 password 변수에 저장됩니다.
 > 2. password를 복사한 copyPassword는 password의 값 123456을 복사합니다.
 > 3. password에 654321로 값을 재할당하면 기존의 123456 값을 수정하는 것이 아니라 새로운 메모리 공간에 저장되며 password 식별자는 새로운 값이 담긴 메모리 주소를 가르킵니다.
@@ -48,7 +48,7 @@ console.log(typeof "true") //string
 - 객체 타입 변수를 다른 변수에 복사하면 원본의 **메모리 주소 값이 복사**됩니다.
 - 같은 주소를 바라보고 있기 때문에 **복사한 객체를 수정하면 원본 객체도 같이 수정됩니다.**
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1PlT7EDKxpr3AAoqW9WGBHwYvJO8Ymkr3" alt="" width="660" height="972"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738487616/02.data_type/x5efurrt6053t3rqbqou.jpg" alt="" width="660" height="972"/>
 <br/>
 > 1. userInfo는 객체가 저장된 주소를 저장합니다.
 > 2. copyUserInfo는 userInfo 객체가 저장된 주소 값을 복사합니다.
@@ -303,7 +303,7 @@ console.log(
 <br/>
 (딴소리지만 재귀함수를 사용할 때는 재귀함수 종료 조건인 base case를 잘 설정해줍시다. 
 조건을 data === null <HighlightText type="background">&&</HighlightText> typeof data !== "object"로 넣었다가 눈물이 찔끔 나왔버렸습니다.)
-<PostImage src="https://drive.google.com/uc?export=view&id=1WC-1hkUU_hwYWNap9E6gD7F4FByIEtX-" alt="스택오버플로우" width="440" height="177"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738487610/02.data_type/s28ibvdvj1hxkvlcwxyo.png" alt="스택오버플로우" width="440" height="177"/>
 
 <br/>
 ## 포스팅을 마치며

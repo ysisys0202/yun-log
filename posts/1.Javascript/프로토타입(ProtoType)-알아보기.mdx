@@ -3,7 +3,7 @@ title: 프로토타입(ProtoType) 알아보기
 intro: "예전에 같이 일하던 프론트엔드 개발자님께 ‘프로토타입이 뭔지 아시나요?’란 질문을 받은 적이 있는데요. 머리 속에 둥둥 떠오르는 내용들을 말로 설명하기 어려웠던 기억이 납니다. 공부를 하다보면 강의를 듣거나 문서를 읽은 것만으로 이해했다고 착각하기 쉬운 것 같습니다. 머리로 어렴풋하게 알고 있는 것과 실제로 다른 사람에게 말로 설명하는 것에는 아주 큰 차이가 있는데 말이죠. 오늘은 제가 알고 있다고 착각했던 프로토타입에 대해 정리해보겠습니다."
 isFeatured: true
 createdAt: "2024-08-02"
-thumbnail : "https://drive.google.com/uc?export=view&id=1c0_ly-NQ_bRsw2up4RqKkFfETN_97aJF"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738485967/03.proto_type/je2oqqz4nkbxi24qswbz.jpg"
 keywords: "자바스크립트, javascript, 프로토타입, prototype, 객체 지향, 상속"
 ---
 <p>{intro}</p>
@@ -23,9 +23,10 @@ console.log(obj.[[Prototype]]);
 console.log(Object.getPrototypeOf(obj))
 ```
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1rxr4x95OyzOjQky0mx6QH4HSLJt6xDR6" alt="obj의 프로토타입" width="400" height="263" />
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485965/03.proto_type/oqnpaymcr3pimlmek74q.png" alt="obj의 프로토타입" width="400" height="263" />
 <br/>
-객체 리터럴을 통해 빈 객체 obj를 만들고 콘솔을 통해 확인해보면 [[prototype]]에 Object 프로토타입이 존재하는 것을 확인할 수 있습니다. 또한 프로토타입에 정의된 메서드를 사용할 수도 있죠.
+{/* NOTE : 문장 간결하게 수정  */}
+객체 리터럴을 통해 빈 객체 obj를 만들고 콘솔을 확인해보면 [[prototype]]에 Object 프로토타입이 존재하는 것을 확인할 수 있습니다. 또한 프로토타입에 정의된 메서드를 사용할 수도 있죠.
 <br/>
 다만 직접 프로토타입에 접근하려고 할 때 obj.[[Prototype]]으로는 접근할 수 없고 Object.getPrototypeOf() 메서드를 사용하여 객체의 프로토타입에 접근할 수 있습니다. 
 <br/>
@@ -69,7 +70,7 @@ console.log(giselle);
 
 ```
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=15Y3Ftl1Ka_r0jI3BEx7tEThXU107Yhmk" alt="프로토타입 체이닝" width="400" height="449"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485964/03.proto_type/d0km1gr35h4fu1poryuq.png" alt="프로토타입 체이닝" width="400" height="449"/>
 <br/>
 이렇게 각 멤버들의 공통된 프로퍼티와 메서드를 추상화하여 Idol 생성자 함수를 만들고 생성자 함수를 통해 멤버(인스턴스)들을 만들 수 있게 되었습니다. 
 <br/>
@@ -186,7 +187,7 @@ giselle.sing(); //지젤이(가) 노래를 부른다.
 <br/>
 ningning.sing을 재정의하여 ningning.sing이 오버라이딩 되었습니다. 하지만 giselle.sing은 기존의 메서드를 유지하고 있죠. 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1Tn8U4kWBrZno1r4QlFeG00n1z1m68DEc" alt="Idol의 instance" width="400" height="177"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485966/03.proto_type/sf8wemcazvnlfe9p4zvw.png" alt="Idol의 instance" width="400" height="177"/>
 <br/>
 이것은 ningning.sing을 오버라이딩 할 때 프로토타입의 메서드를 수정한 것이 아니라 ningning 인스턴스에 메서드로 추가된 것이기 때문입니다. 이처럼 인스턴스 프로퍼티(프로퍼티와 메서드를 모두 포함)에 의해 프로토타입 프로퍼티가 가려지는 현상을 프로퍼티 섀도잉이라고 합니다.
 <br/>
