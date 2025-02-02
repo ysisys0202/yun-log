@@ -2,7 +2,7 @@
 title: 쓰로틀과 디바운스로 이벤트 최적화하기
 intro: "프론트엔드 개발을 하다보면 DOM 이벤트를 자주 다루게 됩니다. 특히, scroll, resize, form change와 같은 이벤트는 연속적으로 발생해 함수를 매우 빈번하게 호출하게 됩니다. 만약 scroll 이벤트가 발생할 때마다 서버에 요청하는 함수가 있다면, 10초 동안 100번 이상 요청이 발생할 수도 있습니다. 과도한 서버 요청은 곧 비용으로 직결되기 때문에, 함수 호출 빈도를 최적화하는 것이 중요합니다. 오늘은 쓰로틀(throttle)과 디바운스(debounce)를 사용해 이벤트를 최적화하는 방법에 대해 알아보겠습니다."
 createdAt: "2024-09-26"
-thumbnail : "https://drive.google.com/uc?export=view&id=1DAv2NMkK_YebZn5P7PJItM2RqJ3CeKkJ" 
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486536/11.throttle_debounce/hpt3jqfh30ifxmrrylzt.jpg" 
 keywords: "자바스크립트, javascript, 쓰로틀 ,throttle, 디바운스, debounce, 이벤트 최적화"
 ---
 <p>{intro}</p>
@@ -16,7 +16,7 @@ keywords: "자바스크립트, javascript, 쓰로틀 ,throttle, 디바운스, de
 <br/>
 사전에서 쓰로틀을 찾아보면 다음과 같은 의미를 가지고 있습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1EAdQ4Sgn21ZZGOSo_Jw1pnVQilePn3X-" alt="쓰로틀의 의미" width="482" height="223"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486528/11.throttle_debounce/icpqufhzf19bzibv8xdo.png" alt="쓰로틀의 의미" width="482" height="223"/>
 <br/>
 엔진의 속도를 조절하는 조절판, 즉 속도를 조절한다는 의미를 가지고 있습니다. 최적화 기법에서의 쓰로틀은 연속적으로 이벤트가 발생할 때 지정한 시간 주기로 함수를 호출을 조절하는 방식을 의미합니다. scroll, mouse move, resize 이벤트 같이 연속적으로 무수히 많이 발생할 때 특정 주기로 함수 호출해도 되는 경우 최적화하기 유리합니다.
 예를 들어 무한 스크롤을 구현한다고 가정해보곘습니다. 리스트의 가장 아래 부분이 화면에 노출될 때 새로운 데이터를 요청하여 화면에 그려주려고 합니다. 이 때 리스트의 가장 아래 도달했는지 확인하기 위해서 스크롤이 발생할 때마다 매번 함수를 호출할 필요는 없을 것입니다. 따라서 쓰로틀을 적용하여 사용성을 해치지 않을 주기마다 함수가 호출되게 최적화하는 것이 좋습니다. 
@@ -68,11 +68,11 @@ window.addEventListener("scroll", throttle(log, 600));
 <br/>
 자 그럼 이제 쓰로틀을 사용하지 않았을 때와 사용했을 때의 차이를 확인해보겠습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1Rwp0BybjWHPH61sTgDi6VfqAPAtgVWkb" alt="쓰로틀 적용 전" width="802" height="342"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486530/11.throttle_debounce/jocptsnejjnn9ixpqaij.gif" alt="쓰로틀 적용 전" width="802" height="342"/>
 <br/>
 쓰로틀을 사용하지 않으면 함수 호출이 짧은 시간에 120회 가까이 일어납니다😱 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1PFU-_9yXqIzvGO9tVC_A0dI5tsdXRlI-" alt="쓰로틀 적용 후" width="802" height="342"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486532/11.throttle_debounce/bppolcpiaz1xvml4ohfg.gif" alt="쓰로틀 적용 후" width="802" height="342"/>
 <br/>
 그리고 쓰로틀을 적용한 결과 함수 호출이 1/30 수준으로 줄어들었습니다☺️ 
 이렇게 쓰로틀을 통해 연속적으로 일어나는 함수 호출을 최적화 해보았습니다.
@@ -108,7 +108,7 @@ const handleScroll = throttle(log,600)
 <br/>
 디바운스의 사전적 의미는 다음과 같습니다. 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1VuDX22-YYo9LhbliEj73tFjCyVOKZEM7" alt="디바운스의 의미" width="487" height="183" caption="bounce 하지 않는 것, 그것이 debounce니까 끄덕"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486534/11.throttle_debounce/wwarnhe4nvyyb0vug9yq.png" alt="디바운스의 의미" width="487" height="183" caption="bounce 하지 않는 것, 그것이 debounce니까 끄덕"/>
 <br/>
 연속적을 발생하는 바운스를 보정한다는 의미를 가지고 있습니다. 최적화 기법에서의 디바운스는 연속적인 이벤트가 발생하고 지정한 시간이 지난 후에 함수를 호출하는 방식입니다. input, change와 같이 연속적으로 이벤트가 발생하지만 이벤트가 종료된 후 함수를 호출해도 되는 경우 최적화하기 유리합니다. 검색창의 자동 완성 기능처럼 input에 값이 입력될 때 마다 api를 요청하면 단 시간에 엄청나게 많은 요청이 발생하게 됩니다. 이를 방지하기 위해 사용자가 input 창에 검색어를 입력하고 특정 시간이 지난 후 함수를 호출하게 하여 최적화할 수 있습니다.
 <br/>
@@ -155,9 +155,9 @@ input.addEventListener(
 #### 디바운스 적용 전 vs 적용 후
 그럼 이제 디바운스를 적용하지 않았을 때와 적용했을 때를 비교해보겠습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1yOInFW8xaXE-HUL0_0cIK1Gh-kYjDpzX" alt="쓰로틀 적용 전" width="802" height="342" caption="강조되고 반복되는 이벤트는 개발자를 불안하게 해요!!"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486539/11.throttle_debounce/x2sqwfeqz7psevl38vhw.gif" alt="쓰로틀 적용 전" width="802" height="342" caption="강조되고 반복되는 이벤트는 개발자를 불안하게 해요!!"/>
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1M1ePp99TMqSKtySE1-zyZE0wDRIjqpNH" alt="쓰로틀 적용 후" width="802" height="342"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486538/11.throttle_debounce/dergjzdnvcjerglistp7.gif" alt="쓰로틀 적용 후" width="802" height="342"/>
 <br/>
 만약 디바운스를 적용하지 않아 값이 입력될 때 마다 api를 호출했다면 짧은 시간 안에 수십번이나 호출되었겠죠.
 디바운스를 적용하면 단 두번만 호출됩니다. delayTime은 사용성을 저하하지 않는 수준으로 맞춰보면 좋을 것 같습니다😄

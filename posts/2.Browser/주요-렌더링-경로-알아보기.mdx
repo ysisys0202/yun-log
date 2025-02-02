@@ -2,7 +2,7 @@
 title: 주요 렌더링 경로 알아보기
 intro: "CSS로 인터랙션을 구현할 때 width, position 속성값 대신 transform 속성값을 사용하라는 이야기 들어보셨나요? 저는 웹 퍼블리싱에 입문한지 얼마 안 되어 해당 이야기를 들었지만, 그 당시에는 이유를 자세히 알지 못했습니다. 그냥 transform이 성능상 더 좋다고만 알고 넘어갔는데요. 그러다 브라우저 렌더링 과정, 특히 주요 렌더링 경로 (CRP, Critical Rendering Path)를 알게 되면서 CSS 속성별로 성능 차이가 나는 이유를 알게 되었습니다. 오늘은 주요 렌더링 경로에 대해 알아보며 브라우저 렌더링 성능을 향상하는 방법에 대해서도 알아보겠습니다."   
 createdAt: "2024-12-30"
-thumbnail : "https://drive.google.com/uc?export=view&id=1CqohgXNMYLLa--RB_CKm-0pc87BIWR9S"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486640/19.CRP/wm9w5ochzjr7pa9n9llu.jpg"
 keywords: "브라우저, Browser, DOM, CSSOM, render tree, 성능 최적화, 중요 렌더링 경로, 주요 렌더링 경로"
 ---
 <p>{intro}</p>
@@ -18,7 +18,7 @@ keywords: "브라우저, Browser, DOM, CSSOM, render tree, 성능 최적화, 중
 <br/>
 그럼 주요 렌더링 경로 단계를 자세히 살펴보겠습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1uBp_K-BPc4qrA45hfw8NzuNLRmp0pSVM" alt="주요 렌더링 경로 Tree" caption="주요 렌더링 경로 단계" width="1097" height="80"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486631/19.CRP/sz9pygr42p7ozroisjsh.png" alt="주요 렌더링 경로 Tree" caption="주요 렌더링 경로 단계" width="1097" height="80"/>
 <br/>
 브라우저가 화면을 렌더링 할 때 요청/응답, 로딩, 스크립팅, 렌더링, 레이아웃, 페인팅 단계를 거칩니다.
 <br/>
@@ -28,7 +28,7 @@ keywords: "브라우저, Browser, DOM, CSSOM, render tree, 성능 최적화, 중
 <br/>
 ### 2. 로딩
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=17BREfJ05c4_5bDSIliOjtGl4Oea3yUXP" alt="DOM Tree" caption="HTML을 파싱하여 생성된 DOM Tree \n 이미지 출처 : https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work" width="754" height="689"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486642/19.CRP/mwh4jpcgw3bxndfkm3sw.jpg" alt="DOM Tree" caption="HTML을 파싱하여 생성된 DOM Tree \n 이미지 출처 : https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work" width="754" height="689"/>
 <br/>
 - 브라우저가 HTML을 파싱하여 DOM Tree를 생성합니다. 이때 파싱은 HTML과 같은 데이터를 브라우저가 이해할 수 있는 객체(DOM)로 변환하는 작업을 의미합니다.
 - HTML 파싱 중에 발견된 CSS, JavaScript, 이미지 등 외부 자원을 요청합니다.
@@ -40,7 +40,7 @@ HTML 파싱 중 포함된 JavaScript가 실행됩니다. 이때 DOM 및 CSSOM �
 <br/>
 ### 4. 렌더링
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1hrNScSTux8kj2vkmzkTCqlwh9bHpglYV" alt="Render Tree" caption="DOM과 CSSOM이 결합하여 생성된 Render Tree \n 이미지 출처 : https://web.dev/articles/critical-rendering-path/render-tree-construction?hl=ko" width="1150" height="537"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738489533/19.CRP/gumwiwtfwlps4hd65mlv.jpg" alt="Render Tree" caption="DOM과 CSSOM이 결합하여 생성된 Render Tree \n 이미지 출처 : https://web.dev/articles/critical-rendering-path/render-tree-construction?hl=ko" width="1150" height="537"/>
 <br/>
 - CSS 파일을 파싱하여 DOM과 CSS를 결합한 CSSOM(CSS Object Model)을 생성합니다.
 - DOM과 CSSOM을 결합하여 화면에 렌더링 될 Render Tree를 생성합니다. 이때 Render Tree는 **최종적으로 화면에 보이는 요소만을 포함**합니다. HTML의 HEAD 태그, CSS에서 display:none;이 적용된 요소와 같이 화면에 보이지 않는 요소는 Render Tree에 포함되지 않습니다.
@@ -53,11 +53,11 @@ Render Tree의 요소들이 페이지에서 배치되는 위치와 크기, 그�
 <br/>
 6-1. Paint 단계 : Render Tree를 분석한 후 **요소들을 그룹 지어 레이어로 나눕니다.** 그 후 각각의 레이어는 픽셀 데이터로 변환됩니다. 이때 각 레이어는 독립적으로 렌더링 되며 이는 브라우저의 렌더링 성능을 향상 하는데 도움을 줍니다. 레이어는 CSS 속성 (z-index, position, transform, will-change 등)과 canvas, video 태그 등을 기준으로 분리됩니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1S43zUu6I9RCefjijuyGNlhsaQ7_eJiyr" alt="개발자 도구에서 Layer 확인하기" caption="개발자 도구의 오른쪽 점 세 개 버튼 -> 도구 더 보기 -> 레이어 클릭 시 열리는 레이어 탭에서 레이어를 직접 확인해 볼 수 있습니다." width="778" height="448"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486630/19.CRP/aehimnnckg4lzqirpte3.png" alt="개발자 도구에서 Layer 확인하기" caption="개발자 도구의 오른쪽 점 세 개 버튼 -> 도구 더 보기 -> 레이어 클릭 시 열리는 레이어 탭에서 레이어를 직접 확인해 볼 수 있습니다." width="778" height="448"/>
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1oiuMWCftObjIHjRQrXYwPlXWCSJwAnQz" alt="개발자 도구에서 블로그 메인 Layer 확인" caption="블로그 메인 화면 레이어" width="812" height="419"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486646/19.CRP/armbgfxsbwjeved8cakz.png" alt="개발자 도구에서 블로그 메인 Layer 확인" caption="블로그 메인 화면 레이어" width="812" height="419"/>
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1_UllJ2lWLjj7LnaXAL9NK4b_JgQdM2-N" alt="개발자 도구에서 블로그 PostCard의 image에 will-change 속성을 주었을 때" caption="PostCard의 Image에 will-change 속성을 적용하면 이미지마다 레이어가 생성됨" width="812" height="419"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486633/19.CRP/wkwqaqg2ca6dbnomlxia.png" alt="개발자 도구에서 블로그 PostCard의 image에 will-change 속성을 주었을 때" caption="PostCard의 Image에 will-change 속성을 적용하면 이미지마다 레이어가 생성됨" width="812" height="419"/>
 <br/>
 시각적으로 레이어를 확인할 수 있으니 더 이해하기 쉽습니다 👍
 <br/>
@@ -80,21 +80,21 @@ CSS 속성 중 브라우저에 미리 변경될 CSS를 알려주는 will-change�
 <br/>
 포스트 초반에 인터랙션을 구현할 때 transform이 width, position 보다 성능상 유리하다는 이야기를 했습니다. 바로 CSS 속성에 따라 거치는 렌더링 단계가 달라지기 때문입니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1xoblvY9Eoe-_J18_sCXWJvib5Ag0YVy7" alt="Reflow" caption="DOM 요소, CSS 변경 등으로 레이아웃 과정이 다시 발생" width="1097" height="80"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486627/19.CRP/yhjtzvlsf0xnmckfrpbs.jpg" alt="Reflow" caption="DOM 요소, CSS 변경 등으로 레이아웃 과정이 다시 발생" width="1097" height="80"/>
 <br/>
 **리플로우(Reflow)** 는 렌더링 과정에서 레이아웃 과정이 다시 일어나는 것을 의미합니다. DOM 요소를 추가, 제거하거나 width, position, margin 등의 CSS 속성 변경으로 인해 HTML 요소들이 재배치되어야 할 때 브라우저는 각 요소의 위치와 크기를 새로 계산하는 리플로우 과정을 거치게 됩니다. 화면 배치를 다시 계산하기 때문에 렌더링 성능 저하를 유발합니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=14ROLfH0-ESzDxtIHyfXfifcWrlAOcnQP" alt="Repainting" caption="레이아웃 변경 없이 CSS가 변경될 때 발생" width="1097" height="80"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486636/19.CRP/wqfohmpkoyaasn0df33w.jpg" alt="Repainting" caption="레이아웃 변경 없이 CSS가 변경될 때 발생" width="1097" height="80"/>
 <br/>
 **리페인팅(Repainting)** 은 렌더링 과정에서 페인팅 과정이 다시 일어나는 것을 의미합니다. 레이아웃 변화 없이 CSS가 변경될 때 리페인팅 과정을 거치게 됩니다. 리페인팅의 경우 리플로우보다는 덜 하지만 여전히 성능을 저하시키는 요인입니다. 따라서 인터랙션을 구현할 때 리플로우보다는 리페인팅을, 그 중에서도 특히 Composite 단계만 거치는 속성을 사용하는 것이 중요합니다.
 <br/>
 [CSS Triggers](https://www.lmame-geek.com/css-triggers/)에 들어가 보면 스타일 변경 시 Layout, Paint, Composite를 트리거하는 CSS 속성이 잘 정리되어 있습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1I6IJWINm4nEa13651Y4XJPAqoyySIaFO" alt="css triggers transform" width="808" height="57"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486625/19.CRP/thtjzavhschn9qsp6h9o.png" alt="css triggers transform" width="808" height="57"/>
 transform은 Composite만 트리거합니다 👍
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1vsd5zGvduzJeeRjMpWqCzvkHH8d8vLaj" alt="css triggers width" width="1097" height="80"/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1qt97fdden-SPsiqJYnErt5e0e0SoP3E4" alt="css triggers position" width="1097" height="80"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486638/19.CRP/yr7kunuligohgemlmo0e.png" alt="css triggers width" width="1097" height="80"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486623/19.CRP/qj2bp4atuhsffbngmh9m.png" alt="css triggers position" width="1097" height="80"/>
 <br/>
 하지만 width와 position은 Layout 트리거, 즉 리플로우 단계를 거치는 것을 확인할 수 있습니다. 즉 width, position을 빈번하게 변경시키는 인터랙션이 있다면 그만큼 화면을 계산하는 일이 많아져 브라우저 렌더링 성능이 떨어지며 브라우저 화면 프레임이 뚝뚝 끊길 수도 있습니다. 그렇기에 인터랙션을 구현할 때 리플로우보다는 리페인팅을, 그중에서도 Composite만 발생하는 CSS 속성을 사용하는 것이 좋습니다.
 <br/>

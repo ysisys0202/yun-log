@@ -3,7 +3,7 @@ title: next-sitemap으로 사이트맵 만들기
 intro: "제가 생각하는 프론트엔드 개발의 재밌는 점은 코드로 화면을 만들 수 있다는 점과 만들어진 화면을 통해 사용자와 소통할 수 있다는 점입니다. 그렇기에 열심히 코드를 작성하여 배포했을때 많은 사용자와 만나게 될 것을 기대하게 됩니다. (아무도 안들어온다면 정말 아주 조금 속상할지도요...🥲) 그럼 어떻게 사용자를 사이트에 유입시킬 수 있을까요? 여러 마케팅 방법이 있겠지만 가장 비용이 들지 않는 방법은 구글, 네이버와 같은 검색 포털 사이트의 검색 결과에 잘 노출되게 하는 것입니다. 오늘은 검색 엔진이 우리 사이트의 정보를 잘 수집하여 검색 결과에 노출할 수 있도록 사이트맵을 만드는 과정을 소개해보겠습니다."
 isFeatured: false
 createdAt: "2024-09-09"
-thumbnail : "https://drive.google.com/uc?export=view&id=1-TDcPAFhhXAjvqKjMi0jJ868z7PLe5WP"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486471/8.next-sitemap/ixvphodgllzy1kio8efi.jpg"
 keywords: "리액트, react, next.js, 넥스트, sitemap, SEO, 검색 엔진 최적화, 구글 서치 콘솔, next-sitemap"
 ---
 <p>{intro}</p>
@@ -99,18 +99,19 @@ yarn build
 <br/>
 분명 처음에 사이트맵이 잘 생성되었던 기억이 있었기 때문에 vercel 배포 로그를 살펴봐야겠다는 생각이 들었습니다. (꼭 자려고 누웠을 때 이런 생각이 들더라고요 😫)
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1fm0ly9EGgEC5my4TyHFpAN6pTaY8yX8S" alt="vercel 배포 로그 - 사이트맵 생성 확인" width="905" height="254"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486474/8.next-sitemap/jcmj2mej2rxrvyfykgl9.png" alt="vercel 배포 로그 - 사이트맵 생성 확인" width="905" height="254"/>
 <br/>
 역시나... 처음 배포 시에는 잘 생성되고 있었습니다. 그럼 언제부터 postbuild가 안됐던걸까 고민하던 차에 눈에 보였던 것이 yarn 버전이었습니다. 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1YDeF46BcfJ5mX9aghch5Sl_bRsXJ_kcz" alt="vercel 배포 로그 - yarn 버전 확인" width="674" height="190"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486467/8.next-sitemap/tyrelzkkx6zg6zxfsuvl.png" alt="vercel 배포 로그 - yarn 버전 확인" width="674" height="190"/>
 <br/>
 1.22.19버전...?
 그제서야 최근 스토리북을 세팅한 일이 떠올랐습니다. yarn 1버전인 yarn classic을 사용하면 스토리북이 정상적으로 동작하지 않아 yarn berry (4.4.1버전)로 변경했었던 것이죠.
 다시 yarn 버전을 1.22.19 버전으로 바꾸고 build 해보니 사이트맵이 잘 생성되었습니다.
 그럼 왜 yarn berry에서는 postbuild가 안될까 구글링 하던 차에 yarn berry에서 npm에 존재하는 lifecycle script를 모두 지원하지 않는다는 내용을 찾게 되었습니다.
 [yarn 4 버전 life cycle 관련 문서](https://yarnpkg.com/advanced/lifecycle-scripts)
-<PostImage src="https://drive.google.com/uc?export=view&id=1Rr4sHoeDunUuEtdsPdOGMmYEgTzfgngw" alt="vercel 배포 로그 - yarn 버전 확인" width="948" height="418"/>
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486477/8.next-sitemap/v4w1chdgmj5tj3ydydnm.png" alt="vercel 배포 로그 - yarn 버전 확인" width="948" height="418"/>
 <br/>
 위 문서는 yarn 4 버전 이상을 다루고 있다고 하여 yarn 3 버전으로도 시도해 보았지만 마찬가지로 postbuild는 실행되지 않았습니다.
 해결 방법이 있나 구글링해도 저와 같은 문제를 겪고 있는 분들의 글을 찾기가 힘들었습니다. (yarn berry랑 next-sitemap 사용하는 사람이 저만 있는 것도 아닐텐데 어째서..?)
@@ -121,7 +122,7 @@ yarn classic을 사용하자니 스토리북이 울고, yarn berry를 쓰자니 
 <br/>
 <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>에 접속해봅시다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1FOvn2rcsIT2wYeBtUf1vaeMp7JSa5jnN" alt="블로그 사이트맵" width="847" height="222" caption="not 어쩌구 하면 일단 심장 뛰는 사람... XML 파일에 스타일 정보가 없어 문서의 내용만 트리 형태로 보여준다고 합니다."/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486464/8.next-sitemap/s639ydv9t8ignggl0xg6.png" alt="블로그 사이트맵" width="847" height="222" caption="not 어쩌구 하면 일단 심장 뛰는 사람... XML 파일에 스타일 정보가 없어 문서의 내용만 트리 형태로 보여준다고 합니다."/>
 <br/>
 사이트맵이 잘 나온다면 성공적으로 생성이 된 것입니다.🥳
 <br/>
@@ -134,12 +135,12 @@ yarn classic을 사용하자니 스토리북이 울고, yarn berry를 쓰자니 
 <br/>
 [구글 서치 콘솔 페이지](https://search.google.com/search-console/about?hl=ko)에 들어가봅시다. 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1Bx9d7VH5ThjB4FfJqrty9aGDU8KDaq8H" alt="구글 서치 콘솔 시작하기" width="853" height="718"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486475/8.next-sitemap/ss3nrgio3vs4kxhm1bu5.png" alt="구글 서치 콘솔 시작하기" width="853" height="718"/>
 <br/>
 로그인 후 시작하기 페이지로 넘어가면 이런 화면이 나옵니다.
 사이트 도메인을 입력하고 [계속] 버튼을 클릭합니다. 
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=117Cx4BBViLt2O_NhsjSo1p1a-WyRn5_j" alt="DNS 설정" width="760" height="706"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486465/8.next-sitemap/xwrgksaz65ua3rhdcbve.png" alt="DNS 설정" width="760" height="706"/>
 <br/>
 도메인 소유권 인증을 위해 TXT 레코드를 DNS 설정에 추가해줍시다.
 <br/>
@@ -160,17 +161,17 @@ DNS에서의 레코드는 **도메인 이름과 연결된 정보가 기록된 �
 <br/>
 설정을 완료하면 사이트의 구글 서치 콘솔 대시보드가 나옵니다. 클릭 수 0회... 앞으로 좀 더 힘내보겠습니다(광클 시작🔥)
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1pTYOrXq6Nbydbb3mNDa6mm1-pzHGlTyM" alt="구글 서치 콘솔 대시보드" width="902" height="462"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486465/8.next-sitemap/xwrgksaz65ua3rhdcbve.png" alt="구글 서치 콘솔 대시보드" width="902" height="462"/>
 <br/>
 ### 사이트맵 제출
 <br/>
 왼쪽 사이드 메뉴에서 sitemaps 탭에 들어가 사이트맵을 제출해줍시다.  <HighlightText type="background" fontWeight={700}>domain/sitemap.xml</HighlightText>을 입력해주면 됩니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1PYCSL8BlhX4kY5EGrXu-abw-fXFmDOpP" alt="구글 서치 콘솔 대시보드" width="842" height="456"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486470/8.next-sitemap/plyy1ugpeztdhnkyckmf.png" alt="구글 서치 콘솔 대시보드" width="842" height="456"/>
 <br/>
 ### 검색 결과 확인
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1fMNAxlMf6jxV_rsFOZ1Aq0QO2b_krtnH" alt="검색 결과" width="842" height="277" />
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486472/8.next-sitemap/pfhcir7manvhsodr8bux.png" alt="검색 결과" width="842" height="277" />
 <br/>
 사이트맵을 제출하고 하루 뒤 사이트가 구글 검색 결과에 잘 노출되는 것을 확인할 수 있었습니다🎉 
 배포하고 2~3일은 노출되지 않아서 전전긍긍했는데 서치 콘솔에 제출하고 하루 뒤에 바로 노출되었습니다. (단순히 시간이 지나서 노출됐을 가능성이 클 것 같긴 합니다.)

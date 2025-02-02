@@ -3,7 +3,7 @@ title: 클로저 알아보기
 intro: "자바스크립트를 공부하다보면 클로저를 접하게 됩니다. 책 혹은 유튜브 영상에서 자주 볼 수 있고 특히 프론트엔드 기술 면접 리스트에 빠지지 않고 등장하는 단골 손님입니다. 오늘은 과연 클로저란 무엇인지, 어떤 상황에서 사용하게 되는지 알아보도록 하겠습니다."
 isFeatured: true
 createdAt: "2024-09-25"
-thumbnail : "https://drive.google.com/uc?export=view&id=1-HDZnarqGvaaqWn84YLxKQvYJ0PzA362" 
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486521/10.closure/fbwwcmeq9dhcypdlgxvh.jpg" 
 keywords: "자바스크립트, javascript, 클로저, 스코프"
 ---
 <p>{intro}</p>
@@ -17,7 +17,7 @@ keywords: "자바스크립트, javascript, 클로저, 스코프"
 <br/>
 일단 클로저란 단어의 뜻을 알아보겠습니다. 클로저는 폐쇄라는 뜻이라고 합니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1WS11Sx5ebdS5RqddZqEZxHwmVsvj7fox" alt="클로저는 폐쇄라는 뜻" width="647" height="242"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486518/10.closure/w49fszse2q41kkxzrbe3.png" alt="클로저는 폐쇄라는 뜻" width="647" height="242"/>
 <br/>
 무엇을 폐쇄하는 것일까요? [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)에서는 자바스크립트의 클로저에 대해 아래와 같이 설명하고 있습니다.
 <br/>
@@ -131,7 +131,7 @@ makeCounter라는 함수는 내부에 privateCounter라는 변수를 가지고 p
 <br/>
 위 코드는 인자로 받은 콜백함수를 1000ms 주기로 호출하는 간단한 쓰로틀 함수입니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1QePamgiolCJRK8782fya6l-GjIh9HYMZ" alt="1초 간격으로 로그가 찍히는 중" width="698" height="546"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486523/10.closure/rnaeifh0gyi9ewzckj6r.gif" alt="1초 간격으로 로그가 찍히는 중" width="698" height="546"/>
 <br/>
 스크롤 이벤트가 발생할 때 1000ms 간격으로 logScroll 함수가 실행되는 걸 확인할 수 있습니다.
 <br/>
@@ -169,7 +169,7 @@ window.addEventListener("scroll", () => {
 });
 ```
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1I7Eb1wgtCD2xdbqIa7UJifyS4afRj3Bs" alt="로그가 무수히 찍히는 중" width="698" height="546"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486520/10.closure/rdfkgryfocsddxz1ngdf.gif" alt="로그가 무수히 찍히는 중" width="698" height="546"/>
 <br/>
 scroll 이벤트가 발생할 때 마다 timer 값이 undefined로 초기화되며 연속적으로 logScroll 함수가 실행됩니다😓
 <br/>

@@ -3,7 +3,7 @@ title: framer motion으로 스크롤 애니메이션 적용하기
 intro: "제 블로그의 홈 화면에는 블로그 소개 글이 있습니다. 스크롤 할 때 글씨가 천천히 올라가며 점차 투명해집니다. framer motion 라이브러리를 사용하여 해당 효과를 구현한 이야기를 해보겠습니다. 처음 framer motion을 사용할 당시 공식 문서가 굉장히 잘 되어 있음에도 불구하고 원하는 정보를 찾고 적용하기가 어려웠던 기억이 납니다. 이번에 스크롤 애니메이션을 적용하는 과정도 다사다난했는데요. 다시 같은 실수를 반복하지 않기 위해 이 과정을 기록해 두려 합니다."
 isFeatured: false
 createdAt: "2024-09-05"
-thumbnail : "https://drive.google.com/uc?export=view&id=1BygqRiRKneTKSqsYSSr9R4wCL_9uxu82"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486436/7.framer-motion-scroll-animation/cj7m2myjmi5mcxydlouv.jpg"
 keywords: "framer motion, 프레이머 모션, 애니메이션, aimation, scroll animation, 스크롤 애니메이션, 리액트, react, next.js, 넥스트"
 ---
 <p>{intro}</p>
@@ -24,13 +24,13 @@ keywords: "framer motion, 프레이머 모션, 애니메이션, aimation, scroll
 <br/>
 ## 무엇을 구현할까
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1yUbpwoW0y-YVKc_cDsQzET-V2aoAVQZF" alt="홈 화면 1" width="640" height="334"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486440/7.framer-motion-scroll-animation/xpqpnrt3ppzptcjirzor.gif" alt="홈 화면 1" width="640" height="334"/>
 <br/>
 블로그 홈 화면을 만들던 당시 Hero 섹션이 좀 심심해보인다는 생각이 들었습니다. 
 'Hero 섹션이 스크롤 속도보다 천천히 올라가면 사용자들에게 더 잘 기억되지 않을까?' 하는 생각에 스크롤 애니메이션을 적용하기로 마음 먹었습니다.
 이때 제가 원하던 애니메이션은 섹션의 특정 지점에서 텍스트의 위치가 천천히 올라가며, 점차 투명해져 텍스트가 사라지는 애니메이션이었습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1K_GxZLgE1dptvP4qaD5I89EUzyew8Ldd" alt="홈 화면 1" width="1072" height="830"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486435/7.framer-motion-scroll-animation/jl88tticfujl0bfbg38c.jpg" alt="홈 화면 1" width="1072" height="830"/>
 <br/>
 Window 스크롤이 애니메이션 구간을 지날때 스크롤 진행 바율 값(0 ~ 1)으로 css 값 적용하면 될 것 같습니다.
 <br/>
@@ -135,7 +135,7 @@ const Section = () => {
 자 이제 useMotionValueEvent로 scrollYProgress를 값이 원하는 대로 나오는지 확인해 보면 좋을 것 같습니다. 다만 scrollYPropss는 motion value로 리액트 state 값이 아니기 때문에 값의 변화를 추적할 때 useEffect를 사용할 수가 없습니다. 다행히 framer motion은 motion value의 변화를 감지할 수 있는 <HighlightText fontWeight="700">useMotionValueEvent</HighlightText>를 제공하고 있습니다. 
 useMotionValueEvent를 사용하여 scrollYProgress 값을 출력해 보겠습니다. (가시성을 위해 섹션에 배경색을 줘보았습니다.)
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1kRIBkyEf5Fwl4xvjLBe0dM0hPSWROUyg" alt="홈 화면 1" width="558" height="720"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486442/7.framer-motion-scroll-animation/dvcfy9n82bmrhbkeksn8.gif" alt="홈 화면 1" width="558" height="720"/>
 <br/>
 section에서의 스크롤 진행 값이 잘 출력됩니다. 이제 이 값을 어떻게 적용해야할까요?
 <br/>
@@ -180,7 +180,7 @@ const Section = () => {
 <br/>
 motion component에 scrollYProgress 값을 넘겨주면 스크롤할 때 마다 opacity와 translateY 값이 바뀌는 걸 확인할 수 있습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1691zGb1SzEYO70cwsVmE9RmWejXoe35S" alt="motion component 적용" width="640" height="332"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486439/7.framer-motion-scroll-animation/jy1bg5vi96o1kb6lexmk.gif" alt="motion component 적용" width="640" height="332"/>
 <br/>
 흠...하지만 이건 제가 원하는 것이 아닙니다😞 
 저는 섹션의 시작 지점와 끝 지점이 아니라 섹션의 특정 구간에서 애니메이션이 동작해야하며 값도 opacity는 1에서 0, translateY는 0에서 180px로 변하게 하고 싶습니다.
@@ -276,12 +276,12 @@ const Section = () => {
 };
 ```
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1AURcHE4Hnuvhv6aXzf8a_nbh1hW22-yS" alt="결과물" width="640" height="332"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486443/7.framer-motion-scroll-animation/qgf4xsswc9khva3tsvsi.gif" alt="결과물" width="640" height="332"/>
 <br/>
 짜잔 이제 비로소 제가 원하던 애니메이션이 구현되었습니다🎉 
 (~~마지막으로 검토 중에 발견한건데 Wellcom 무엇... 흐린 눈 해주세요...~~)
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1qu8Cz2trc65gsAl8PwDY9nYkWh3lghMw" alt="홈 화면 1" width="640" height="332"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486443/7.framer-motion-scroll-animation/qgf4xsswc9khva3tsvsi.gif" alt="홈 화면 1" width="640" height="332"/>
 <br/>
 섹션을 기준으로 동작하기 때문에 섹션을 가운데로 이동시켜도 동일한 애니메이션이 적용됩니다👍
 <br/>
@@ -514,7 +514,7 @@ export default Section;
 일단 저의 가장 큰 패착은 텍스트가 천천히 올라가는 애니메이션을 위해 section을 sticky로 화면 상단에 고정시키고 translateY로 텍스트를 서서히 올리려고 한 것이었습니다.
 이렇게 되면 section의 위치가 고정되기 때문에 scrollYProgress값이 원하는 대로 나오지 않습니다🤦
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=11sf0lTW9WoQkiJJko0eKgQH98BnIS3Qq" alt="" width="640" height="404" caption="section 위치가 고정되니 계속 0이 나오게 됩니다."/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486438/7.framer-motion-scroll-animation/ebt96ftag3ksqwt425hz.gif" alt="" width="640" height="404" caption="section 위치가 고정되니 계속 0이 나오게 됩니다."/>
 <br/>
 때문에 초기 렌더링 시에 섹션의 rect 값은 미리 저장해두고 스크롤 진행률을 직접 계산하게 됩니다.
 그리고 css 값 계산도 일단은 원하는 애니메이션이 적용되도록 냅다 적어줍니다. 
