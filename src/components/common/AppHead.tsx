@@ -10,7 +10,7 @@ const AppHead = ({
   title,
   keywords = "웹 개발, 프론트엔드, html, css, 자바스크립트, 리액트, 넥스트",
   description = "프론트엔드 개발자 Yun의 개발 기록",
-  ogImage = "https://drive.google.com/uc?export=view&id=1yOlfpgm4njlZWaw6QkgCrY1ufD_uKOaJ",
+  ogImage = "https://res.cloudinary.com/yun-log/image/upload/v1738485920/00.global/jmrisisnsvetb5t0m6fv.jpg",
 }: Props) => {
   const siteName = "Yun's Dev Log";
   return (

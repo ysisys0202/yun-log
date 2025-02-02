@@ -3,7 +3,7 @@ title: 이벤트루프 알아보기
 intro: "자바스크립트는 한 번에 하나의 일만 처리할 수 있는 싱글 스레드 언어입니다. 하지만 실제로 자바스크립트를 사용해보면 어떤가요? 데이터를 가져오는 동안 다른 함수를 실행할 수 있고 setTimeOut으로 지정한 시간 뒤에 특정 함수를 실행시키려 할 때 다른 함수가 바로 실행되는 등 동시에 여러 일을 처리하는 것처럼 보입니다. 이는 자바스크립트가 실행되는 런타임 환경인 브라우저가 비동기 작업을 지원하기 때문입니다. 오늘은 브라우저에서 비동기 작업을 처리하는 이벤트 루프(Event Loop)에 대해서 알아보도록 하겠습니다."   
 isFeatured: true
 createdAt: "2024-09-16"
-thumbnail : "https://drive.google.com/uc?export=view&id=1O-6yJHRLOjthjmdrTOQkrXd6NI2pkfoM"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738486504/09.event_loop/oc4a63lfksw830bkypxa.jpg"
 keywords: "자바스크립트, javascript, 이벤트 루프, event loop, 콜 스택, call stack, 태스트 큐, task queue, 비동기"
 ---
 <p>{intro}</p>
@@ -11,7 +11,7 @@ keywords: "자바스크립트, javascript, 이벤트 루프, event loop, 콜 스
 
 ## 자바스크립트 엔진과 런타임 환경
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1GWut_okKW71WPVL7UY066r99i0-t_Ysh" alt="자바스크립트 런타임 환경" width="992" height="584"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486502/09.event_loop/oferio6vo4lrltq3phbj.jpg" alt="자바스크립트 런타임 환경" width="992" height="584"/>
 <br/>
 **자바스크립트 엔진**은 자바스크립트 코드를 해석하고 실행하는 프로그램입니다. 자바스크립트가 싱글 스레드 언어이기 때문에 자바스크립트 엔진은 **한 번에 하나의 일만 수행 가능**하며 이는 함수의 실행을 관리하는 **콜 스택이 하나**라는 의미이기도 합니다. 대표적으로 크롬과 Node.js에서 사용하는 V8엔진이 있습니다.
 <br/>
@@ -37,7 +37,7 @@ keywords: "자바스크립트, javascript, 이벤트 루프, event loop, 콜 스
 <br/>
 앞서 본 이미지를 보며 비동기 작업이 어떤 순서로 진행되는지 알아보겠습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1GWut_okKW71WPVL7UY066r99i0-t_Ysh" alt="자바스크립트 런타임 환경" width="992" height="584"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486502/09.event_loop/oferio6vo4lrltq3phbj.jpg" alt="자바스크립트 런타임 환경" width="992" height="584"/>
 <br/>
 1. 이벤트 루프는 콜 스택이 비워져 있는지 확인합니다.
 2. 콜 스택이 비워져 있지 않다면 작업을 콜 스택으로 이동시키지 않습니다. 
@@ -63,7 +63,7 @@ const runAfterZero = () => {
 runAfterZero();
 ```
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1uuDOMCraKrFf4VQTGAR87CVDNPxOcjZ0" alt="이벤트 루트 동작 확인" width="982" height="162" caption="setTimeOut 0는 0ms 뒤에 실행 되지...않았습니다...!"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738486505/09.event_loop/bshbzgai8ffxfpqwegkt.png" alt="이벤트 루트 동작 확인" width="982" height="162" caption="setTimeOut 0는 0ms 뒤에 실행 되지...않았습니다...!"/>
 <br/>
 >1. 전역 컨텍스트가 생성되어 콜 스택에 쌓입니다.
 >2. runAfterZero 함수가 호출되며 콜 스택에 runAfterZero 함수의 실행 컨텍스트가 쌓입니다.
@@ -100,7 +100,7 @@ while (Date.now() - start < duration) {
 <br/>
 
 <PostImage
- src="https://drive.google.com/uc?export=view&id=1c6camld3ESi41yDJXZKSflvEm6MLzFMv" alt="3초 후 실행" width="498" height="86" />
+ src="https://res.cloudinary.com/yun-log/image/upload/v1738489141/09.event_loop/rqb1lruixpyqqtyfpcqo.gif" alt="3초 후 실행" width="498" height="86" />
 <br/>
 3초 동안 반복문이 실행되고 전역 코드가 모두 종료되어 전역 컨텍스트가 제거된 후 setTimeOut의 콜백함수가 실행됩니다.😱
 이렇게 되면 성능에도 좋지 않고 사용자가 화면을 클릭 했을 때 등록된 이벤트 리스너 콜백이 바로 실행되지 않는 등 사용성이 굉장히 떨어질 수 밖에 없습니다.
@@ -108,7 +108,7 @@ while (Date.now() - start < duration) {
 <br/>
 그리고 브라우저는 성능 최적화와 안정적인 사용자 환경을 위해 콜 스택에 있는 함수가 모두 실행된 후 화면의 변경을 업데이트합니다. 보통의 경우에는 60fps (약 16ms) 주기로 업데이트 되지만 콜 스택에서 굉장히 오랫동안 실행되는 코드가 있다면 정상젹으로 UI가 업데이트 되지 않는 이슈가 발생할 수 있기 때문에 역시 너무 크고 복잡한 작업을 나누어 관리하는 것이 중요합니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1iJg8OtBfWQJJYKAhPlLN70GPzxOxyI4a" alt="UI 업데이트 테스트" width="792" height="144" caption="콜 스택에서 함수가 실행될 동안 mouse hover로 인한 UI 업데이트가 되지 않음" />
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738489144/09.event_loop/b91l2i2fbn8cettfwdpo.gif" alt="UI 업데이트 테스트" width="792" height="144" caption="콜 스택에서 함수가 실행될 동안 mouse hover로 인한 UI 업데이트가 되지 않음" />
 <br/>
 
 ## 포스팅을 마치며

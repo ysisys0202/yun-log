@@ -4,7 +4,7 @@ subTitle: var와 const, let의 차이점 알아보기
 intro: "혹시 자바스크립트에서 var 사용을 지양하라는 말을 들어보셨나요? \n var는 한때 자바스크립트에서 변수를 선언할 수 있는 유일한 키워드였습니다. 하지만 ES6부터 모던 자바스크립트를 사용하는 개발자들은 더 이상 var를 사용하지 않고 있습니다. ES6부터 포함된 const와 let이라는 변수 선언 키워드가 있기 때문입니다. 하지만 var를 사용하지 않는 이유가 그저 오래된 문법이라서일까요? var와 const, let의 차이점을 알아보며 var가 외면받는 이유에 대해 알아보겠습니다."
 isFeatured: true
 createdAt: "2024-07-24"
-thumbnail : "https://drive.google.com/uc?export=view&id=1KhO3x8PP7eh40G3ux4RsEg40L32eVkuC" 
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738485949/01.variables/dave43z19ofgsqizyyif.jpg" 
 keywords: "자바스크립트, javascript, 변수, variables, var, const, let, hoisting, 호이스팅, scope"
 ---
 <p>{intro}</p>
@@ -20,7 +20,7 @@ var password = 123456;
 <br/>
 위와 같이 변수를 선언하고 값을 할당하면 3단계에 걸쳐 변수에 값이 저장됩니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1WtfApWevV7lzHhaKIx6mF-KktJy5wZBo" alt="변수 선언 과정" width="580" height="392"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485949/01.variables/wnz6aiqagp25atzigv2g.jpg" alt="변수 선언 과정" width="580" height="392"/>
 <br/>
 > 1. 선언 : 자바스크립트 엔진이 **변수의 식별자를 인식하는 단계**입니다. 식별자만 인식할 뿐 값이 저장되지는 않습니다.
 > 2. 초기화 : 변수 식별자가 인식된 후, **메모리 공간을 확보하고 초기값을 설정하는 단계**입니다. 이 때 식별자는 확보된 메모리 공간의 주소값을 가르킵니다. 초기 값이 명시되어 있지 않은 경우 undefined로 초기화 됩니다.
@@ -64,7 +64,7 @@ var와 const, let의 재선언, 재할당 여부는 아래와 같습니다.
 2. **const** : 재선언과 재할당 **모두 불가능**합니다. 값이 변하지 않으니, 선언과 동시에 값이 할당되어야 합니다. 재할당이 허용되지 않으므로 상수(constance)라고도 합니다.
 3. **let** : **재할당만 가능**하고 재선언은 허용되지 않습니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=14fhjKXNkr4VFS8JnRq4UDa8c052BeEp9" alt="챗지피티한테 let의 의미를 물어보았다." width="558" height="266" caption="그래서 let이 무슨 뜻이냐고요..."/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485945/01.variables/k84zbeddysycmxm5ytko.jpg" alt="챗지피티한테 let의 의미를 물어보았다." width="558" height="266" caption="그래서 let이 무슨 뜻이냐고요..."/>
 <br/>
 #### 재선언의 위험성 🚨
 <br/>
@@ -102,7 +102,7 @@ password = 654321;
 **전역 스코프 (Global Scope)** : 함수나 블럭 바깥의 최상위 공간입니다. 전역 스코프에 선언된 변수는 어디서나 접근 가능하며 이를 전역 변수라고 합니다.
 **지역 스코프 (Local Scope)** : 함수나 블럭 내부를 뜻합니다. 지역 스코프에 선언된 변수는 해당 스코프 내에서만 접근 가능하여 이를 지역 변수라고 합니다.
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1ZAsj37PaM6f7rCxrv65DjyHeVz4BMqy_" alt="스코프" width="558" height="266"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485945/01.variables/whunmujpitodlhvaihy9.jpg" alt="스코프" width="558" height="266"/>
 <br/>
 >1. 전역 스코프에 선언된 변수는 어디서나 접근 가능합니다.
 >2. 지역 스코프에 선언된 변수는 전역 스코프에서 접근할 수 없습니다.
@@ -161,7 +161,7 @@ var의 경우 호이스팅 시 **선언과 동시에 undefined로 초기화**되
 <br/>
 #### var의 호이스팅
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1Fp1-ZFQeIhvim7xyAgEHu-O6iagpDqjA" alt="var의 호이스팅" width="728" height="445"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485946/01.variables/ct0un2vi2rtujkhy93mk.jpg" alt="var의 호이스팅" width="728" height="445"/>
 <br/>
 > 1. 초기화 된 undefined 출력 😱
 > 2. 선언 후 값을 할당하지 않았으므로 undefined로 초기화
@@ -186,7 +186,7 @@ const와 let으로 선언한 변수는 자바스크립트 엔진이 변수 선�
 <br/>
 #### const의 호이스팅
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1e6ONONIaXB_0jj3nXJUnFdZbrImqp5EH" alt="const의 호이스팅" width="728" height="373"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485947/01.variables/cdbnoxwf3aefpssqdmcw.jpg" alt="const의 호이스팅" width="728" height="373"/>
 <br/>
 > 1. 변수 선언이 끌어올려진 후 초기화 되지 않아 접근할 수 없음 <br/>(ReferenceError: Cannot access 'password' before initialization)
 > 2. 값을 재할당 할 수 없는 상수(constant)이기에 초기화와 동시에 할당
@@ -195,7 +195,7 @@ const와 let으로 선언한 변수는 자바스크립트 엔진이 변수 선�
 <br/>
 #### let의 호이스팅
 <br/>
-<PostImage src="https://drive.google.com/uc?export=view&id=1IwziOv60kqGAzwjJjoAO8oqOFbVeNE-v" alt="let의 호이스팅" width="728" height="445"/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738485947/01.variables/gkfj35bde6zrbfeu1vkz.jpg" alt="let의 호이스팅" width="728" height="445"/>
 <br/>
 > 1. 변수 선언이 끌어올려진 후 초기화 되지 않아 접근할 수 없음 <br/>(ReferenceError: Cannot access 'password' before initialization)
 > 2. 선언 후 값을 할당하지 않으면 undefined로 초기화 
