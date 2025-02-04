@@ -1,0 +1,163 @@
+---
+title: UI 라이브러리 제작기
+intro: "며칠 전 처음으로 UI 라이브러리를 만들고 npm에 배포까지 해보았습니다. 이번 포스트에서는 UI 라이브러리를 만드는 과정에 대해 이야기해 보도록 하겠습니다."
+isFeatured: true
+createdAt: "2025-02-04"
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1738680051/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/lxi0wwolrctnhztkxond.jpg" 
+keywords: "UI 라이브러리, 패키지, chak-blocks, npm, publish"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+## 개발 동기
+<br/>
+올해 들어 사이드 프로젝트를 하기로 마음먹었습니다. 그런데 본격적으로 프로젝트를 하기에 앞서 사이드 프로젝트용 리액트 UI 라이브러리를 만들어보면 어떨까 싶더라고요. 버튼이나 타이포그래피처럼 공통적으로 사용되는 컴포넌트를 미리 만들어두면 이후 프로젝트에서는 서비스 로직에만 집중할 수 있을 거라고 생각했습니다. 사실 예전이었으면 라이브러리를 만들 생각은 못했을 텐데 작년에 패스트캠퍼스에서 UI 라이브러리 만들기 강의를 들었기 때문에 '꼭 이걸 내 프로젝트에 활용해야겠다'라는 생각을 했고 이번 기회에 직접 저만의 UI 라이브러리를 만들어보게 되었습니다.
+<br/>
+참고로 패키지 이름은 앞으로 진행할 프로젝트인 독서 기록 플랫폼 chak(책 + check)와 레고 블록을 조립해서 멋진 결과물을 만들듯이 컴포넌트 블록을 조립하여 서비스를 만들 수 있다는 의미에서 chak-blocks라고 지어보았습니다.
+<br/>
+## 고려할 부분
+<br/>
+구현 사항은 간단합니다. 리액트 컴포넌트 만들기! 그런데 이걸 패키지로 배포하려면 고려해야 할 부분이 있습니다.
+<br/>
+- **ESM, CJS 모듈 시스템을 모두 지원할 것**
+<br/> 이 부분은 강의를 듣지 않았다면 생각하지 못했을 부분이었습니다. 패키지를 사용하는 곳에서 어떤 방식의 모듈 시스템을 사용할지 모르니 범용성 있게 ESM, CJS 모두 지원해 주는 것이 좋다고 합니다.
+- **서버 컴포넌트를 지원할 것**
+<br/> 사이드 프로젝트를 넥스트 앱 라우터로 만들 생각이었기 때문에 서버 컴포넌트를 지원해야 했습니다. 리액트 서버 컴포넌트는 브라우저에서 실행되는 자바스크립트 번들의 크기를 줄이기 위해 고안된 컴포넌트로, 서버에서만 실행되고 자바스크립트 번들에서는 제외되기 때문에 브라우저에서는 실행되지 않습니다. 즉 CSS in JS 방식의 스타일 라이브러리와 브라우저에서 실행되는 리액트 훅 사용에 제약이 걸리게 되는 것이죠. 뒤에서 이야기하겠지만 이것 때문에 꽤 골머리 앓았습니다 🥲
+- **사용자는 나**
+<br/>작업을 하다 보면 어디까지 기능을 지원해야 하지?하는 애매한 부분이 생깁니다. 이때 너무 많은 경우의 수를 고려하여 코드의 복잡성을 높이지 않기 위해 주 사용자를 저 자신으로 설정하고 작업했습니다. 당장 저에게 필요한 컴포넌트, 기능 구현에 집중했고 나중에 필요해지는 것들은 추후 보완해 나갈 생각입니다.
+<br/>
+## 번들러 설정하기
+<br/>
+본격적으로 컴포넌트를 만들기에 앞서 번들러 세팅을 해주었습니다. 번들러는 모듈화된 파일들을 하나로 묶어주는 역할을 합니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738672323/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/mklnummqi29scrzpl0ja.png" alt="웹팩 메인 이미지" width={1095*0.7} height={414*0.7} caption="웹팩 메인 화면, 번들러의 역할이 잘 표현되어 있음"/>
+<br/>
+이번 라이브러리 프로젝트에서 사용한 번들러는 [esbuild](https://esbuild.github.io/)입니다. esbuild는 다음과 같은 특징을 갖습니다.
+<br/>
+- **번들링 속도가 빠름.**
+<br/> esbuild는 메인 화면에서도 빠른 빌드 속도를 강점으로 내세우고 있습니다. 웹팩 같은 기존의 번들러와 비교하면 10-100배 정도 빠르다고 합니다.
+- **추가적인 플러그인 없이 자바스크립트, CSS, 타입스크립트, JSX을 번들링할 수 있음**
+<br/>(다만 타입 체크는 지원하지 않기 때문에 tsc로 따로 타입 체크를 해주었습니다.)
+- **ESM, CJS 번들링 지원** 
+<br/>
+즉, 제가 고려한 사항들을 모두 충족하면서도 가장 빠른 속도의 번들러이기 때문에 esbuild가 이번 프로젝트에 가장 적합하다고 판단했습니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738668086/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/vfng2f9vtwfv0d2aemer.png" alt="번들링" width={1026 *0.7} height={380 *0.7}/>
+<br/>
+src 폴더에 있는 파일들을 번들링하면 여러 컴포넌트 코드가 index.js 파일 하나에 모두 들어가 있는 것을 확인할 수 있습니다.
+<br/>
+그런데 컴포넌트 작업을 마무리하고 넥스트 앱 라우터 프로젝트에서 패키지를 불러와 보니 에러가 발생하더라고요.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738668086/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/xj4lzbsmlpqumuiko5fn.png" alt="TypeError: (0, react_WEBPACK_IMPORTED_MODULE_® createContext) is not a function" width={943} height={178}  caption="TypeError: (0, react_WEBPACK_IMPORTED_MODULE_® createContext) is not a function"/>
+<br/>
+일부 컴포넌트에서 Context API를 사용하고 있어 발생한 에러였습니다. 타이포그래피나 태그 등 동적 기능이 없는 컴포넌트들도 Context API를 사용하는 컴포넌트들과 한 파일에 번들링되어 있다보니 서버 컴포넌트로 사용하기에 제약이 걸렸습니다. 어떻게 이 문제를 해결할 수 있을까 고민하던 차에 떠오른 방법은 바로...
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738668920/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/cu1jcoayh1yz0wh6b2lu.jpg" alt="깨달음" width={319*0.7} height={360*0.7} />
+<HighlightText textColor="red">"코드를 분리해 버리자!"</HighlightText>
+<br/>
+<br/>
+Context API 사용 여부를 기준으로 번들된 결과물을 나누면 문제가 해결될 것이라고 생각했습니다. 
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738668086/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/eezclvbgl27xnzofqjvm.png" alt="번들링" width={1010*0.7} height={476*0.7}/>
+<br/>
+그리고 실제로 적용해 보니 잘 동작하는 것을 알 수 있었습니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738673821/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/urxmrzdktwpnhoykoodg.png" alt="plain 컴포넌트 렌더링" width={724} height={248} caption="plain 컴포넌트 렌더링 화면"/>
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738673821/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/jctez3mqpveaungewaln.png" alt="context 컴포넌트 렌더링" width={724} height={361} caption="context 컴포넌트 렌더링 화면"/>
+
+<br/>
+다만 사용하는 곳에서 context 컴포넌트와 plain 컴포넌트를 구분해서 import 해야 하기 때문에 사용법이 복잡해진 점은 아쉽습니다.
+<br/>
+## 컴포넌트 만들기
+<br/>
+리액트 UI 라이브러리니까 컴포넌트도 만들어줘야 합니다. 모든 프로젝트에서 기본적으로 사용되는 타이포그래피, 버튼, 태그, 아코디언 등을 만들었습니다.
+<br/>
+### 재사용성 고려하기
+<br/>
+컴포넌트를 만들 때 중요한 점은 재사용성을 고려해야 한다는 점입니다. 저는 아래와 같은 방법으로 재사용성을 높여보았습니다.
+<br/>
+- **HTML Element Attributes 모두 지원하기**
+<br/>저는 공통 컴포넌트를 만들 때 '스타일이 입혀진 HTML 요소'처럼 쓸 수 있도록 하는 것을 좋아합니다.
+컴포넌트는 스타일만 가지고 있고 컴포넌트가 처리할 로직이나 속성 등은 props로 전달받을 수 있게 말이죠. 
+<br/>예를 들어 버튼 컴포넌트를 만든다고 했을 때, 스타일이 입혀진 버튼 요소처럼 쓸 수 있도록 버튼 요소가 가진 속성을 모두 지원합니다. 버튼이 처리할 클릭 로직은 onClick prop으로 전달받으며, type, disable, 그리고 data attribute까지 컴포넌트를 사용하는 곳에서 자유롭게 사용할 수 있도록 HTML Element Attributes를 props로 전달받을 수 있게 컴포넌트를 구성했습니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738674874/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/orf082znq0hlnb59ouj7.png" alt="버튼 컴포넌트 props" width={922*0.7} height={240*0.7} caption="버튼 요소의 모든 attributes를 props로 지원"/>
+<br/>
+- **컴파운드 패턴 적용하기**
+<br/>아코디언같이 여러 컴포넌트를 조합하여 컴포넌트를 만드는 경우, 부모 컴포넌트 내부에 자식 컴포넌트를 포함하고 있으면 요구사항이 조금 달라졌을 때 대응하기 쉽지 않습니다. props로 분기 처리하는 등 코드가 점점 복잡해지기 마련입니다. 이런 복잡성을 방지하고 유연하게 컴포넌트를 사용하기 위해 컴파운드 패턴으로 컴포넌트를 설계했습니다. 컴파운드 패턴을 사용하면 Context API를 통해 서로 상태는 공유하지만, 컴포넌트 자체는 독립적으로 존재하기 때문에 상황에 맞게 컴포넌트를 조립할 수 있습니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738674777/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/uzcjuro058cw2htho8qn.png" alt="컴파운드 패턴으로 구현된 아코디언 컴포넌트" width={1062*0.7} height={988*0.7} caption="컴포넌트가 독립적으로 사용되어 자유롭게 커스텀 가능"/>
+<br/>
+### 스타일링
+<br/>
+컴포넌트 스타일링은 [vanilla extract](https://vanilla-extract.style/)를 사용했습니다. Vanilla Extract는 CSS in TS 방식의 스타일 라이브러리로, 이름처럼 빌드 타임에 순수한 CSS를 추출합니다. 
+<br/>
+<Callout title="바닐라의 의미">
+잠깐 딴 길로 새자면 바닐라 자바스크립트도 그렇고 왜 바닐라가 순수하다는 의미인지 궁금해져서 찾아보았는데 바닐라 아이스크림이 가장 기본적이 맛이라서 그렇다고 하네요 🍦😋
+</Callout>
+<br/>
+순수한 CSS를 제공한다는 것에는 두 가지 장점이 있습니다.
+<br/>
+- **서버 컴포넌트에서 사용하기에 적합함**
+<br/> 런타임 환경에서 동적으로 스타일이 결정되는 것이 아니기 때문에 서버 컴포넌트를 스타일링하기 적합하다고 생각했습니다.
+- **패키지를 사용하는 곳에서 스타일 라이브러리에 의존성을 갖지 않음**
+<br/> 빌드된 패키지에는 순수한 CSS만 포함되기 때문에, 패키지를 사용하는 곳에서 CSS 라이브러리에 대한 의존성이 필요하지 않을 것이라 생각했습니다. 그러나 편의성과 동적 스타일링을 위해 vanilla-extract/dynamic과 vanilla-extract/recipes를 추가로 사용하게 되면서, 결국 패키지를 사용하는 곳에서 이 라이브러리들을 의존성으로 추가해 주어야 합니다 😞
+<br/>
+### 스토리북
+<br/>
+작업 중 컴포넌트 확인은 스토리북을 사용했습니다. 컴포넌트 비주얼 테스트와 동시에 사용자들에게 제공할 문서까지 만들 수 있으니, 일석이조라고 생각했습니다. 그라나 스토리북 개발 서버 구동과 번들링을 위한 vite 설치가 불가피해졌습니다. '하나의 프로젝트에 번들러가 2개여도 되나...?'하는 의문이 생겼지만 일단 스토리북을 사용하기 위해 vite를 추가로 설치해 주었습니다.
+<br/>
+## package.json 설정하기
+<br/>
+패키지를 배포하기 위해서 package.json을 설정해 주어야 합니다.
+평소에는 스크립트를 추가하거나 의존성 명세서 정도로 사용했는데 패키지로 배포하려고 하니까 여러모로 신경 쓸 게 있더라고요.
+<br/>
+- **name** & **version** 
+<br/> name은 배포될 패키지의 이름이며, version은 패키지가 변경될 때마다 같이 업데이트해 주어야 합니다. [npm Docs](https://docs.npmjs.com/cli/v11/configuring-npm/package-json)에 따르면 패키지를 배포할 때 가장 중요한 것은 name과 version이라고 하며, name과 version은 고유해야 한다고 합니다.
+- **files**
+<br/> 패키지를 설치할 때 포함할 항목을 명시하는 필드입니다. 기본값은 ["*"]로 모든 파일을 포함하지만 저는 번들링 된 파일만 내보내기 위해 ['dist']로 명시해 주었습니다.
+- **export** 
+<br/> 패키지 진입점을 정의하는 필드입니다. 
+<br/>
+```json
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts"
+    },
+    "./plain": {
+      "import": "./dist/plain/index.js",
+      "require": "./dist/plain/index.cjs",
+      "types": "./dist/components/plain/index.d.ts"
+    },
+    "./context": {
+      "import": "./dist/context/index.js",
+      "require": "./dist/context/index.cjs",
+      "types": "./dist/components/context/index.d.ts"
+    },
+    "./plain/style.css": "./dist/plain/index.css",
+    "./context/style.css": "./dist/context/index.css"
+  }
+```
+<br/>
+context 컴포넌트와 plain 컴포넌트의 진입점을 구분하고 ESM과 CJS의 모듈 시스템과 type, style 파일 경로를 명시해 주었습니다.   
+<br/>
+자세한 내용은 [Node.js 공식 문서](https://nodejs.org/api/packages.html#package-entry-points)에서 확인해 볼 수 있습니다.
+<br/>
+## 문서화
+<br/>
+아무래도 npm에 올라갈 패키지다 보니 문서화 작업에도 신경을 쓰게 되었습니다. 설치 방법, 컴포넌트 사용 방법 등을 되도록 상세히 리드미에 작성해 주었습니다. 이때 마크다운 테이블 반복 작업이 상당히 귀찮은데요. 이 부분은 Chat GPT 도움을 많이 받았습니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1738671670/21.chak-blocks-%EC%A0%9C%EC%9E%91%EA%B8%B0/f0djxze7vxohbichjoa5.png" alt="개떡같이 말해도 찰떡같이 알아듣는 Chat GPT" width={719} height={296} caption="개떡같이 말해도 찰떡같이 테이블 만들어주는 Chat GPT"/>
+<br/>
+[chak-blocks 리드미 보러 가기](https://github.com/ysisys0202/chak-blocks)
+<br/>
+## publish 하기
+<br/>
+npm 배포는 간단합니다. npm 사이트에서 회원가입을 한 후, 배포하고자 하는 프로젝트에서 npm publish 명령어를 입력하면 됩니다.
+<br/>
+[chak-blocks 패키지 보러 가기](https://www.npmjs.com/package/chak-blocks)
+<br/>
+## 포스트를 마무리하며
+<br/>
+이렇게 UI 라이브러리를 만들고 npm에 배포까지 해보았습니다. 늘 익숙하게 해왔던 컴포넌트 작업에 더해, 번들러를 직접 세팅해 보며 개발 환경에 대한 이해도를 높이고, 패키지 배포용 package.json을 구성하며 패키지는 만드는 방법에 대해서도 알 수 있었습니다. 여러모로 아쉬움이 남는 부분도 있지만 점차 개선할 수 있으리라 믿고 첫 패키지 배포 후기는 여기서 마치도록 하겠습니다 👋👋
+
