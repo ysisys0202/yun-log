@@ -1,0 +1,178 @@
+---
+title: 스트리밍 적용해서 라우팅 속도 개선하기
+intro: "이번 포스트에서는 넥스트 SSR의 한계와 스트리밍은 무엇인지, 넥스트에서 스트리밍을 적용하는 방법에 대해서 알아보도록 하겠습니다."
+createdAt: "2025-03-05"
+isFeature: true
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1741226078/24.next-streaming/jjisjavsbdmycbvkpiab.jpg"
+keywords: "Next.js, 넥스트, 스트리밍, streaming, SSR"
+---
+<p>{intro}</p>
+<Spacing size="lg" />
+## 문제 발생
+<br/>
+새로 작업한 프로젝트를 배포하고 보니 라우팅 반응 속도가 느려지는 현상이 발견되었습니다. 이는 이동할 페이지를 생성하기 위해 데이터를 불러오고 HTML을 렌더링하는 만큼 시간이 소요되기 때문이었습니다. 이를 개선하기 위해 넥스트에서 지원하는 스트리밍을 적용하게 되었습니다.
+<br/>
+## 넥스트 SSR의 한계
+<br/>
+넥스트의 스트리밍을 알아보기에 앞서 라우팅 반응 속도가 느려진 이유에 대해 알아보겠습니다.
+<br/>
+넥스트의 SSR(Server Side Rendering)은 다음과 같은 단계로 진행됩니다.
+<br/>
+1. API 서버로부터 페이지를 구성하는 데 필요한 모든 데이터를 가져옵니다.
+2. 넥스트 서버는 가져온 데이터로 HTML을 렌더링합니다.
+3. 만들어진 HTML과 CSS, 자바스크립트를 클라이언트에 전송합니다.
+4. 클라이언트는 전달받은 HTML과 CSS로 화면을 렌더링합니다. 이때는 아직 자바스크립트가 적용되지 않아 상호 작용이 되지 않는 정적 UI입니다.
+5. 마지막으로 React가 정적 UI에 자바스크립트를 연결하는 하이드레이션 과정을 거쳐 마침내 상호 작용이 가능한 UI가 됩니다.
+<br/>
+이때 넥스트는 페이지를 렌더링하는 데 필요한 모든 데이터를 받아오고 HTML이 모두 준비되어야 페이지가 이동시키게 됩니다. 즉 링크를 클릭해도 페이지가 렌더링 되는 시간만큼 반응에 딜레이가 생기게 됩니다. 이는 사용자 경험을 크게 저하시키는 요인으로 이를 해결하기 위해 넥스트의 스트리밍을 적용할 수 있습니다.
+<br/>
+## 스트리밍이란?
+<br/>
+일단 스트리밍이라는 단어에 대해 알아보겠습니다. 일상적으로 많이 사용하는 용어지만 막상 그 뜻을 온전히 알고 쓰진 않았던 것 같습니다.
+스트리밍은 큰 데이터를 작은 조각으로 나누어 물이 흐르듯 순서대로 전달하고 처리하는 과정을 의미합니다. 흔히 유튜브나 음원 사이트에서 비디오나 오디오 데이터를 작은 단위로 나누어 제공할 때 사용하곤 합니다. 그렇다면 넥스트의 스트리밍은 무엇일까요? (드디어 본론!)
+<br/>
+## 넥스트의 스트리밍
+<br/>
+넥스트의 스트리밍은 페이지의 HTML을 작은 조각으로 나누어 준비되는 순서대로 클라이언트에 전송하는 것을 의미합니다. 따라서 스트리밍을 적용하면 앞서 언급한 라우팅 속도가 느려지는 현상을 개선할 수 있습니다. 
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741144198/24.next-streaming/sbaoxao6netonmlby3oz.avif" alt="넥스트의 스트리밍" width={1600*0.4} height={785 *0.4} caption="넥스트의 스트리밍, 페이지를 구성하는 HTML 작은 조각 나누어 클라이언트에 전송"/>
+<br/>
+링크를 클릭했을 때 아무런 반응도 없다가 몇초후에 화면이 이동하는 것이 아니라 일단 페이지가 이동하고 먼저 준비된 UI을 보여줄 수 있으니 페이지 초기 로드 속도가 단축되고 사용자 경험도 개선할 수 있게 됩니다.
+<br/>
+## 넥스트에서 스트리밍 적용하기
+<br/>
+넥스트에서 스트리밍을 적용하기 위해서는 클라이언트에서 요청이 발생할 때 동적으로 생성되는 페이지여야 합니다. 이미 정적으로 빌드된 페이지라면 스트리밍이 필요하지 않을 테니까요.
+<br/>
+그럼 이제 넥스트에서 스트리밍을 적용하는 두 가지 방법에 대하여 알아보겠습니다.
+<br/>
+### 1. loading 페이지 추가하기
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741144198/24.next-streaming/fh58byejiay7zihrbjqs.avif" alt="loading 페이지" width={1600*0.4} height={785 *0.4} caption="Suspense 컴포넌트 적용."/>
+<br/>
+첫 번째로는 loading 페이지를 추가하는 것입니다. 스트리밍을 적용할 페이지 파일과 동일한 경로에 loading.tsx 파일을 생성하고 해당 파일 내에서 로딩 시에 보여줄 fallback 컴포넌트를 내보내면 됩니다.
+<br/>
+### 2. Suspense 컴포넌트 사용하기
+<br/>
+페이지 단위가 아닌 컴포넌트 단위로 로딩 UI를 보여주고 싶다면 리액트에서 제공하는 Suspense 컴포넌트를 사용하면 됩니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741144198/24.next-streaming/ss5ildcma1wunkxmzwqj.avif" alt="loading 페이지" width={1600*0.4} height={785 *0.4} caption="Suspense 컴포넌트 적용."/>
+<br/>
+데이터를 페칭하는 컴포넌트를 Suspense로 감싸고 로딩 시 보여줄 fallback 컴포넌트를 전달하면 됩니다. Suspense는 페이지 단위의 로딩 UI보다 디테일하게 로딩 UI를 제공할 수 있다는 장점이 있습니다. 보통 스켈레톤 UI를 제공하여 어떤 UI가 렌더링 될지 사용자에게 예측할 수 있게 합니다. 
+<br/>
+```tsx
+<Suspense fallback={<Loading />}> 
+  <SomeComponent />
+</Suspense>
+```
+<br/>
+이렇게 SomeComponent를 감싸면 SomeComponent가 렌더링 될 동안 Loading UI가 노출됩니다.
+<br/>
+#### (개선) HOC로 재사용성 높이기
+<br/>
+이때 저는 부모 컴포넌트에서 Suspense로 감싸기보다 Suspense로 감싸질 컴포넌트 파일 안에서 로딩 UI를 같이 관리하고 싶었습니다.
+따라서 Suspense를 적용할 컴포넌트 파일에서 withSuspense HOC를 내보내도록 작업했습니다.
+HOC는 High Order Component의 약자로 컴포넌트를 인자로 받아 새로운 컴포넌트를 반환하는 함수입니다. 각각의 컴포넌트에 공통 로직을 적용할 때 유용하게 사용할 수 있습니다. 더 자세한 내용이 알고 싶으시다면 [이 포스트](/posts/React/HOC-사용해서-재사용성-높이기)를 확인해 주세요.
+<br/>
+```tsx
+// withSuspense HOC
+import { ComponentType, ReactNode, Suspense } from "react";
+
+const withSuspense = <Props extends object>(
+  Component: ComponentType<Props>,
+  fallback: ReactNode
+) => {
+  const ContainerComponent: React.FC<Props> = ({
+    suspenseKey,
+    ...props
+  }) => (
+    <Suspense fallback={fallback}>
+      <Component {...(props as Props)} />
+    </Suspense>
+  );
+
+  ContainerComponent.displayName = `withSuspense(${
+    Component.displayName || Component.name || "Component"
+  })`;
+
+  return ContainerComponent;
+};
+
+export default withSuspense;
+
+```
+<br/>
+```tsx
+// SomeComponent
+const SomeLoading = () => {
+    return <div>loading...</div>
+}
+
+const SomeComponent = () => {
+    return <div>some...</div>
+}
+
+export default withSuspense(SomeComponent, <SomeLoading />);
+```
+<br/>
+#### (최종) 쿼리 파라미터로 데이터를 새로 불러오는 경우 대응하기
+<br/>
+Suspense 컴포넌트는 기본적으로 데이터를 한 번 불러온 후에는 로딩 완료 상태를 유지합니다. 이때 문제가 되는 점은 필터나 페이징같이 쿼리 파라미터를 사용하여 API 호출을 하는 경우 Suspense가 로딩 완료 상태를 유지하고 있기 때문에 fallback UI를 노출하지 않는다는 점입니다. 따라서 처음과 똑같이 상호 작용 속도 이슈가 발생합니다. 이 문제를 해결하기 위해서 새로 데이터를 불러올 때 Suspense에 키값을 변경하여 강제로 리렌더링해주야 합니다.
+<br/>
+키값을 전달하기 위해 withSuspense를 수정해 주었습니다.
+<br/>
+```tsx
+import { ComponentType, ReactNode, Suspense } from "react";
+
+const withSuspense = <Props extends object>(
+  Component: ComponentType<Props>,
+  fallback: ReactNode
+) => {
+  const ContainerComponent: React.FC<Props & { suspenseKey?: string }> = ({
+    suspenseKey, // Props 타입에 suspenseKey 추가
+    ...props
+  }) => (
+    <Suspense key={suspenseKey} fallback={fallback}> 
+    {/* suspenseKey 전달*/}
+      <Component {...(props as Props)} />
+    </Suspense>
+  );
+
+  ContainerComponent.displayName = `withSuspense(${
+    Component.displayName || Component.name || "Component"
+  })`;
+
+  return ContainerComponent;
+};
+
+export default withSuspense;
+
+```
+<br/>
+```tsx
+const SomeLoading = () => {
+    return <div>loading...</div>
+}
+
+const SomeComponent = () => {
+    return <div>some...</div>
+}
+
+export default withSuspense(
+  (props: Props) => (
+    <SomeComponent
+      {...props}
+      suspenseKey={`${props.searchParams?.["reading-state"]} ${props.searchParams?.page}}`}
+    />
+  ),
+  <SomeLoading />
+);
+```
+<br/>
+## 포스팅을 마무리하며
+<br/>
+이번 포스트에서 넥스트 SSR의 한계점과 이를 개선하기 위한 스트리밍에 대해 알아보았습니다. HTML이 모두 렌더링 되기 전에 로딩 UI를 먼저 노출시켜 사용자 경험을 향상 시킬 수 있었던 것 같습니다. 그럼 이번 포스트는 여기서 마무리하겠습니다 👋👋
+<br/>
+## 참고 자료
+<br/>
+- [넥스트 스트리밍 공식 문서](https://nextjs.org/docs/app/getting-started/fetching-data#streaming).
+- [리액트 Suspense 공식 문서](https://ko.react.dev/reference/react/Suspense#resetting-suspense-boundaries-on-navigation)
