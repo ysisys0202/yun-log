@@ -25,15 +25,14 @@ describe("페이지 진입 시 콘텐츠 노출 테스트", () => {
     });
   });
   it("주요 게시글 포스트 카드를 클릭하면 포스트 상세 페이지로 이동한다.", () => {
-    cy.findByTestId("feature-post-list").within(async () => {
-      const postUrl = cy
-        .getElementByIndex("post-card", 0)
+    cy.findByTestId("feature-post-list").within(() => {
+      cy.getElementByIndex("post-card", 0)
         .find("a")
-        .invoke("attr", "href");
-      cy.getElementByIndex("post-card", 0).click();
-      postUrl.then((compareUrl) => {
-        cy.url().should("eq", `${Cypress.env("baseUrl")}${compareUrl}`);
-      });
+        .invoke("attr", "href")
+        .then((postUrl) => {
+          cy.getElementByIndex("post-card", 0).click();
+          cy.url().should("eq", `${Cypress.env("baseUrl")}${postUrl}`);
+        });
     });
   });
 
@@ -50,15 +49,14 @@ describe("페이지 진입 시 콘텐츠 노출 테스트", () => {
   });
 
   it("최신 게시글 포스트 카드를 클릭하면 포스트 상세 페이지로 이동한다.", () => {
-    cy.findByTestId("recent-post-list").within(async () => {
-      const postUrl = cy
-        .getElementByIndex("post-list-item", 0)
+    cy.findByTestId("recent-post-list").within(() => {
+      cy.getElementByIndex("post-list-item", 0)
         .find("a")
-        .invoke("attr", "href");
-      cy.getElementByIndex("post-list-item", 0).click();
-      postUrl.then((compareUrl) => {
-        cy.url().should("eq", `${Cypress.env("baseUrl")}${compareUrl}`);
-      });
+        .invoke("attr", "href")
+        .then((postUrl) => {
+          cy.getElementByIndex("post-list-item", 0).click();
+          cy.url().should("eq", `${Cypress.env("baseUrl")}${postUrl}`);
+        });
     });
   });
 });
