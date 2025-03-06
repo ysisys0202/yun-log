@@ -1,0 +1,130 @@
+---
+title: 넥스트 서버 사이드에서 쿠키에 접근하기
+intro: "이번 포스트에서는 프로젝트를 진행하며 제 멘탈을 터트린 문제에 관해 이야기해보겠습니다. 바로 넥스트 서버에서 브라우저에 저장된 쿠키에 접근할 수 없었던 것인데요. 똑같은 실수를 반복하지 않기 위해 에러의 원인을 찾고 해결 방법을 적용했던 과정을 기록해 봅니다."
+createdAt: "2025-03-06"
+isFeature: true
+thumbnail : "https://res.cloudinary.com/yun-log/image/upload/v1741226028/25.accessing-cookies-on-the-next-server/o0bvz7resvcxhkle0tzy.jpg"
+keywords: "Next.js, SSR, 쿠키, 도메인, cookie"
+---
+<p>{intro}</p>
+
+<Spacing size="lg" />
+## 발단 - 서버 사이드에서 인증 로직 구현하기
+<br/>
+사건의 발단은 서버 사이드에서 인증 로직을 구현하면서 시작되었습니다. 프로젝트를 마무리하며 코드를 살펴보았을 때 데이터를 클라이언트에서 불러오는 경우가 많았기에 SSR을 위해 서버 사이드에서 데이터를 불러오도록 코드 수정 작업을 시작했습니다. 원래 인증 로직은 보안을 위해 서버에서 HttpOnly 쿠키로 토큰을 세팅하고 클라이언트에서 요청을 보낼 때 credentials : "include" 옵션을 주어 자동으로 쿠키가 전달될 수 있게 처리해 두었습니다. 그러나 넥스트 서버에서는 브라우저에 저장된 쿠키에 접근할 수 없었기 때문에 요청 헤더에 포함된 쿠키에 접근하여 토큰 값을 가져오는 방향으로 작업을 진행했습니다.
+<br/>
+```tsx
+// util/auth.ts
+import { cookies } from "next/headers";
+
+export const getToken = async () => {
+  const cookie = await cookies();
+  return cookie.get("token")?.value ?? null;
+};
+
+```
+<br/>
+넥스트 요청 헤더에 포함된 쿠키에서 토큰을 가져온 후
+<br/>
+```tsx
+// AuthGuard
+import { redirect } from "next/navigation";
+import path from "@/constants/path";
+import { getAuthServer } from "@/api/server/auth";
+import { getToken } from "@/util/auth";
+
+const AuthGuard = async ({ children }: { children: React.ReactNode }) => {
+  try {
+    const token = await getToken();
+    await getAuthServer({
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return <>{children}</>;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error);
+      redirect(path.login);
+    }
+  }
+};
+
+export default AuthGuard;
+```
+<br/>
+토큰을 Authorization 헤더에 추가하여 사용자 인증 정보를 불러옵니다.
+이때 사용자 인증 정보가 없다면 로그인 페이지로 리다이렉션 시킵니다.
+<br/>
+## 전개 - 토큰을 찾을 수 없음
+<br/>
+작업을 완료한 후 코드를 배포하니 큰 문제가 생겼습니다. 로그인 해도 계속 로그인 페이지로 리다이렉트되는 문제였습니다. 로컬에서는 로그인 후 쿠키에 저장된 토큰을 통해 유저 정보를 가져오는 것이 정상적으로 처리되었기에 의문이었습니다.
+<br/> 
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741223110/25.accessing-cookies-on-the-next-server/jc39whldxenpx6xwwhc3.jpg" alt="쿠키가 저장되어 있음" width="585" height="45" caption="쿠키는 저장되어 있는데 어째서...?"/>
+<br/>
+분명 브라우저에 토큰이 저장되어 있는데 토큰이 존재하지 않는다는 에러가 계속 발생했습니다.
+<br/>
+이 과정에서 온갖 키워드로 구글링하고 챗지피티한테 호통치고 (~~미래를 위한 호감작 실패~~ 🥲) 로컬 환경과 배포 환경을 비교해 보며 결국 에러의 원인을 찾아냈습니다. 
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741222939/25.accessing-cookies-on-the-next-server/tfkxmdshotnsi5hmsoqd.jpg" alt="로컬에서의 요청" width="672" height="336" caption="로컬에서 요청이 갈 때는 토큰이 포함됨"/>
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741222939/25.accessing-cookies-on-the-next-server/gpekxbffzz1axlq9gml1.jpg" alt="배포 도메인에서의 요청" width="697" height="292" caption="뭐야, 내 쿠키 돌려줘요"/>
+<br/>
+배포 환경에서는 넥스트 서버로 요청이 갈 때 리퀘스트 헤더에 쿠키가 포함되지 않았던 것입니다. 
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741222939/25.accessing-cookies-on-the-next-server/hvtbfuxz5x1eyoiaxfhq.jpg" alt="배포 환경의 쿠키 도메인" width="585" height="57" caption="쿠키의 도메인이 서버 도메인으로 지정되어 있음"/>
+<br/>
+이유는 쿠키의 도메인 때문이었습니다. 도메인은 쿠키를 전달받을 서버를 지정하는 속성으로 따로 지정하지 않으면 쿠키를 세팅한 서버의 도메인이 자동으로 지정됩니다.
+<br/>
+<PostImage src="https://res.cloudinary.com/yun-log/image/upload/v1741222939/25.accessing-cookies-on-the-next-server/ik52gcgdldqjfqudaaja.jpg" alt="로컬  쿠키 도메인" width="585" height="62" caption="로컬은 넥스트 서버와 API 서버가 동일한 도메인을 가짐"/>
+<br/>
+로컬 환경에서는 넥스트 서버와 API 서버가 동일한 localhost 도메인이기 때문에 넥스트 서버로 API 서버에서 세팅한 쿠키가 전달될 수 있었지만
+배포 환경에서는 넥스트 서버와 API 서버의 도메인이 다르다 보니 넥스트 서버 요청에 쿠키가 같이 전달되지 않았던 것이죠 🥲
+<br/>
+## 위기 - 도메인 세팅 실패
+<br/>
+원인을 알았으니 쉽게 해결할 수 있을거라고 생각했습니다. 
+
+"도메인을 넥스트 서버 도메인으로 하면 해결되겠다!"라고 생각했던 것이죠.
+바로 API 서버에서 쿠키를 세팅할 때 도메인에 넥스트 서버 도메인을 지정하고 배포를 진행했습니다.
+<br/>
+```ts
+export const setToken = (res: Response, token: string) => {
+  const options = {
+    maxAge: Number(env.jwt.expiredSec) * 1000,
+    httpOnly: true,
+    sameSite: "none" as "none",
+    secure: true,
+    domain: env.client.host, // 도메인 설정
+  };
+  res.cookie("token", token, options);
+};
+```
+<br/>
+그리고 로그인을 진행하니 이제는 토큰 쿠키조차 세팅되지 않는 이슈가 발생했습니다 😱 서브 도메인이 아닌 완전히 다른 도메인을 설정하는 것은 보안상의 이유로 허용되지 않기 때문이었습니다. 이때쯤부터 "이거 내가 해결 가능한 이슈인가?" 하는 불안감이 엄습했습니다.
+<br/>
+## 절정 - 쿠키 세팅을 넥스트에 위임
+<br/>
+SSR을 포기하고 클라이언트에서 인증 로직을 구현할지, 아니면 도메인을 구입해서 넥스트 서버와 백엔드 서버 도메인을 일치시킬지 고민하던 차에 해결 방법을 찾게 되었습니다.
+<br/>
+- [Next.js x Express: Using HTTP-Only Cookie, JWT, and Refresh Token for API Secure Authentication and Protect Next Route Pages.](https://medium.com/@adimuhamadfirmansyah/next-js-x-express-using-http-only-cookie-jwt-and-refresh-token-for-api-secure-authentication-and-b7ee46ac4da3)
+- [서로 다른 도메인에서 쿠키 사용하기](https://velog.io/@jojeon4515/%EC%84%9C%EB%A1%9C-%EB%8B%A4%EB%A5%B8-%EB%8F%84%EB%A9%94%EC%9D%B8%EC%97%90%EC%84%9C-%EC%BF%A0%ED%82%A4-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-React-Express#-express-%EC%BF%A0%ED%82%A4-%EC%98%B5%EC%85%98-domain)
+<br/>
+구글 망령이 되어 돌아다니던 중 만나게 된 귀인들의 블로그.. 
+<br/>
+ 바로 API 서버에서 토큰을 생성하여 전달하면 넥스트 서버에서 쿠키를 세팅하는 방법이었습니다. 이러면 쿠키 도메인이 넥스트 도메인으로 지정되어 넥스트 서버에서 쿠키에 접근이 가능해집니다! 다만 클라이언트에서 API 서버로 요청을 보내는 경우 쿠키가 포함되지 않는 이슈가 발생하니 클라이언트에서 요청을 보낼 때 넥스트 서버를 거치게 한 후 미들웨어에서 토큰을 추출하여 Authorization 헤더에 토큰을 추가해 API 서버로 보내는 방법으로 문제를 해결하게 되었습니다.  
+<br/>
+- [미들웨어 코드](https://github.com/ysisys0202/chak_client/blob/main/src/middleware.ts)
+- [로그인 후 쿠키 세팅 코드](https://github.com/ysisys0202/chak_client/tree/main/src/app/api/auth/login)
+<br/>
+## 결말 - 이슈 해결 🎉 거기에 찝찝함을 곁들인..
+<br/>
+위 방법을 적용하니 배포 환경에서도 인증 처리가 정상적으로 동작했습니다. 
+일단 문제가 해결되어 한숨 돌렸지만 넥스트 API에서 쿠키를 세팅하게 되면서 클라이언트 로직과 API 로직의 경계가 흐려진 것 같아 살짝 찝찝한 마음이 듭니다. 게다가 모든 API 요청이 넥스트를 한 번 거치게 되어 성능에 영향을 미치지 않을지 우려되기도 합니다.
+<br/>
+## 포스팅을 마무리하며
+<br/>
+이번 포스트에서는 API 서버와 도메인이 다른 넥스트 서버에서 쿠키에 접근하는 방법에 대해 알아보았습니다. 이번 에러를 해결하며 네트워크 지식의 부족함을 많이 느꼈고 공부의 필요성을 절실히 느끼게 된 것 같습니다. 올해 목표에 네트워크 공부를 슬쩍 추가하며 이번 포스트를 마무리하겠습니다 👋👋👋   
+<br/>
+## 참고 자료
+- [Next.js x Express: Using HTTP-Only Cookie, JWT, and Refresh Token for API Secure Authentication and Protect Next Route Pages.](https://medium.com/@adimuhamadfirmansyah/next-js-x-express-using-http-only-cookie-jwt-and-refresh-token-for-api-secure-authentication-and-b7ee46ac4da3)
+- [서로 다른 도메인에서 쿠키 사용하기](https://velog.io/@jojeon4515/%EC%84%9C%EB%A1%9C-%EB%8B%A4%EB%A5%B8-%EB%8F%84%EB%A9%94%EC%9D%B8%EC%97%90%EC%84%9C-%EC%BF%A0%ED%82%A4-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-React-Express#-express-%EC%BF%A0%ED%82%A4-%EC%98%B5%EC%85%98-domain)
+<br/>
