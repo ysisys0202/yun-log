@@ -158,14 +158,16 @@ const SomeComponent = () => {
 }
 
 export default withSuspense(
-  (props: Props) => (
-    <SomeComponent
-      {...props}
-      suspenseKey={`${props.searchParams?.["reading-state"]} ${props.searchParams?.page}}`}
-    />
-  ),
+  SomeComponent,
   <SomeLoading />
 );
+```
+<br/>
+```tsx
+const ParentComponent = ()=>{
+  return <SomeComponent suspenseKey={queryParams.id}/>
+}
+
 ```
 <br/>
 ## 포스팅을 마무리하며
